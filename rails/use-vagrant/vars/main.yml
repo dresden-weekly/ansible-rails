@@ -1,0 +1,19 @@
+
+rails_vagrant_create_folders:
+- db
+- public
+
+rails_vagrant_links:
+- app
+- config
+- config.ru
+- db/migrate
+- Gemfile
+- lib
+- Rakefile
+- vendor
+- public/favicon.ico
+- public/robots.txt
+
+rails_vagrant_syncs:
+- public

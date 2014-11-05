@@ -1,0 +1,47 @@
+postgresql_service: postgresql
+postgresql_package: postgresql-9.3
+postgresql_user: postgres
+
+# variables to build postgresql.conf
+postgresql_config_path: /etc/postgresql/9.3/main
+postgresql_data_path: /var/lib/postgresql/9.3/main
+postgresql_pid_file: /var/run/postgresql/9.3-main.pid
+
+postgresql_listen:
+  - '0.0.0.0'
+postgresql_port: 5432
+postgresql_max_connections: 100
+postgresql_socket_directories:
+  - '/var/run/postgresql'
+
+postgresql_connections:
+  ssl: false
+
+postgresql_resources:
+  shared_buffers: 128MB
+  # temp_buffers: 8MB
+
+postgresql_write_ahead_log: {}
+postgresql_replication: {}
+postgresql_query_tuning: {}
+postgresql_logging:
+  log_line_prefix: "'%t '"
+  log_timezone: "'UTC'"
+
+postgresql_runtime_statistics: {}
+postgresql_autovacuum: {}
+postgresql_client_connection_defaults:
+  datestyle: "'iso, mdy'"
+  timezone: "'UTC'"
+  lc_messages: "'en_US.utf8'"
+  lc_monetary: "'en_US.utf8'"
+  lc_numeric: "'en_US.utf8'"
+  lc_time: "'en_US.utf8'"
+  default_text_search_config: "'pg_catalog.english'"
+
+postgresql_lock_management: {}
+postgresql_cutomized: {}
+
+postgresql_users_role_attr_flags:
+  - CREATEDB
+  - NOSUPERUSER

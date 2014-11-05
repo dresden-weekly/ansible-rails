@@ -1,0 +1,6 @@
+
+rails_deploy_custom_archive: [] # custom files/folders that are exported from git
+
+rails_deploy_custom_shared_folders: [] # custom folders that are shared between releases
+
+rails_deploy_custom_create_folders: [] # custom folders that are created for each release

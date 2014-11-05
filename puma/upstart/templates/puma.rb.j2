@@ -1,0 +1,55 @@
+#!/usr/bin/env puma
+# {{ ansible_managed }}
+
+environment ENV['RAILS_ENV'] || 'production'
+
+directory "
+{%- if puma_bundle_path -%}
+  {{ puma_bundle_path }}
+{%- else -%}
+  {{ puma_path | default(app_path, true) }}/current
+{%- endif -%}"
+
+rackup "
+{%- if puma_rackup_path -%}
+  {{ puma_rackup_path }}
+{%- elif puma_bundle_path -%}
+  {{ puma_bundle_path }}/config.ru
+{%- else -%}
+  {{ puma_path | default(app_path, true) }}/current/config.ru
+{%- endif -%}"
+
+pidfile "
+{%- if puma_pid -%}
+  {{ puma_pid }}
+{%- else -%}
+  {{ puma_path | default(app_path, true) }}/shared/tmp/pids/puma.pid
+{%- endif -%}"
+
+{% for typ,v in puma_binds.iteritems() %}
+bind "{{ typ }}://{{ v }}:{{ puma_port }}"
+{% endfor %}
+
+preload_app!
+
+workers Integer(ENV['PUMA_WORKERS'] || {{ puma_workers }})
+threads Integer(ENV['MIN_THREADS']  || {{ puma_thread_min }}), Integer(ENV['MAX_THREADS'] || {{ puma_thread_max }})
+
+stdout_redirect '{{ puma_access_log }}', '{{ puma_error_log }}', true
+
+# daemonize true
+
+on_restart do
+  puts 'Refreshing Gemfile'
+  ENV["BUNDLE_GEMFILE"] = "{%- if puma_bundle_path -%}
+  {{ puma_bundle_path }}/Gemfile
+{%- else -%}
+  {{ puma_path | default(app_path, true) }}/current/Gemfile
+{%- endif -%}"
+end
+
+on_worker_boot do
+  ActiveSupport.on_load(:active_record) do
+    ActiveRecord::Base.establish_connection
+  end
+end

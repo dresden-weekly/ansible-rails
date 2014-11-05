@@ -1,0 +1,9 @@
+
+bundle_binstubs: # {{ app_path }}/shared/bin
+bundle_gemfile: Gemfile
+bundle_path: # {{ app_path }}/shared/bundle
+bundle_without:
+- development
+- test
+bundle_flags:
+- '--quiet'

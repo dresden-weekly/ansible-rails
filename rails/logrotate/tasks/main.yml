@@ -1,0 +1,7 @@
+#
+# setup a log rotation for shared/log/*.log
+#
+- name: Setup Logrotate
+  template:
+    dest: "/etc/logrotate.d/{{ app_name }}"
+    src: "logrotate.j2"

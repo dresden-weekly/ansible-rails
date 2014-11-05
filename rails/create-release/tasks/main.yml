@@ -1,0 +1,49 @@
+#
+# Define a ReleaseId, Extract it from git and construct shared and custom folders
+#
+---
+- name: Define release id
+  set_fact:
+    RELEASE_ID: "{{ [ansible_date_time.year, ansible_date_time.month, ansible_date_time.day, ansible_date_time.hour, ansible_date_time.minute, ansible_date_time.second] | join('') }}"
+
+- name: Define release path
+  set_fact:
+    RELEASE_PATH: "{{ app_path }}/releases/{{ RELEASE_ID }}"
+
+- name: Ensure git mirror repo is up to date
+  git:
+    repo: "{{ git_url }}"
+    dest: "{{ app_path }}/repo"
+    bare: yes
+    version: "{{ git_branch }}"
+    update: yes
+    accept_hostkey: yes
+  remote_user: "{{ app_user }}"
+
+- name: Create release
+  shell: >
+    git archive --format=tar --prefix={{ RELEASE_ID }}/ {{ git_branch }}
+    {{ rails_deploy_archive | join(' ') }}
+    {{ rails_deploy_custom_archive | join(' ') }}
+    | (cd {{ app_path }}/releases && tar -xf -)
+  args:
+    creates: "{{ RELEASE_PATH }}"
+    chdir: "{{ app_path }}/repo"
+
+- name: Clean shared folders
+  file:
+    path: "{{ RELEASE_PATH }}/{{ item }}"
+    state: absent
+    force: yes
+  with_flattened:
+  - rails_deploy_shared_folders
+  - rails_deploy_custom_shared_folders
+
+- name: Create custom folders
+  file:
+    path: "{{ RELEASE_PATH }}/{{ item }}"
+    state: directory
+  with_flattened:
+  - rails_deploy_custom_create_folders
+
+- include: shared_folders.yml

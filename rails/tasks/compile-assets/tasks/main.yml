@@ -1,0 +1,10 @@
+#
+# Perform the asset:precompile rake task
+#
+---
+- name: Precompile assets
+  shell: "{{ profile }}{{ ruby_bin }}bundle exec rake assets:precompile"
+  args:
+    chdir: "{{ RELEASE_PATH }}"
+  register: result
+  changed_when: "'Writing' in result.stdout"

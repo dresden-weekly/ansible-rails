@@ -1,0 +1,5 @@
+{%- if rvm_user or app_user -%}
+  ~/.init/puma.conf
+{%- else -%}
+  /etc/init/puma.conf
+{%- endif -%}

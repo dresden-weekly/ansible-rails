@@ -1,0 +1,40 @@
+- name: Install dependencies
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+  with_items:
+  - curl
+  - bison
+  - build-essential # allow building native gems
+  - zlib1g-dev
+  - libssl-dev
+  - libreadline6-dev
+  - libxml2-dev
+  - git-core
+  - libsqlite3-dev # build native sqlite3 driver
+  - nodejs # precompile assets
+
+- name: Install rvm
+  shell: curl -L https://get.rvm.io | bash -s stable --autolibs=disable --auto-dotfiles
+  args:
+    creates: ~/.rvm
+  sudo: yes
+  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+
+- name: Install ruby
+  shell: "~/.rvm/bin/rvm install {{ lookup('template', '../templates/default_arg.j2') | trim }} {{ item }}"
+  args:
+    creates: "~/.rvm/rubies/ruby-{{ item }}"
+  sudo: yes
+  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+  with_flattened:
+  - rvm_rubies
+  - "{{ rvm_default | default(ruby_version, true) }}"
+
+- name: Export RAILS_ENV
+  lineinfile:
+    dest: ~/.profile
+    regexp: "^export RAILS_ENV="
+    line: "export RAILS_ENV={{ rails_env }}"
+  sudo: true
+  sudo_user: "{{ rvm_user | default(app_user, true) }}"

@@ -1,0 +1,8 @@
+---
+rvm_default: # {{ ruby_version }}
+rvm_rubies: []
+# - {{ rvm_default }}
+
+rvm_user: # {{ app_user }}
+
+ruby_bin: '~/.rvm/bin/rvm default do '

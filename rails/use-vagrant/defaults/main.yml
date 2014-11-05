@@ -1,0 +1,6 @@
+
+vagrant_mount: /vagrant
+
+rails_vagrant_custom_create_folders: [] # custom folders created inside the vagrant release
+
+rails_vagrant_custom_links: [] # custom links to the vagrant mount

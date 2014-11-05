@@ -1,0 +1,29 @@
+- name: Add repo
+  apt_repository:
+    repo: 'ppa:nginx/stable'
+
+- name: Install
+  apt:
+    name: nginx
+
+- name: Configure
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify:
+  - restart nginx
+
+- name: Extra Configuration
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/nginx/conf.d/{{ item }}.conf"
+  with_items: nginx_confd_templates
+  notify:
+  - restart nginx
+
+- name: Disable the default config
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify:
+  - restart nginx

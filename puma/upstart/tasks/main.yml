@@ -1,0 +1,18 @@
+---
+- name: config script
+  template:
+    src: puma.rb.j2
+    dest: "{{ lookup('template', '../templates/puma_config_path.j2' ) | trim }}"
+  sudo: yes
+  sudo_user: "{{ puma_user | default(rvm_user, true) | default(app_user, true) }}"
+
+- name: upstart script
+  template:
+    src: upstart.conf.j2
+    dest: "{{ lookup('template', '../templates/upstart_conf_path.j2' ) | trim }}"
+  sudo: yes
+  sudo_user: "{{ rvm_user | default(app_user, true) | default('root', true) }}"
+
+- name: store puma fact
+  set_fact:
+    APP_URL: "{{ lookup('template', '../templates/app_url.j2') | trim }}"

@@ -1,0 +1,13 @@
+
+- meta: flush_handlers
+
+- name: Check for Restart
+  stat:
+    path: "{{ app_path }}/restart.txt"
+  register: puma_restart
+
+- name: Restart
+  shell: >
+    rm {{ app_path }}/restart.txt ;
+    restart puma || start puma
+  when: puma_restart.stat.exists

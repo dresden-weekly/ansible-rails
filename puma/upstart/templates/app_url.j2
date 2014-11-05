@@ -1,0 +1,7 @@
+{%- for typ, v in puma_binds.iteritems() -%}
+{%-   if loop.first -%}
+{%-      if typ=='tcp' -%}
+{{ ansible_default_ipv4.address }}:{{ puma_port }}
+{%-      endif -%}
+{%-    endif -%}
+{%-  endfor -%}

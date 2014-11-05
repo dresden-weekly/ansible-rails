@@ -1,0 +1,12 @@
+#
+# Update the current release link
+#
+---
+- name: Link current
+  file:
+    path: "{{ app_path }}/current"
+    src: "{{ RELEASE_PATH }}"
+    state: link
+    force: yes
+  notify:
+  - restart required

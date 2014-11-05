@@ -1,0 +1,23 @@
+
+puma_path: # {{ app_path }}
+puma_user: # {{ rvm_user | default(app_user) }}
+
+puma_workers: 3
+puma_thread_min: 1
+puma_thread_max: 16
+
+puma_port: 9292
+puma_binds:
+  tcp: '0.0.0.0'
+
+#Not used
+# puma_socket: # {{ puma_path }}/shared/tmp/sockets/puma
+
+# default pathes for capistrano deployment
+puma_bundle_path: # {{ puma_path }}/current
+puma_rackup_path: # {{ puma_bundle_path }}/config.ru
+puma_config_path: # {{ puma_path }}/shared/config/puma.rb
+puma_pid: # {{ puma_path }}/shared/tmp/pids/puma.pid
+puma_error_log: "{{ app_path }}/shared/log/puma.error.log"
+puma_access_log: "{{ app_path }}/shared/log/puma.access.log"
+

@@ -1,0 +1,8 @@
+nginx_user: www-data
+nginx_pid: /var/run/nginx.pid
+nginx_worker_processes: 4
+nginx_events:
+  worker_connections: 4096
+nginx_http_conf: {}
+nginx_confd_templates:
+  - confd_https

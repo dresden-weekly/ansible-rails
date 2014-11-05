@@ -1,0 +1,67 @@
+- name: Configure Locales
+  copy:
+    dest: /etc/profile.d/lang.sh
+    content: |
+      export LANGUAGE="en_US.UTF-8"
+      export LANG="en_US.UTF-8"
+      export LC_ALL="en_US.UTF-8"
+
+- name: Add repo key
+  apt_key:
+    url: "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
+
+- name: Add repo
+  apt_repository:
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main'
+
+- name: Install Package
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+  - '{{ postgresql_package }}'
+  - python-psycopg2 # allow ansible to access postgresql
+
+- name: Update template
+  shell: >
+    sudo -u postgres psql -c "update pg_database set encoding = pg_char_to_encoding('UTF8'), datctype = 'en_US.UTF-8', datcollate = 'en_US.UTF-8';"
+    && touch ~/.fixed_pg
+  args:
+    creates: ~/.fixed_pg
+
+- name: Configure
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ postgresql_config_path }}/{{ item }}"
+  notify:
+  - restart postgresql
+  with_items:
+  - pg_hba.conf
+  - postgresql.conf
+
+- name: Create user
+  postgresql_user:
+    name: "{{ db_user }}"
+    password: "{{ lookup('env', 'DB_PASSWORD') | default(db_password, true) }}"
+    role_attr_flags: "{{ postgresql_users_role_attr_flags | join(',') }}"
+  sudo: yes
+  sudo_user: '{{ postgresql_user }}'
+  when: db_user is defined
+
+- name: Create database
+  postgresql_db:
+    name: "{{ db_name }}"
+    owner: "{{ db_user | default(postgresql_user, true) }}"
+    encoding: UTF8
+    state: present
+    lc_collate: en_US.UTF-8
+    lc_ctype: en_US.UTF-8
+    template: template0
+  sudo: yes
+  sudo_user: '{{ postgresql_user }}'
+
+- name: Connection URL
+  set_fact:
+    DATABASE_URL: "{{ lookup('template', '../templates/database_url.j2') | trim }}"
+
+- meta: flush_handlers

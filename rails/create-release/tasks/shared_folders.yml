@@ -1,0 +1,18 @@
+---
+- name: Create shared folders
+  file:
+    path: "{{ app_path }}/shared/{{ item }}"
+    state: directory
+  with_flattened:
+  - rails_deploy_shared_folders
+  - rails_deploy_custom_shared_folders
+
+- name: Link shared folders
+  file:
+    path: "{{ RELEASE_PATH }}/{{ item }}"
+    src: "{{ app_path }}/shared/{{ item }}"
+    state: link
+    force: yes
+  with_flattened:
+  - rails_deploy_shared_folders
+  - rails_deploy_custom_shared_folders

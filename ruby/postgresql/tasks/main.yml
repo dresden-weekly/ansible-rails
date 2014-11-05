@@ -1,0 +1,7 @@
+# Packages required for postgresql gem
+- name: Packages
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+  - libpq-dev

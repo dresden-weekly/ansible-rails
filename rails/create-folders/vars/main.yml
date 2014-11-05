@@ -1,0 +1,12 @@
+rails_deploy_create_folders:
+- releases
+- shared/config
+- shared/bin
+- shared/bundle
+- shared/public
+- shared/tmp
+- shared/tmp/cache
+- shared/tmp/pids
+- shared/tmp/sessions
+- shared/tmp/sockets
+- shared/log

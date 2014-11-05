@@ -1,0 +1,8 @@
+#
+# Keep only a defined amount of releases, delete the oldest if more exist
+#
+---
+- name: Cleanup
+  shell: "ls -dt {{ app_path }}/releases/* | egrep '[0-9]+' | tail -n +{{ rails_deploy_old_release_count }} | xargs rm -rfv"
+  register: result
+  changed_when: "'removed' in result.stdout"

@@ -1,0 +1,1 @@
+postgresql://{{ db_user | default(postgresql_user, true) }}:{{ db_password | default('') }}@{{ ansible_default_ipv4.address }}:{{ postgresql_port }}/{{ db_name }}

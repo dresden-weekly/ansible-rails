@@ -1,0 +1,35 @@
+#
+# Create a vagrant release from the vagrant mount
+#
+# As windows vagrant mounts do not support links to the shared folder,
+# we have link to parts
+#
+---
+- name: Define release id
+  set_fact:
+    RELEASE_ID: vagrant
+    RELEASE_PATH: "{{ app_path }}/releases/vagrant"
+
+- name: Create release
+  file:
+    path: "{{ RELEASE_PATH }}"
+    state: directory
+
+- name: Create custom folders
+  file:
+    path: "{{ RELEASE_PATH }}/{{ item }}"
+    state: directory
+  with_flattened:
+  - rails_vagrant_create_folders
+  - rails_vagrant_custom_create_folders
+
+- name: Links to vagrant
+  file:
+    dest: "{{ RELEASE_PATH }}/{{ item }}"
+    src: "{{ vagrant_mount }}/{{ item }}"
+    state: link
+  with_flattened:
+  - rails_vagrant_links
+  - rails_vagrant_custom_links
+
+- include: ../../create-release/tasks/shared_folders.yml
