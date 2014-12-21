@@ -1,7 +1,7 @@
 Role Name
 =========
 
-Out sink-tank for modules and playbooks that help to deploy Ruby on Rails applications
+Our think-tank for modules and playbooks that help to deploy Ruby on Rails applications
 
 Requirements
 ------------
@@ -50,7 +50,7 @@ Roadmap
 * Features
   * multiple machine deployment (requires a test)
   * skip deploy if nothing changed, unless forced
-  *
+  
 * Release Management
   * Download based releases
 * Webserver
