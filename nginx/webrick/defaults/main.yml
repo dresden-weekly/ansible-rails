@@ -1,0 +1,4 @@
+site_name: # {{ app_name }}
+site_port: 80
+site_domain: # {{ app_domain }}
+site_path: # {{ app_path }}

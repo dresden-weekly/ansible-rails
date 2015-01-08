@@ -1,0 +1,13 @@
+
+- meta: flush_handlers
+
+- name: Check for Restart
+  stat:
+    path: "{{ app_path }}/restart.txt"
+  register: webrick_restart
+
+- name: Restart
+  shell: >
+    rm {{ app_path }}/restart.txt ;
+    restart webrick || start webrick
+  when: webrick_restart.stat.exists

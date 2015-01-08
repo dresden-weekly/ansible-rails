@@ -1,0 +1,5 @@
+{%- if rvm_user or app_user -%}
+  ~/.init/webrick.conf
+{%- else -%}
+  /etc/init/webrick.conf
+{%- endif -%}

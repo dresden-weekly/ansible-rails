@@ -1,0 +1,11 @@
+
+webrick_path: "{{ app_path }}"
+
+webrick_port: 3000
+webrick_binding: '0.0.0.0'
+
+# default pathes for capistrano deployment
+webrick_bundle_path: "{{ webrick_path }}/current"
+webrick_pid: "{{ webrick_path }}/shared/tmp/pids/webrick.pid"
+webrick_log: "{{ webrick_path }}/shared/log/webrick.log"
+webrick_error_log: "{{ webrick_path }}/shared/log/webrick_error.log"
