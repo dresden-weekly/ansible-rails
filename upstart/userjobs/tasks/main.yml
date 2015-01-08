@@ -1,16 +1,18 @@
 #
 # enables upstart user jobs
 #
-- name: Allow userjobs
+- name: Precise Allow
   template:
     src: Upstart.conf
     dest: /etc/dbus-1/system.d/Upstart.conf
     force: yes
+  when: ansible_distribution == 'Ubuntu' and ansible_lsb.major_release|int <= 13
 
-- name: Autostart userjobs
+- name: Precise Autostart
   template:
     src: load_user_jobs.conf
     dest: /etc/init/load_user_jobs.conf
+  when: ansible_distribution == 'Ubuntu' and ansible_lsb.major_release|int <= 13
 
 - name: Create ~/.init folder
   file:
@@ -18,4 +20,27 @@
     state: directory
   sudo: yes
   sudo_user: "{{ item }}"
+  with_items: users
+
+- name: Trusty Session Init
+  template:
+    src: session_init.conf
+    dest: /etc/init/session_init.conf
+  when: ansible_distribution == 'Ubuntu' and ansible_lsb.major_release|int >= 14
+
+- name: Trusty Session Setup
+  template:
+    src: session_init_setup.conf
+    dest: /etc/init/session_init_setup.conf
+  when: ansible_distribution == 'Ubuntu' and ansible_lsb.major_release|int >= 14
+
+- name: Trusty Join Session
+  lineinfile:
+    dest: ~/.profile
+    line: 'export XDG_RUNTIME_DIR=/run/user/$(id -u) && export UPSTART_SESSION=$(initctl list-sessions | cut "-d " -f2)'
+    regexp: "^export\ XDG_RUNTIME_DIR"
+    create: true
+  sudo: true
+  sudo_user: "{{ item }}"
+  when: ansible_distribution == 'Ubuntu' and ansible_lsb.major_release|int >= 14
   with_items: users

@@ -41,6 +41,6 @@ exec /bin/bash <<'EOT'
 
   logger -t puma "Starting server: $PWD"
 
-  exec {{ ruby_bin }} bundle exec puma -C {{ PUMA_UPSTART_CONF_PATH }}
+  exec {{ ruby_bin }} bundle exec puma -C {{ PUMA_CONFIG_PATH }}
 EOT
 end script
