@@ -2,14 +2,17 @@
 - name: config script
   template:
     src: puma.rb.j2
-    dest: "{{ lookup('template', '../templates/puma_config_path.j2' ) | trim }}"
+    dest: "{{ lookup('template', '../templates/puma_config_path.j2') | trim }}"
   sudo: yes
   sudo_user: "{{ puma_user | default(rvm_user, true) | default(app_user, true) }}"
+
+- set_fact:
+    PUMA_UPSTART_CONF_PATH: "{{ lookup('template', '../templates/upstart_conf_path.j2') | trim }}"
 
 - name: upstart script
   template:
     src: upstart.conf.j2
-    dest: "{{ lookup('template', '../templates/upstart_conf_path.j2' ) | trim }}"
+    dest: "{{ PUMA_UPSTART_CONF_PATH }}"
   sudo: yes
   sudo_user: "{{ rvm_user | default(app_user, true) | default('root', true) }}"
 

@@ -18,7 +18,6 @@
     version: "{{ git_branch }}"
     update: yes
     accept_hostkey: yes
-  remote_user: "{{ app_user }}"
 
 - name: Create release
   shell: >

@@ -6,3 +6,6 @@ rvm_rubies: []
 rvm_user: # {{ app_user }}
 
 ruby_bin: '~/.rvm/bin/rvm default do '
+
+rvm_gpg_keys: '409B6B1796C275462A1703113804BB82D39DC0E3'
+rvm_gpg_key_server: 'hkp://keys.gnupg.net'

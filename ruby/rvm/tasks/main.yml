@@ -14,6 +14,22 @@
   - libsqlite3-dev # build native sqlite3 driver
   - nodejs # precompile assets
 
+- name: Check GPG keys
+  command: 'gpg --list-keys {{ rvm_gpg_keys }}'
+  ignore_errors: yes
+  changed_when: False
+  register: rvm_gpg_keys_check
+  sudo: yes
+  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+  when: rvm_gpg_keys != ''
+
+- name: Import GPG keys
+  command: 'gpg --keyserver {{ rvm_gpg_key_server }} --recv-keys {{ rvm_gpg_keys }}'
+  changed_when: False
+  sudo: yes
+  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+  when: 'rvm_gpg_keys_check.rc != 0'
+
 - name: Install rvm
   shell: curl -L https://get.rvm.io | bash -s stable --autolibs=disable --auto-dotfiles
   args:
