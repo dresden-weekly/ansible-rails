@@ -9,5 +9,5 @@
 - name: Restart
   shell: >
     rm {{ app_path }}/restart.txt ;
-    restart puma || start puma
+    {{ profile }}restart puma || start puma
   when: puma_restart.stat.exists

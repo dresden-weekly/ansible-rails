@@ -9,5 +9,5 @@
 - name: Restart
   shell: >
     rm {{ app_path }}/restart.txt ;
-    restart webrick || start webrick
+    {{ profile }}restart webrick || start webrick
   when: webrick_restart.stat.exists

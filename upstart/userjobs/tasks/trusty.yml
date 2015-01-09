@@ -1,0 +1,30 @@
+---
+- name: Trusty | Session Init
+  template:
+    src: "{{ item }}"
+    dest: "/etc/init/{{ item }}"
+  with_items:
+  - session_init.conf
+  - session_init_setup.conf
+
+- name: Trusty | Check Session Init
+  command: "status session_init USER={{ item }}"
+  register: session_init_status
+  changed_when: no
+  failed_when: (session_init_status.rc != 0) and (session_init_status.rc != 1)
+  with_items: users
+
+- name: Trusty | Start Session Init
+  command: "start session_init USER={{ item.item }}"
+  when: "'running' not in item.stdout"
+  with_items: session_init_status.results
+
+- name: Trusty | Join Session
+  lineinfile:
+    dest: ~/.profile
+    line: 'export XDG_RUNTIME_DIR=/run/user/$(id -u) && export UPSTART_SESSION=$(initctl list-sessions | cut "-d " -f2)'
+    regexp: "^export\ XDG_RUNTIME_DIR"
+    create: true
+  sudo: true
+  sudo_user: "{{ item }}"
+  with_items: users
