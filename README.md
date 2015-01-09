@@ -53,9 +53,12 @@ See our example: https://github.com/dresden-weekly/ansible-rails-example
 Changelog
 ---------
 
-**0.1** (first release) *planned*
+**0.2** (more features!) *planned*
 
 * (Your pull requests)
+
+**0.1** (first release) 09.01.2015
+
 * Features
   * ✔ Windows Vagrant support
   * ✔ Simple Remote-Tool to trigger deployments
@@ -81,28 +84,28 @@ Roadmap
 -------
 
 * Features
-  * multiple machine deployment (requires a test)
-  * skip deploy if nothing changed, unless forced 
+  * ☐ multiple machine deployment (requires a test)
+  * ☐ skip deploy if nothing changed, unless forced 
 * Release Management
-  * Download based releases
+  * ☐ Download based releases
 * Webserver
-  * Apache
-  * Passenger Standalone
+  * ☐ Apache
+  * ☐ Passenger Standalone
 * Rails Application Server
-  * Passenger on NGINX
-  * Passenger on Apache
-  * Thin
-  * Unicorn
+  * ☐ Passenger on NGINX
+  * ☐ Passenger on Apache
+  * ☐ Thin
+  * ☐ Unicorn
 * Database support
-  * MySql
-  * Sqlite3 (for vagrant development)
+  * ☐ MySql
+  * ☐ Sqlite3 (for vagrant development)
 * Ruby installation
-  * Package based
+  * ☐ Package based
 * Configuration management
-  * Generator for secrets.yml
-  * Generator for database.yml
+  * ☐ Generator for secrets.yml
+  * ☐ Generator for database.yml
 * Linux distribution
-  * CentOS
+  * ☐ CentOS
 
 License
 -------
@@ -128,5 +131,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-
