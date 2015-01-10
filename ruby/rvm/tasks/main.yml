@@ -16,8 +16,8 @@
 
 - name: Check GPG keys
   command: 'gpg --list-keys {{ rvm_gpg_keys }}'
-  ignore_errors: yes
-  changed_when: False
+  failed_when: no
+  changed_when: no
   register: rvm_gpg_keys_check
   sudo: yes
   sudo_user: "{{ rvm_user | default(app_user, true) }}"
