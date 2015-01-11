@@ -5,6 +5,12 @@
 - name: Define release id
   set_fact:
     RELEASE_ID: "{{ [ansible_date_time.year, ansible_date_time.month, ansible_date_time.day, ansible_date_time.hour, ansible_date_time.minute, ansible_date_time.second] | join('') }}"
+  run_once: on # make sure we have a consistent RELEASE_ID
+  delegate_to: "{{ groups['app'][0] }}"
+
+- name: Distribute release id
+  set_fact:
+    RELEASE_ID: "{{ hostvars[groups['app'][0]].RELEASE_ID }}"
 
 - name: Define release path
   set_fact:
