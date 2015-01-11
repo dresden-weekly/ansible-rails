@@ -1,0 +1,25 @@
+---
+- name: Distribute release id
+  set_fact:
+    RELEASE_ID: "{{ hostvars[groups['app'][0]].RELEASE_ID }}"
+
+- name: Define release path
+  set_fact:
+    RELEASE_PATH: "{{ app_path }}/releases/{{ RELEASE_ID }}"
+
+- name: Create folders
+  file:
+    path: "{{ RELEASE_PATH }}"
+    state: directory
+
+- name: Check folder
+  stat:
+    path: "{{ RELEASE_PATH }}/public"
+  register: release_folder
+
+- name: Copy assets
+  shell: >
+    scp -r -3 {{ app_user }}@{{ groups['app'][0] }}:{{ RELEASE_PATH }}/public {{ app_user }}@{{ inventory_hostname }}:{{ RELEASE_PATH }}/
+  sudo: no
+  delegate_to: 127.0.0.1
+  when: not release_folder.stat.exists
