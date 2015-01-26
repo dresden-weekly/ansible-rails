@@ -1,5 +1,6 @@
 dresden-weekly.Rails
 ====================
+[![Ansible Galaxy](https://img.shields.io/badge/Ansible%20Galaxy-dresden--weekly.Rails-blue.svg)](https://galaxy.ansible.com/list#/roles/2108)
 
 Our think-tank for modules and playbooks that help to deploy Ruby on Rails applications
 
