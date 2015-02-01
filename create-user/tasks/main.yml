@@ -21,14 +21,13 @@
   authorized_key:
     user: "{{ user.name }}"
     key: "{{ item }}"
-  with_items:
-  - user.authorized_keys | default([])
+  with_items: user.authorized_keys | default([])
 
 - name: Environment Variables
   lineinfile:
     dest: ~/.profile
     regexp: "^export {{ item.key }}="
-    line: "export {{ item.key }}={{ default(item.value, true) }}"
+    line: "export {{ item.key }}={{ item.value }}"
   sudo: true
   sudo_user: "{{ user.name }}"
   when: item.value != ''
