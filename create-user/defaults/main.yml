@@ -1,25 +1,28 @@
-
+---
 # a documented example user
 user:
   name: example # required!
   comment: Managed by Ansible # is the default
-  password: '' # empty password by default
-  shell: /bin/bash # default ist /bin/sh
-  authorized_keys: [] # (.ssh/authorized_keys) default is ENV['AUTHORIZED_KEY']
-  group: example # (main group of the user) default is the user name
+  password: '' # no password by default
+  shell: /bin/bash # default
+  authorized_keys: [] # content for ~/.ssh/authorized_keys
+  group: example # main group of the user, default is the user name
   groups: [] # extra groups
-  env: # (Environment variables added to .profile)
+  env: # environment variables added to .profile
     DATABASE_URL: "..."
     PATH: "$HOME/.rvm/bin:$PATH" # useful for rvm_ruby
-  env_facts: # (Facts added as environment variables)
-  - group: db # (index to groups) required!
-    index: 0 # (index inside the group) 0 is default
-    facts: # (list of fact-names == variable name)
-    - DATABASE_URL
-  - group: app
-    index: 0
+  env_facts: # list of facts stored in .profile as environment variables
+  - host: app # element of Ansible hostvars
     facts:
-    - RAILS_LOG_FILE_PATH
+    - RAILS_LOG_FILE_PATH # pseudo code "export {{fact}}={{ hostvars[host][fact] }}"
+  - group: db # element of Ansible groups
+    index: 0 # index inside the group - 0 is default
+    facts: # list of fact-names == variable name
+    - DATABASE_URL # pseudo code "export {{fact}}={{ hostvars[ groups[group][index] ][fact] }}"
   bashrc_lines: # lines added to the .bashrc file
-  - cd /data/example_app
-  - cd /data/example_app/current
+  - cd /data/example_app || true
+  - cd /data/example_app/current || true
+
+# Note:
+#   if you want to create multiple users you have to apply this role multiple times.
+#   We have not found a way to perform complex nested loops with defaults in Ansible see env_facts
