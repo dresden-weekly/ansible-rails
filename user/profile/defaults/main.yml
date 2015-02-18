@@ -1,0 +1,30 @@
+---
+# a documented example user
+rails_user_name: "{{ app_user }}"
+
+# dict of environment variables added to .profile
+rails_user_env: {}
+# examples:
+  # DATABASE_URL: "..."
+  # PATH: "$HOME/.rvm/bin:$PATH" # useful for rvm_ruby
+
+# list of facts stored in .profile as environment variables
+rails_user_env_facts: []
+# examples:
+  # - host: app # element of Ansible hostvars
+  #   facts:
+  #   - RAILS_LOG_FILE_PATH # pseudo code "export {{fact}}={{ hostvars[host][fact] }}"
+  # - group: db # element of Ansible groups
+  #   index: 0 # index inside the group - 0 is default
+  #   facts: # list of fact-names == variable name
+  #   - DATABASE_URL # pseudo code "export {{fact}}={{ hostvars[ groups[group][index] ][fact] }}"
+
+# list of lines added to the .bashrc file
+rails_user_bashrc_lines: []
+# examples:
+  # - cd /data/example_app || true
+  # - cd /data/example_app/current || true
+
+# Note:
+#   if you want to create multiple users you have to apply this role multiple times.
+#   We have not found a way to perform complex nested loops with defaults in Ansible see env_facts

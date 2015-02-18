@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{% for port in apache_server_ports %}
+{%   if port is mapping %}
+Listen {% if port.address is defined %}{{ port.address }}:{% endif %}{{ port.port }}{% if port.protocl is defined %} {{ port.protocol }}{% endif %}
+{%   else %}
+Listen {{ port }}
+{%   endif %}
+{% endfor %}

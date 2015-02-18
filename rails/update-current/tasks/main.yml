@@ -4,8 +4,8 @@
 ---
 - name: Link current
   file:
-    path: "{{ app_path }}/current"
-    src: "{{ RELEASE_PATH }}"
+    path: "{{ rails_current_path }}"
+    src: "{{ rails_release_path }}"
     state: link
     force: yes
   notify:

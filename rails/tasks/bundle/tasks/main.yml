@@ -3,13 +3,14 @@
 #
 ---
 - name: Bundle install
-  shell: >
-    {{ ruby_bin }}bundle install
+  command: >
+    {{ profile }}
+    'bundle install
     --binstubs {{ bundle_binstubs | default(app_path + '/shared/bin', true) }}
     --gemfile {{ bundle_gemfile }}
     --path {{ bundle_path | default(app_path + '/shared/bundle', true) }}
     --without {{ bundle_without | join(' ') }}
-    {{ bundle_flags | join(' ') }}
+    {{ bundle_flags | join(' ') }}'
   args:
     chdir: "{{ RELEASE_PATH }}"
   register: result

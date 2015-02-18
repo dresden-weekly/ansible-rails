@@ -1,0 +1,12 @@
+---
+- name: vhost | config
+  template:
+    dest: "{{ apache_server_sites_available_folder }}/{{ site_domain }}.conf"
+    src: "vhost.conf.j2"
+  notify: restart
+
+- name: vhost | enable
+  command: 'a2ensite {{ site_domain }}'
+  register: apache_passenger_vhost_enable_result
+  changed_when: "'Enabling site' in apache_passenger_vhost_enable_result.stdout"
+  notify: restart

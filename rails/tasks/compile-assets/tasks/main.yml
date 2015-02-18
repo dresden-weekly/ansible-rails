@@ -3,7 +3,7 @@
 #
 ---
 - name: Precompile assets
-  shell: "{{ profile }}{{ ruby_bin }}bundle exec rake assets:precompile"
+  command: "{{ profile }}'bundle exec rake assets:precompile'"
   args:
     chdir: "{{ RELEASE_PATH }}"
   register: result

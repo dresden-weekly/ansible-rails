@@ -1,0 +1,10 @@
+---
+- include: install.yml
+- include: configs.yml
+- include: mods.yml
+
+- name: export facts
+  set_fact:
+    apache_server_sites_available_folder: '{{ apache_server_sites_available_folder }}'
+    apache_server_sites_include_folder: '{{ apache_server_sites_include_folder }}'
+    apache_server_service: '{{ apache_server_service }}'

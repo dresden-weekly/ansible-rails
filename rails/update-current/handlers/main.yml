@@ -1,5 +1,5 @@
 ---
 - name: restart required
   file:
-    path: "{{ app_path }}/restart.txt"
+    path: "{{ app_path }}/shared/tmp/restart.txt"
     state: touch

@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+<VirtualHost *:{{ site_port }}>
+  ServerName {{ site_domain }}
+{% for server_alias in site_domain_aliases %}
+  ServerAlias {{ server_alias }}
+{% endfor %}
+
+  DocumentRoot {{ vhost_document_root }}
+
+  Include {{ apache_server_sites_include_folder }}/{{ site_domain }}/*.conf
+</VirtualHost>

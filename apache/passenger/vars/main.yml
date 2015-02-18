@@ -1,0 +1,3 @@
+---
+apache_passenger_package: 'libapache2-mod-passenger'
+apache_passenger_mod: 'passenger'

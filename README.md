@@ -16,7 +16,7 @@ Content Roles
 
 Provisioning:
 
-* **create-user** create a user according to a profile hash
+* **user/profile** store facts to .profile and .bashrc 
 * **postgresql** install a PostgreSQL 9.3 database
 * **upstart/userjobs** enables Upstart userjobs
 * **ruby/rvm** installs a specific Ruby version with rvm
@@ -28,6 +28,8 @@ Provisioning:
 * **nginx/webrick** prepare nginx for webrick apperserver
 * **puma/upstart** install userjob for puma
 * **webrick/upstart** install userjob for webrick
+* **apache/server** install and configure apache server
+* **apache/passenger** install and configure passenger for apache
 
 Deployment:
 

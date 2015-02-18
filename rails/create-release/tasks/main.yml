@@ -1,10 +1,10 @@
 #
-# Define a ReleaseId, Extract it from git and construct shared and custom folders
+# Define a release id, extract it from git and construct shared and custom folders
 #
 ---
 - name: Define release id
   set_fact:
-    RELEASE_ID: "{{ [ansible_date_time.year, ansible_date_time.month, ansible_date_time.day, ansible_date_time.hour, ansible_date_time.minute, ansible_date_time.second] | join('') }}"
+    RELEASE_ID: "{{ rails_release_id }}"
   run_once: on # make sure we have a consistent RELEASE_ID
   delegate_to: "{{ groups['app'][0] }}"
 
@@ -34,12 +34,14 @@
   args:
     creates: "{{ RELEASE_PATH }}"
     chdir: "{{ app_path }}/repo"
+  register: rails_create_release_result
 
 - name: Clean shared folders
   file:
     path: "{{ RELEASE_PATH }}/{{ item }}"
     state: absent
     force: yes
+  when: rails_create_release_result.changed
   with_flattened:
   - rails_deploy_shared_folders
   - rails_deploy_custom_shared_folders

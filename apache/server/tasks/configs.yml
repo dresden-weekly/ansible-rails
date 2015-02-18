@@ -1,0 +1,28 @@
+---
+- name: configs | ports
+  template:
+    dest: "{{ apache_server_ports_config_file }}"
+    src: "ports.conf.j2"
+  notify: restart
+
+- name: configs | server
+  template:
+    dest: "{{ apache_server_conf_available_folder }}/{{ apache_server_config_name }}.conf"
+    src: "server_config.conf.j2"
+  notify: restart
+
+- name: configs | enable
+  command: "a2enconf {{ item }}"
+  register: apache_server_config_enable_result
+  changed_when: "'Enabling conf' in apache_server_config_enable_result.stdout"
+  with_items:
+  - '{{apache_server_config_name}}'
+  notify: restart
+
+- name: configs | disable sites
+  shell: "find {{ apache_server_sites_enabled_folder }} -maxdepth 1 -type l -regex '.*/\\([0-9]+-\\)?{{ item }}\\.conf' -exec rm -v {} \\;"
+  register: apache_server_disable_sites_results
+  failed_when: no
+  changed_when: "'removed' in apache_server_disable_sites_results.stdout"
+  with_items: apache_server_disable_sites
+  notify: restart

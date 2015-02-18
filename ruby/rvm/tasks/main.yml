@@ -25,10 +25,17 @@
 
 - name: Import GPG keys
   command: 'gpg --keyserver {{ rvm_gpg_key_server }} --recv-keys {{ rvm_gpg_keys }}'
-  changed_when: False
+  ignore_errors: yes
+  register: rvm_import_gpg_keys_result
   sudo: yes
   sudo_user: "{{ rvm_user | default(app_user, true) }}"
-  when: 'rvm_gpg_keys_check.rc != 0'
+  when: rvm_gpg_keys_check.rc != 0
+
+- name: Alternative GPG keys
+  shell: 'curl -sSL {{ rvm_gpg_key_alternative_url }} | gpg --import -'
+  sudo: yes
+  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+  when: rvm_gpg_keys_check.rc != 0 and rvm_import_gpg_keys_result.rc != 0
 
 - name: Install rvm
   shell: curl -L https://get.rvm.io | bash -s stable --autolibs=disable --auto-dotfiles

@@ -1,0 +1,11 @@
+---
+- name: site | folder
+  file:
+    path: "{{ apache_server_sites_include_folder }}/{{ site_domain }}"
+    state: directory
+
+- name: site | config
+  template:
+    dest: "{{ apache_server_sites_include_folder }}/{{ site_domain }}/{{ site_name }}.conf"
+    src: "site.conf.j2"
+  notify: restart

@@ -1,0 +1,25 @@
+---
+- name: install | add key
+  apt_key:
+    keyserver: '{{ apache_passenger_key_server }}'
+    id: '{{ apache_passenger_key_id }}'
+
+- name: install | add repo
+  apt_repository:
+    repo: 'deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ ansible_lsb.codename }} main'
+
+- name: install | packages
+  apt:
+    pkg: '{{ item }}'
+    state: '{{ apache_passenger_state }}'
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+  - '{{ apache_passenger_package }}'
+  notify: restart
+
+- name: install | enable module
+  apache2_module:
+    name: '{{ apache_passenger_mod }}'
+#    state: "{{ apache_passenger_state if apache_passenger_state == 'absent' else 'present' }}"
+  notify: restart
