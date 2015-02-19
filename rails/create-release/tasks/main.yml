@@ -7,14 +7,20 @@
     RELEASE_ID: "{{ rails_release_id }}"
   run_once: on # make sure we have a consistent RELEASE_ID
   delegate_to: "{{ groups['app'][0] }}"
+  tags:
+  - facts
 
 - name: Distribute release id
   set_fact:
     RELEASE_ID: "{{ hostvars[groups['app'][0]].RELEASE_ID }}"
+  tags:
+  - facts
 
 - name: Define release path
   set_fact:
     RELEASE_PATH: "{{ app_path }}/releases/{{ RELEASE_ID }}"
+  tags:
+  - facts
 
 - name: Ensure git mirror repo is up to date
   git:
