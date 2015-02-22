@@ -2,10 +2,14 @@
 - name: Distribute release id
   set_fact:
     RELEASE_ID: "{{ hostvars[groups['app'][0]].RELEASE_ID }}"
+  tags:
+  - facts
 
 - name: Define release path
   set_fact:
     RELEASE_PATH: "{{ app_path }}/releases/{{ RELEASE_ID }}"
+  tags:
+  - facts
 
 - name: Create folders
   file:

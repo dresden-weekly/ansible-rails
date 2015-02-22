@@ -63,5 +63,7 @@
 - name: Connection URL
   set_fact:
     DATABASE_URL: "{{ lookup('template', '../templates/database_url.j2') | trim }}"
+  tags:
+  - facts
 
 - meta: flush_handlers

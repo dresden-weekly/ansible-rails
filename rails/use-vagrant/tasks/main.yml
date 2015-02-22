@@ -9,6 +9,8 @@
   set_fact:
     RELEASE_ID: vagrant
     RELEASE_PATH: "{{ app_path }}/releases/vagrant"
+  tags:
+  - facts
 
 - name: Create release
   file:

@@ -3,6 +3,8 @@
   set_fact:
     PUMA_CONFIG_PATH: "{{ lookup('template', '../templates/puma_config_path.j2') | trim }}"
     APP_URL: "{{ lookup('template', '../templates/app_url.j2') | trim }}"
+  tags:
+  - facts
 
 - name: config script
   template:

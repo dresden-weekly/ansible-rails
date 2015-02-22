@@ -2,6 +2,8 @@
 - name: store facts
   set_fact:
     APP_URL: "{{ ansible_all_ipv4_addresses | last }}:{{ webrick_port }}"
+  tags:
+  - facts
 
 - name: upstart script
   template:
