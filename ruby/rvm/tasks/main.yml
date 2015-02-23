@@ -29,6 +29,9 @@
   register: rvm_import_gpg_keys_result
   sudo: yes
   sudo_user: "{{ rvm_user | default(app_user, true) }}"
+  until: rvm_import_gpg_keys_result.rc == 0
+  retries: 10
+  delay: 0
   when: rvm_gpg_keys_check.rc != 0
 
 - name: Alternative GPG keys
