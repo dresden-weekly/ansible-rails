@@ -1,7 +1,13 @@
-#
-# setup a log rotation for shared/log/*.log
-#
-- name: Setup Logrotate
+---
+- name: packages
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    state: present
+    cache_valid_time: 86400
+  with_items: logrotate_packages
+
+- name: configure
   template:
-    dest: "/etc/logrotate.d/{{ app_name }}"
+    dest: "{{ etc_logrotate_path }}/{{ rails_logrotate_name }}"
     src: "logrotate.j2"

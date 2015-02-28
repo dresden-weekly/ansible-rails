@@ -1,0 +1,7 @@
+---
+rails_app_server: "{{ groups['app'][0] }}"
+rails_app_server_release_id: "{{ hostvars[rails_app_server].RAILS_APP_RELEASE_ID }}"
+rails_app_server_release_path: "{{ hostvars[rails_app_server].RAILS_APP_RELEASE_PATH }}"
+rails_app_server_assets_path: "{{ rails_app_server_release_path }}/public"
+
+rails_app_release_assets_path: "{{ RAILS_APP_RELEASE_PATH }}/public"

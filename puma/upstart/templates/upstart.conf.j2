@@ -8,7 +8,7 @@ stop on runlevel [06]
 respawn
 respawn limit 3 30
 
-instance {{ puma_path | default(app_path, true) }}
+instance {{ puma_path }}
 
 script
 exec /bin/bash <<'EOT'
@@ -33,14 +33,9 @@ exec /bin/bash <<'EOT'
     # chruby 2.0.0
   fi
 
-  cd {% if puma_bundle_path -%}
-  {{ puma_bundle_path }}
-     {%- else -%}
-  {{ puma_path | default(app_path, true) }}/current
-     {%- endif %}
-
+  cd {{ puma_directory }}
   logger -t puma "Starting server: $PWD"
 
-  exec {{ ruby_bin }} bundle exec puma -C {{ PUMA_CONFIG_PATH }}
+  exec {{ puma_ruby_prefix }} bundle exec puma -C {{ puma_config_file }}
 EOT
 end script

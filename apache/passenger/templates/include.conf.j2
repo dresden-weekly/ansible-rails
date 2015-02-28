@@ -3,16 +3,15 @@
 <Directory {{ site_path }}>
   Options FollowSymLinks
   AllowOverride None
-  Order allow,deny
-  Allow from all
+  Require all granted
 
   RailsBaseURI {{ site_url_path }}
-  PassengerMinInstances {{ site_min_instances }}
+  PassengerMinInstances {{ passenger_min_instances }}
 {% for option, value in apache_site_options.iteritems() %}
   {{ option }} {{ value }}
 {% endfor %}
 </Directory>
 
-{% if site_start_url %}
-PassengerPreStart {{ site_start_url }}
+{% if passenger_start_url %}
+PassengerPreStart {{ passenger_start_url }}
 {% endif %}

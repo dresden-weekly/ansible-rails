@@ -3,11 +3,11 @@
 
 - name: Check for Restart
   stat:
-    path: "{{ app_path }}/shared/tmp/restart.txt"
-  register: puma_restart
+    path: "{{ RAILS_APP_RESTART_PATH }}"
+  register: rails_puma_restart
 
 - name: Restart
   shell: >
-    rm {{ app_path }}/shared/tmp/restart.txt ;
+    rm {{ RAILS_APP_RESTART_PATH }} ;
     {{ profile }}'restart puma || start puma'
-  when: puma_restart.stat.exists
+  when: rails_puma_restart.stat.exists

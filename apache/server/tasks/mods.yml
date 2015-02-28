@@ -1,23 +1,25 @@
 ---
 - name: mods | conf
   file:
-    dest: "{{ apache_server_mods_available_folder }}/{{ item.name }}.conf"
+    dest: "{{ apache_server_mods_available_path }}/{{ item.name }}.conf"
     content: "{{ item.conf }}"
   when: (item is mapping)
     and (item.conf is defined)
     and (item.name is defined)
   with_items: apache_server_mods
-  notify: restart
+  notify:
+  - restart apache
 
 - name: mods | load
   file:
-    dest: "{{ apache_server_mods_available_folder }}/{{ item.name }}.load"
+    dest: "{{ apache_server_mods_available_path }}/{{ item.name }}.load"
     content: "{{ item.conf }}"
   when: (item is mapping)
     and (item.load is defined)
     and (item.name is defined)
   with_items: apache_server_mods
-  notify: restart
+  notify:
+  - restart apache
 
 - name: mods | enable
   apache2_module:
@@ -26,11 +28,13 @@
   with_flattened:
   - apache_server_mods
   - "{{ ['ssl'] if apache_server_ssl else [] }}"
-  notify: restart
+  notify:
+  - restart apache
 
 - name: mods | disable
   apache2_module:
     name: "{{ item }}"
     state: absent
   with_items: apache_server_disable_mods
-  notify: restart
+  notify:
+  - restart apache

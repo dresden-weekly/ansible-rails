@@ -14,15 +14,15 @@
     path: "{{ item }}"
     state: directory
   with_items:
-  - "{{ apache_server_config_base }}"
-  - "{{ apache_server_ssl_folder }}"
-  - "{{ apache_server_conf_available_folder }}"
-  - "{{ apache_server_conf_enabled_folder }}"
-  - "{{ apache_server_sites_available_folder }}"
-  - "{{ apache_server_sites_enabled_folder }}"
-  - "{{ apache_server_sites_include_folder }}"
-  - "{{ apache_server_mods_available_folder }}"
-  - "{{ apache_server_mods_enabled_folder }}"
+  - "{{ apache_server_config_path }}"
+  - "{{ apache_server_ssl_path }}"
+  - "{{ apache_server_conf_available_path }}"
+  - "{{ apache_server_conf_enabled_path }}"
+  - "{{ apache_server_sites_available_path }}"
+  - "{{ apache_server_sites_enabled_path }}"
+  - "{{ apache_server_sites_include_path }}"
+  - "{{ apache_server_mods_available_path }}"
+  - "{{ apache_server_mods_enabled_path }}"
 
 - name: install | www_root
   file:

@@ -1,3 +1,0 @@
----
-rails_current_path: "{{ app_path }}/current"
-rails_release_path: "{{ RELEASE_PATH }}"

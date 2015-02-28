@@ -6,14 +6,14 @@
   command: >
     {{ profile }}
     'bundle install
-    --binstubs {{ bundle_binstubs | default(app_path + '/shared/bin', true) }}
+    --binstubs {{ bundle_binstubs }}
     --gemfile {{ bundle_gemfile }}
-    --path {{ bundle_path | default(app_path + '/shared/bundle', true) }}
+    --path {{ bundle_path }}
     --without {{ bundle_without | join(' ') }}
     {{ bundle_flags | join(' ') }}'
   args:
-    chdir: "{{ RELEASE_PATH }}"
-  register: result
-  changed_when: "'Installing' in result.stdout"
+    chdir: "{{ RAILS_APP_RELEASE_PATH }}"
+  register: rails_bundle_result
+  changed_when: "'Installing' in rails_bundle_result.stdout"
   notify:
-  - restart required
+  - restart rails app

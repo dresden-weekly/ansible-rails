@@ -1,4 +1,5 @@
-site_name: # {{ app_name }}
+---
+site_name: '{{ app_name }}'
 site_port: 80
-site_domain: # {{ app_domain }}
-site_path: # {{ app_path }}
+site_domain: '{{ app_domain }}'
+site_path: '{{ RAILS_APP_CURRENT_PUBLIC_PATH }}'

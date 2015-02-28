@@ -1,29 +1,31 @@
 ---
 - name: Distribute release id
   set_fact:
-    RELEASE_ID: "{{ hostvars[groups['app'][0]].RELEASE_ID }}"
+    RAILS_APP_RELEASE_ID: "{{ rails_app_server_release_id }}"
   tags:
   - facts
 
 - name: Define release path
   set_fact:
-    RELEASE_PATH: "{{ app_path }}/releases/{{ RELEASE_ID }}"
+    RAILS_APP_RELEASE_PATH: "{{ RAILS_APP_RELEASES_PATH }}/{{ RAILS_APP_RELEASE_ID }}"
   tags:
   - facts
 
 - name: Create folders
   file:
-    path: "{{ RELEASE_PATH }}"
+    path: "{{ RAILS_APP_RELEASE_PATH }}"
     state: directory
 
 - name: Check folder
   stat:
-    path: "{{ RELEASE_PATH }}/public"
-  register: release_folder
+    path: "{{ rails_app_release_assets_path }}"
+  register: rails_publish_assets_path_result
 
 - name: Copy assets
   shell: >
-    scp -r -3 {{ app_user }}@{{ groups['app'][0] }}:{{ RELEASE_PATH }}/public {{ app_user }}@{{ inventory_hostname }}:{{ RELEASE_PATH }}/
-  sudo: no
+    scp -r -3
+    {{ app_user }}@{{ rails_app_server }}:{{ rails_app_server_assets_path }}
+    {{ app_user }}@{{ inventory_hostname }}:{{ RAILS_APP_RELEASE_PATH }}/
+  sudo: no # ssh_agent is used
   delegate_to: 127.0.0.1
-  when: not release_folder.stat.exists
+  when: not rails_publish_assets_path_result.stat.exists

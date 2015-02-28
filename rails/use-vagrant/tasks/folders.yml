@@ -1,0 +1,13 @@
+---
+- name: Folders | base
+  file:
+    path: "{{ RAILS_APP_RELEASE_PATH }}"
+    state: directory
+
+- name: Folders | create
+  file:
+    path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
+    state: directory
+  with_flattened:
+  - rails_vagrant_create_folders
+  - rails_vagrant_custom_create_folders

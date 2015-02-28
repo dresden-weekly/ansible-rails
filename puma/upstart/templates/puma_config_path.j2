@@ -1,5 +1,0 @@
-{%- if puma_config_path -%}
-  {{ puma_config_path }}
-{%- else -%}
-  {{ puma_path | default(app_path, true) }}/shared/config/puma.rb
-{%- endif -%}

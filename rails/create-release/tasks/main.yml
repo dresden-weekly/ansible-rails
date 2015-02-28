@@ -2,49 +2,12 @@
 # Define a release id, extract it from git and construct shared and custom folders
 #
 ---
-- name: Define release id
-  set_fact:
-    RELEASE_ID: "{{ rails_release_id }}"
-  run_once: on # make sure we have a consistent RELEASE_ID
-  delegate_to: "{{ groups['app'][0] }}"
-  tags:
-  - facts
-
-- name: Distribute release id
-  set_fact:
-    RELEASE_ID: "{{ hostvars[groups['app'][0]].RELEASE_ID }}"
-  tags:
-  - facts
-
-- name: Define release path
-  set_fact:
-    RELEASE_PATH: "{{ app_path }}/releases/{{ RELEASE_ID }}"
-  tags:
-  - facts
-
-- name: Ensure git mirror repo is up to date
-  git:
-    repo: "{{ git_url }}"
-    dest: "{{ app_path }}/repo"
-    bare: yes
-    version: "{{ git_branch }}"
-    update: yes
-    accept_hostkey: yes
-
-- name: Create release
-  shell: >
-    git archive --format=tar --prefix={{ RELEASE_ID }}/ {{ git_branch }}
-    {{ rails_deploy_archive | join(' ') }}
-    {{ rails_deploy_custom_archive | join(' ') }}
-    | (cd {{ app_path }}/releases && tar -xf -)
-  args:
-    creates: "{{ RELEASE_PATH }}"
-    chdir: "{{ app_path }}/repo"
-  register: rails_create_release_result
+- include: facts.yml
+- include: git.yml
 
 - name: Clean shared folders
   file:
-    path: "{{ RELEASE_PATH }}/{{ item }}"
+    path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: absent
     force: yes
   when: rails_create_release_result.changed
@@ -54,7 +17,7 @@
 
 - name: Create custom folders
   file:
-    path: "{{ RELEASE_PATH }}/{{ item }}"
+    path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: directory
   with_flattened:
   - rails_deploy_custom_create_folders

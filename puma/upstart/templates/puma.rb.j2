@@ -3,31 +3,12 @@
 
 environment ENV['RAILS_ENV'] || 'production'
 
-directory "
-{%- if puma_bundle_path -%}
-  {{ puma_bundle_path }}
-{%- else -%}
-  {{ puma_path | default(app_path, true) }}/current
-{%- endif -%}"
-
-rackup "
-{%- if puma_rackup_path -%}
-  {{ puma_rackup_path }}
-{%- elif puma_bundle_path -%}
-  {{ puma_bundle_path }}/config.ru
-{%- else -%}
-  {{ puma_path | default(app_path, true) }}/current/config.ru
-{%- endif -%}"
-
-pidfile "
-{%- if puma_pid -%}
-  {{ puma_pid }}
-{%- else -%}
-  {{ puma_path | default(app_path, true) }}/shared/tmp/pids/puma.pid
-{%- endif -%}"
+directory "{{ puma_direcotry }}"
+rackup "{{ puma_rackup }}"
+pidfile "{{ puma_pidfile }}"
 
 {% for typ,v in puma_binds.iteritems() %}
-bind "{{ typ }}://{{ v }}:{{ puma_port }}"
+bind "{{ typ }}://{{ v }}"
 {% endfor %}
 
 preload_app!
@@ -37,15 +18,9 @@ threads Integer(ENV['MIN_THREADS']  || {{ puma_thread_min }}), Integer(ENV['MAX_
 
 stdout_redirect '{{ puma_access_log }}', '{{ puma_error_log }}', true
 
-# daemonize true
-
 on_restart do
   puts 'Refreshing Gemfile'
-  ENV["BUNDLE_GEMFILE"] = "{%- if puma_bundle_path -%}
-  {{ puma_bundle_path }}/Gemfile
-{%- else -%}
-  {{ puma_path | default(app_path, true) }}/current/Gemfile
-{%- endif -%}"
+  ENV["BUNDLE_GEMFILE"] = "{{ puma_gemfile }}"
 end
 
 on_worker_boot do

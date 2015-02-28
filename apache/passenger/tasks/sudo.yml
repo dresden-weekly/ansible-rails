@@ -1,6 +1,0 @@
----
-- name: sudo | apache restart
-  copy:
-    dest: '/etc/sudoers.d/{{ site_user }}_restart'
-    content: '{{ site_user }} ALL=NOPASSWD: service {{ apache_server_service }} restart'
-    mode: 440

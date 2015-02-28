@@ -1,0 +1,11 @@
+---
+# packages required for RVM to compile Ruby
+rvm_packages:
+- curl
+- bison
+- build-essential # allow building native gems
+- zlib1g-dev
+- libssl-dev
+- libreadline6-dev
+- libxml2-dev
+- git-core

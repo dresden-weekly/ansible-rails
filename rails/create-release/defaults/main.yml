@@ -1,8 +1,15 @@
-
+---
 # options to create a release id
 rails_release_id: "{{ rails_release_id_time }}"
 rails_release_id_time: "{{ [ansible_date_time.year, ansible_date_time.month, ansible_date_time.day, ansible_date_time.hour, ansible_date_time.minute, ansible_date_time.second] | join('') }}"
 rails_release_id_git_branch: "{{ git_branch }}"
+
+# git repository where rails app taken from
+rails_app_git_repo: "{{ git_url }}"
+rails_app_git_branch: "{{ git_branch }}"
+
+# path where the repository goes
+rails_app_repo_path: "{{ RAILS_APP_BASE_PATH }}/repo"
 
 # handling of deployment files and folder
 rails_deploy_archive: # default files/folders that are exported from git

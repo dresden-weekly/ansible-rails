@@ -1,13 +1,13 @@
 ---
 - name: store facts
   set_fact:
-    APP_URL: "{{ ansible_all_ipv4_addresses | last }}:{{ webrick_port }}"
+    APP_URL: "{{ webrick_app_url }}"
   tags:
   - facts
 
 - name: upstart script
   template:
+    dest: "{{ webrick_upstart_conf }}"
     src: upstart.conf.j2
-    dest: "{{ lookup('template', '../templates/upstart_conf_path.j2') | trim }}"
   sudo: yes
-  sudo_user: "{{ rvm_user | default(app_user, true) | default('root', true) }}"
+  sudo_user: "{{ webrick_user }}"

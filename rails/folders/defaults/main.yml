@@ -1,0 +1,37 @@
+---
+# Create the base structure for Rails releases
+# and store facts for other roles
+#
+# path where the release structure is based on
+rails_app_base_path: '{{ app_path }}'
+
+# server user and group who own the folders
+rails_app_owner: '{{ app_user }}'
+rails_app_group: '{{ app_user }}'
+
+# path where all present releases are stored in
+rails_app_releases_path: "{{ rails_app_base_path }}/releases"
+
+# path used for the active release
+rails_app_current_path: "{{ rails_app_base_path }}/current"
+
+# path where shared data is stored in
+rails_app_shared_path: "{{ rails_app_base_path }}/shared"
+
+# path where Rails logs are stored
+rails_app_log_path: "{{ rails_app_shared_path }}/log"
+
+# path where Rails configs are stored
+rails_app_config_path: "{{ rails_app_shared_path }}/config"
+
+# path for temporaries
+rails_app_tmp_path: "{{ rails_app_shared_path }}/tmp"
+
+# path for process ids
+rails_app_pids_path: "{{ rails_app_tmp_path }}/pids"
+
+# file that is touched to trigger a restart of the application server
+rails_app_restart_path: "{{ rails_app_tmp_path }}/restart.txt"
+
+# additional folders to create
+rails_app_custom_folders: []

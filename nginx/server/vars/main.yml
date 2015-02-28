@@ -1,0 +1,15 @@
+---
+nginx_apt_repo: 'ppa:nginx/stable'
+
+nginx_apt_packages:
+- nginx
+
+nginx_config_path: '/etc/nginx'
+nginx_config_file: '{{ nginx_config_path }}/nginx.conf'
+nginx_config_mime_types_file: '{{ nginx_config_path }}/mime.types'
+
+nginx_config_include_path: '{{ nginx_config_path }}/conf.d'
+nginx_sites_available_path: '{{ nginx_config_path }}/sites-available'
+nginx_sites_enabled_path: '{{ nginx_config_path }}/sites-enabled'
+
+nginx_service_name: 'nginx'

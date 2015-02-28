@@ -1,19 +1,19 @@
 ---
-apache_server_config_base: '/etc/apache2'
+apache_server_config_path: '/etc/apache2'
 apache_server_www_root: '/var/www'
-apache_server_ssl_folder: '{{ apache_server_config_base }}/ssl'
+apache_server_ssl_path: '{{ apache_server_config_path }}/ssl'
 
-apache_server_conf_available_folder: '{{ apache_server_config_base }}/conf-available'
-apache_server_conf_enabled_folder: '{{ apache_server_config_base }}/conf-enabled'
+apache_server_conf_available_path: '{{ apache_server_config_path }}/conf-available'
+apache_server_conf_enabled_path: '{{ apache_server_config_path }}/conf-enabled'
 
-apache_server_sites_available_folder: '{{ apache_server_config_base }}/sites-available'
-apache_server_sites_enabled_folder: '{{ apache_server_config_base }}/sites-enabled'
-apache_server_sites_include_folder: '{{ apache_server_config_base }}/sites-include'
+apache_server_sites_available_path: '{{ apache_server_config_path }}/sites-available'
+apache_server_sites_enabled_path: '{{ apache_server_config_path }}/sites-enabled'
+apache_server_sites_include_path: '{{ apache_server_config_path }}/sites-include'
 
-apache_server_mods_available_folder: '{{ apache_server_config_base }}/mods-available'
-apache_server_mods_enabled_folder: '{{ apache_server_config_base }}/mods-enabled'
+apache_server_mods_available_path: '{{ apache_server_config_path }}/mods-available'
+apache_server_mods_enabled_path: '{{ apache_server_config_path }}/mods-enabled'
 
-apache_server_ports_config_file: "{{ apache_server_config_base }}/ports.conf"
+apache_server_ports_config_file: "{{ apache_server_config_path }}/ports.conf"
 apache_server_config_name: "ansible"
 
 apache_server_packages:
