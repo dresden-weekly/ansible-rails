@@ -3,7 +3,7 @@
   file:
     path: "{{ item }}"
     owner: "{{ rails_app_owner }}"
-    group: "{{ rails_app_owner }}"
+    group: "{{ rails_app_group }}"
     state: directory
   with_flattened:
   - rails_create_folders

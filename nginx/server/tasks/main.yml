@@ -29,7 +29,7 @@
   file:
     dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
     state: absent
-  with_item: nginx_exclude_templates
+  with_items: nginx_exclude_templates
   notify:
   - restart nginx
 

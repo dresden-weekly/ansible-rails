@@ -29,7 +29,7 @@ nginx_http_options:
   server_tokens: 'off'
 
 # included configuration templates
-nginx_include_templates:
+nginx_include_templates: []
 # - confd_https # configure https
 
 # removed configuration templates
