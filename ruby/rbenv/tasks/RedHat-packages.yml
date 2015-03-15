@@ -1,0 +1,10 @@
+- name: Install EPEL repo
+  yum:
+    name: "{{ rbenv_epel_repo }}"
+    update_cache: yes
+
+- name: Install Redhat dependencies
+  yum:
+    pkg: "{{item}}"
+    update_cache: yes
+  with_items: rbenv_package_names
