@@ -1,0 +1,16 @@
+rbenv_default: "{{ ruby_version }}"
+
+rbenv_user: "{{ app_user }}"
+
+rbenv_shell_rc: ~/.profile
+
+rbenv_rubies: []
+# tested with the following versions:
+# - 2.1.0
+# - 2.1.1
+# - 2.1.2
+# - 2.1.3
+# - 2.1.4
+# - 2.1.5
+# - 2.2.0
+# - 2.2.1

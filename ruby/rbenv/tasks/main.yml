@@ -1,0 +1,95 @@
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: RedHat-packages.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian-packages.yml
+  when: ansible_os_family == "Debian"
+
+- name: Install rbenv
+  git:
+    repo: https://github.com/sstephenson/rbenv.git
+    dest: ~/.rbenv
+    depth: 1
+  sudo: yes
+  sudo_user: "{{ rbenv_user }}"
+
+- name: Install ruby-build
+  git:
+    repo: https://github.com/sstephenson/ruby-build.git
+    dest: ~/.rbenv/plugins/ruby-build
+    depth: 1
+  sudo: yes
+  sudo_user: "{{ rbenv_user }}"
+
+- name: ensure {{ rbenv_shell_rc }}  exists
+  shell: touch {{ rbenv_shell_rc }}
+  args:
+    creates: "{{ rbenv_shell_rc }}"
+  sudo: true
+  sudo_user: "{{ rbenv_user }}"
+
+- name: Export RBENV_ROOT in {{ rbenv_shell_rc }}
+  lineinfile:
+    dest: "{{ rbenv_shell_rc }}"
+    regexp: "^export RBENV_ROOT="
+    line: "export RBENV_ROOT=~/.rbenv"
+  sudo: true
+  sudo_user: "{{ rbenv_user }}"
+
+- name: Put rbenv in users PATH in {{ rbenv_shell_rc }}
+  lineinfile:
+    dest: "{{ rbenv_shell_rc }}"
+    regexp: "^PATH=\\$PATH:\\$RBENV_ROOT/bin"
+    line: "PATH=$PATH:$RBENV_ROOT/bin"
+  sudo: true
+  sudo_user: "{{ rbenv_user }}"
+
+- name: Put $RBENV_ROOT/shims in users $PATH in {{ rbenv_shell_rc }}
+  lineinfile:
+    dest: "{{ rbenv_shell_rc }}"
+    regexp: "^PATH=\\$PATH:\\$RBENV_ROOT/shims"
+    line: "PATH=$PATH:$RBENV_ROOT/shims"
+  sudo: true
+  sudo_user: "{{ rbenv_user }}"
+
+- name: Install Rubies
+  shell: "{{ rbenv_ruby_configure_opts | default('') }} ~/.rbenv/bin/rbenv install {{ item }}"
+  args:
+    creates: "~/.rbenv/versions/{{ item }}"
+  sudo: yes
+  sudo_user: "{{ rbenv_user }}"
+  with_flattened:
+  - rbenv_rubies
+  - "{{ rbenv_default }}"
+
+- name: Check default ruby
+  shell: '~/.rbenv/bin/rbenv version | grep -oE "^[^ ]+"'
+  changed_when: no
+  register: rbenv_current_version
+  sudo: yes
+  sudo_user: "{{ rbenv_user }}"
+
+- name: Set default ruby
+  shell: "~/.rbenv/bin/rbenv global {{ ruby_version }}"
+  sudo: yes
+  sudo_user: "{{ rbenv_user }}"
+  when: rbenv_current_version.stdout != ruby_version
+
+- name: Check for Bundler
+  shell: '~/.rbenv/bin/rbenv exec bundle'
+  failed_when: no
+  changed_when: no
+  register: rbenv_bundle_available
+  sudo: yes
+  sudo_user: "{{ rbenv_user }}"
+
+- name: Install Bundler
+  shell: "~/.rbenv/shims/gem install bundler"
+  sudo: yes
+  sudo_user: "{{ rbenv_user }}"
+  when: rbenv_bundle_available.rc != 0 and rbenv_bundle_available.rc != 10
+
+- name: facts
+  set_fact:
+    RUBY_PREFIX: '/home/{{ rbenv_user }}/.rbenv/bin/rbenv exec '
+    RUBY_BIN: '/home/{{ rbenv_user }}/.rbenv/shims/ruby'

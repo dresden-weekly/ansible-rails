@@ -20,6 +20,7 @@ Provisioning:
 * **postgresql** install a PostgreSQL 9.3 database
 * **upstart/userjobs** enables Upstart userjobs
 * **ruby/rvm** installs a specific Ruby version with rvm
+* **ruby/rbenv** installs a specific Ruby version with rbenv
 * **ruby/postgresql** allow ruby to access postgresql
 * **rails/create-folders** prepares a folder for Rails releases
 * **rails/logrotate** create logrotate configuration for Rails logs
