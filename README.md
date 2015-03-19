@@ -21,7 +21,9 @@ Provisioning:
 * **upstart/userjobs** enables Upstart userjobs
 * **ruby/rvm** installs a specific Ruby version with rvm
 * **ruby/rbenv** installs a specific Ruby version with rbenv
-* **ruby/postgresql** allow ruby to access postgresql
+* **ruby/postgresql** support for postgresql client gems
+* **ruby/sqlite3** support for sqlite3 client gems
+* **ruby/mysql** support for mysql client gems
 * **rails/create-folders** prepares a folder for Rails releases
 * **rails/logrotate** create logrotate configuration for Rails logs
 * **nginx/server** install nginx webserver
@@ -39,6 +41,7 @@ Deployment:
 * **rails/tasks/bundle** install all bundles gems
 * **rails/tasks/migrate-database** run Rails database migrations
 * **rails/tasks/compile-assets** create the precompiled assets
+* **rails/publish-assets** transfer compiled assets from app- to web-servers
 * **rails/update-current** change the symlink for the current release
 * **rails/cleanup-old-releases** only keep N last releases
 
@@ -52,64 +55,90 @@ You may want to use our [vagrant-ansible-remote](https://github.com/dresden-week
 Example Playbook
 ----------------
 
-See our example: https://github.com/dresden-weekly/ansible-rails-example
+### Github based single tier deployment
+
+[dresden-weekly/ansible-rails-example@simple](https://github.com/dresden-weekly/ansible-rails-example/tree/simple)
+* Git based deployment
+* single tier
+* PostgreSql database 
+* Nginx Webserver
+* Webrick as application server
+* Support for Vagrant based development
+
+[dresden-weekly/ansible-rails-example@theetier](https://github.com/dresden-weekly/ansible-rails-example/tree/threetier)
+* like simple but for classic 3-tier deployment
+  1. database
+  1. rails application servers
+  1. web-servers
+
+[hicknhack-software/ansible-redmine-example](https://github.com/hicknhack-software/ansible-redmine-example)
+* stable version based deployment
+* single tier with Git and Subversion hosting
+* MySql database
+* Apache webserver
+* Passenger as application server
+* customized for Redmine
 
 Changelog
 ---------
 
 **0.2** (more features!) *planned*
 
+* Features
+  * [x] multiple machine deployment (see three tier example)
+  * [x] skip deploy if nothing changed (using stable release names)
+* Webserver
+  * [x] Apache (see redmine example)
+* Rails Application Server
+  * [x] Passenger on Apache
+* Database support
+  * [x] MySql (see redmine example)
+  * [x] Sqlite3 
+* Ruby installation
+  * [x] rbenv (contributed by @tnt)
 * (Your pull requests)
 
 **0.1** (first release) 09.01.2015
 
 * Features
-  * ✔ Windows Vagrant support
-  * ✔ Simple Remote-Tool to trigger deployments
+  * [x] Windows Vagrant support
+  * [x] Simple Remote-Tool to trigger deployments
 * Release Management
-  * ✔ Git based release management
-  * ✔ Vagrant shared folder based releases for development
+  * [x] Git based release management
+  * [x] Vagrant shared folder based releases for development
 * Webservers
-  * ✔ nginx
+  * [x] nginx
 * Rails application servers
-  * ✔ puma
-  * ✔ webrick
+  * [x] puma
+  * [x] webrick
 * Database support
-  * ✔ PostgreSql
+  * [x] PostgreSql
 * Ruby installation
-  * ✔ RVM
+  * [x] RVM
 * Configuration management
-  * ✔ Deployment User environment variables
+  * [x] Deployment User environment variables
 * Linux distributions
-  * ✔ Ubuntu 12.04
-  * ✔ Ubuntu 14.04
+  * [x] Ubuntu 12.04
+  * [x] Ubuntu 14.04
 
 Roadmap
 -------
 
-* Features
-  * ☐ multiple machine deployment (requires a test)
-  * ☐ skip deploy if nothing changed, unless forced 
 * Release Management
-  * ☐ Download based releases
+  * [ ] Download based releases
 * Webserver
-  * ☐ Apache
-  * ☐ Passenger Standalone
+  * [ ] Passenger Standalone
 * Rails Application Server
-  * ☐ Passenger on NGINX
-  * ☐ Passenger on Apache
-  * ☐ Thin
-  * ☐ Unicorn
-* Database support
-  * ☐ MySql
-  * ☐ Sqlite3 (for vagrant development)
+  * [ ] Passenger on NGINX
+  * [ ] Thin
+  * [ ] Unicorn
 * Ruby installation
-  * ☐ Package based
+  * [ ] Package based
 * Configuration management
-  * ☐ Generator for secrets.yml
-  * ☐ Generator for database.yml
+  * [ ] Generator for secrets.yml
+  * [ ] Generator for database.yml
 * Linux distribution
-  * ☐ CentOS
+  * [ ] CentOS
 
 License
 -------
