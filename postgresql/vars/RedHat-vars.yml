@@ -1,0 +1,23 @@
+---
+postgresql_org_version: '{{ postgresql_version | replace(".","") }}'
+
+postgresql_org_archive_dir: http://yum.postgresql.org/{{ postgresql_version }}/redhat/rhel-7-x86_64/
+postgresql_repo_index: /var/cache/yum/pg-{{ postgresql_version }}.html
+
+postgresql_packages:
+- postgresql{{ postgresql_org_version }}
+- postgresql{{ postgresql_org_version }}-server
+- postgresql{{ postgresql_org_version }}-contrib
+- postgresql{{ postgresql_org_version }}-devel
+
+postgresql_python_packages:
+- python-psycopg2
+
+postgresql_config_path: "/var/lib/pgsql/{{ postgresql_version }}/data"
+postgresql_data_path: "/var/lib/pgsql/{{ postgresql_version }}/data"
+postgresql_pid_file: "/tmp/.s.PGSQL.5432.pid"
+
+postgresql_service: postgresql-{{ postgresql_version }}
+
+postgresql_socket_directories:
+- '/tmp'
