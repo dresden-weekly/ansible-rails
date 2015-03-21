@@ -1,0 +1,18 @@
+postgresql_packages:
+- 'postgresql-{{ postgresql_version }}'
+
+postgresql_python_packages:
+- 'python-psycopg2'
+
+postgresql_apt_url: 'https://apt.postgresql.org/pub/repos/apt'
+postgresql_apt_key: "{{ postgresql_apt_url }}/ACCC4CF8.asc"
+postgresql_apt_repo: 'deb {{ postgresql_apt_url }}/ {{ ansible_lsb.codename }}-pgdg main'
+
+postgresql_config_path: /etc/postgresql/{{ postgresql_version }}/main
+postgresql_data_path: /var/lib/postgresql/{{ postgresql_version }}/main
+postgresql_pid_file: /var/run/postgresql/{{ postgresql_version }}-main.pid
+
+postgresql_service: postgresql
+
+postgresql_socket_directories:
+  - '/var/run/postgresql'

@@ -47,8 +47,8 @@
 - name: Put $RBENV_ROOT/shims in users $PATH in {{ rbenv_shell_rc }}
   lineinfile:
     dest: "{{ rbenv_shell_rc }}"
-    regexp: "^PATH=\\$PATH:\\$RBENV_ROOT/shims"
-    line: "PATH=$PATH:$RBENV_ROOT/shims"
+    regexp: "^PATH=\\$RBENV_ROOT/shims:\\$PATH"
+    line: "PATH=$RBENV_ROOT/shims:$PATH"
   sudo: true
   sudo_user: "{{ rbenv_user }}"
 

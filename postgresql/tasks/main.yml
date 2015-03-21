@@ -1,3 +1,4 @@
+---
 - name: Shell locales
   copy:
     dest: /etc/profile.d/lang.sh
@@ -6,7 +7,11 @@
       export LANG="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
       export LC_ALL="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
 
-- include: packages.yml
+- include_vars: ../vars/{{ ansible_os_family }}-vars.yml
+- include: RedHat-repos.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian-repos.yml
+  when: ansible_os_family == "Debian"
 
 - name: Template locales
   shell: >
@@ -20,7 +25,9 @@
         or datctype != '{{ postgresql_locale }}.{{ postgresql_encoding }}'
         or datcollate != '{{ postgresql_locale }}.{{ postgresql_encoding }}';"
   register: postgresql_update_template_result
-  changed_when: "'UPDATE 0' != postgresql_update_template_result.stdout"
+  changed_when: >
+    postgresql_update_template_result.stdout is defined
+    and 'UPDATE 0' != postgresql_update_template_result.stdout
   ignore_errors: yes
   sudo: yes
   sudo_user: '{{ postgresql_user }}'

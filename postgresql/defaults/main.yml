@@ -1,6 +1,6 @@
 ---
-# the postgresql version
-postgresql_version: 9.3
+# the postgresql version (needs to be quoted for getting a `str` not a `float`)
+postgresql_version: '9.3'
 
 # table locale and character encoding
 postgresql_locale: 'en_US'
@@ -36,17 +36,12 @@ postgresql_users_role_attr_flags:
 - NOSUPERUSER
 
 # variables to build postgresql.conf
-postgresql_config_path: /etc/postgresql/{{ postgresql_version }}/main
-postgresql_data_path: /var/lib/postgresql/{{ postgresql_version }}/main
-postgresql_pid_file: /var/run/postgresql/{{ postgresql_version }}-main.pid
 
 postgresql_host: '{{ ansible_all_ipv4_addresses | last }}'
 postgresql_listen:
   - '0.0.0.0'
 postgresql_port: 5432
 postgresql_max_connections: 100
-postgresql_socket_directories:
-  - '/var/run/postgresql'
 
 postgresql_connections:
   ssl: false
