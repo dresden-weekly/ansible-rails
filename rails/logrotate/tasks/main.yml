@@ -1,11 +1,9 @@
 ---
-- name: packages
-  apt:
-    pkg: "{{ item }}"
-    update_cache: yes
-    state: present
-    cache_valid_time: 86400
-  with_items: logrotate_packages
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"
 
 - name: configure
   template:

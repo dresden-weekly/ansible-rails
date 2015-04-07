@@ -1,0 +1,1 @@
+webrick_service_name: "{{ app_name | default('rails') }}-webrick"

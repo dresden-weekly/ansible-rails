@@ -1,0 +1,10 @@
+---
+- name: systemd unit - RedHat
+  template:
+    dest: "{{ webrick_systemd_unit }}"
+    src: systemd.service.j2
+  sudo: yes
+
+- name: enable start at boot - RedHat
+  service: name={{ webrick_service_name }} enabled=yes
+  sudo: yes

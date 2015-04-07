@@ -1,0 +1,8 @@
+---
+- name: Packages - Debian
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    state: present
+    cache_valid_time: 86400
+  with_items: logrotate_packages

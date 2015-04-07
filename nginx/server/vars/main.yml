@@ -1,7 +1,7 @@
 ---
 nginx_apt_repo: 'ppa:nginx/stable'
 
-nginx_apt_packages:
+nginx_package_names:
 - nginx
 
 nginx_config_path: '/etc/nginx'

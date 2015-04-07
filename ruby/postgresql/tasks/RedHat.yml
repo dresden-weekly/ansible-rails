@@ -1,0 +1,7 @@
+- name: Packages - RedHat
+  yum:
+    pkg: "{{item}}"
+    update_cache: yes
+    state: latest
+  with_items:
+  - libpqxx-devel

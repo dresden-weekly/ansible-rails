@@ -2,8 +2,8 @@ rbenv_package_names:
   - curl
   - bison
   - make
-  - gcc # - build-essential # allow building native gems
-  # - gcc-c++  # ? - part of debians build-essential
+  - gcc             # - build-essential # allow building native gems
+  - gcc-c++         # for v8
   - zlib-devel
   - openssl-devel
   - readline-devel
@@ -13,8 +13,9 @@ rbenv_package_names:
   - libffi-devel
   - gdbm-devel
   - ncurses-devel
-  - sqlite-devel # build native sqlite3 driver
-  - nodejs # precompile assets - requires EPEL
+  - sqlite-devel   # build native sqlite3 driver
+  - nodejs         # precompile assets - requires EPEL
+  - v8-devel       # therubyracer -> libv8 - requires EPEL
 
 # requires a seperate task that's run before any that installs EPEL packages
 rbenv_epel_repo: epel-release

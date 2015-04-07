@@ -1,0 +1,6 @@
+---
+- name: Restart - Debian
+  shell: >
+    rm {{ RAILS_APP_RESTART_PATH }} ;
+    {{ profile }}'restart webrick || start webrick'
+  when: rails_webrick_restart.stat.exists

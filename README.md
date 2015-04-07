@@ -17,22 +17,24 @@ Content Roles
 Provisioning:
 
 * **user/profile** store facts to .profile and .bashrc 
-* **postgresql** install a PostgreSQL 9.3 database
+* [**postgresql**](postgresql) install a PostgreSQL 9.3 database
 * **upstart/userjobs** enables Upstart userjobs
-* **ruby/rvm** installs a specific Ruby version with rvm
-* **ruby/rbenv** installs a specific Ruby version with rbenv
+* [**ruby/rvm**](ruby/rvm) installs a specific Ruby version with rvm
+* [**ruby/rbenv**](ruby/rbenv) installs a specific Ruby version with rbenv
 * **ruby/postgresql** support for postgresql client gems
 * **ruby/sqlite3** support for sqlite3 client gems
 * **ruby/mysql** support for mysql client gems
 * **rails/create-folders** prepares a folder for Rails releases
-* **rails/logrotate** create logrotate configuration for Rails logs
-* **nginx/server** install nginx webserver
-* **nginx/puma** prepare nginx for puma appserver
-* **nginx/webrick** prepare nginx for webrick apperserver
-* **puma/upstart** install userjob for puma
-* **webrick/upstart** install userjob for webrick
-* **apache/server** install and configure apache server
-* **apache/passenger** install and configure passenger for apache
+* [**rails/logrotate**](rails/logrotate) create logrotate configuration for Rails logs
+* [**nginx/server**](nginx/server) install nginx webserver
+* [**nginx/puma**](nginx/puma) prepare nginx for puma appserver
+* [**nginx/webrick**](nginx/webrick) prepare nginx for webrick apperserver
+* [**puma/upstart**](puma/upstart) install userjob for puma
+* [**webrick/upstart**](webrick/upstart) install userjob for webrick
+* [**apache/server**](apache/server) install and configure apache server
+* [**apache/passenger**](apache/passenger) install and configure passenger for apache
+* **firewalld** configure firewalld (for CentOS)
+* **selinux** currently only enable/disable selinux on CentOS
 
 Deployment:
 
@@ -41,7 +43,7 @@ Deployment:
 * **rails/tasks/bundle** install all bundles gems
 * **rails/tasks/migrate-database** run Rails database migrations
 * **rails/tasks/compile-assets** create the precompiled assets
-* **rails/publish-assets** transfer compiled assets from app- to web-servers
+* [**rails/publish-assets**](rails/publish-assets) transfer compiled assets from app- to web-servers
 * **rails/update-current** change the symlink for the current release
 * **rails/cleanup-old-releases** only keep N last releases
 
@@ -65,7 +67,7 @@ Example Playbook
 * Webrick as application server
 * Support for Vagrant based development
 
-[dresden-weekly/ansible-rails-example@theetier](https://github.com/dresden-weekly/ansible-rails-example/tree/threetier)
+[dresden-weekly/ansible-rails-example@threetier](https://github.com/dresden-weekly/ansible-rails-example/tree/threetier)
 * like simple but for classic 3-tier deployment
   1. database
   1. rails application servers

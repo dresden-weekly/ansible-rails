@@ -1,9 +1,6 @@
 # Packages required for sqlite3 gem
-- name: Packages
-  apt:
-    pkg: "{{item}}"
-    update_cache: yes
-    state: latest
-    cache_valid_time: 86400
-  with_items:
-  - libsqlite3-dev # build native sqlite3 driver
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"

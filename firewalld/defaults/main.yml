@@ -1,0 +1,7 @@
+firewalld_ports:
+- port: 80
+  zone: public
+
+# omit the following line to leave it as it is (i.e. only add
+# firewalld_ports if firewalld is running anyway)
+firewalld_enabled: yes

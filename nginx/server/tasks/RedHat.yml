@@ -1,0 +1,19 @@
+---
+- name: Install nginx.org repo rpm - RedHat
+  yum: name=http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+
+- name: Install packages - RedHat
+  yum:
+    pkg: "{{item}}"
+    update_cache: yes
+    state: latest
+  with_items: nginx_package_names
+
+- name: Reload systemd configs - RedHat
+  shell: systemctl daemon-reload
+  changed_when: no
+
+- name: Enable nginx - RedHat
+  service:
+    name: '{{ nginx_service_name }}'
+    enabled: yes

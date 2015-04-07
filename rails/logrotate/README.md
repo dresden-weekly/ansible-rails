@@ -6,7 +6,7 @@ install and configure logrotation for Rails logfiles
 Requirements
 ------------
 
-Ubuntu 12.04 (Precise) or Ubuntu 14.04 (Trusty)
+Ubuntu 12.04 (Precise), Ubuntu 14.04 (Trusty), or CentOS 7
 
 Dependencies
 ------------

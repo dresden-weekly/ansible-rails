@@ -1,4 +1,13 @@
 ---
+- name: Create site directories - RedHat
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+  - "{{ NGINX_SITES_ENABLED_PATH }}"
+  - "{{ NGINX_SITES_AVAILABLE_PATH }}"
+  when: ansible_os_family == "RedHat"
+
 - name: Site configuration
   template:
     src: site.conf.j2

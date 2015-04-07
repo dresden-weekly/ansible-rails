@@ -2,6 +2,11 @@
 # perform a bundle run
 #
 ---
+- include_vars: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+
 - name: Bundle install
   command: >
     {{ profile }}
