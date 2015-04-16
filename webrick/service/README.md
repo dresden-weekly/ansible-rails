@@ -1,7 +1,7 @@
-dresden-weekly.Rails/webrick/upstart
+dresden-weekly.Rails/webrick/service
 ======================
 
-Configure the upstart script and store facts
+Configure the init system to start webrick and store facts
 
 Requirements
 ------------

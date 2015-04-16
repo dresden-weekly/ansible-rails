@@ -7,10 +7,10 @@
       export LANG="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
       export LC_ALL="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
 
-- include_vars: ../vars/{{ ansible_os_family }}-vars.yml
-- include: RedHat-repos.yml
+- include_vars: "{{ ansible_os_family }}.yml"
+- include: RedHat.yml
   when: ansible_os_family == "RedHat"
-- include: Debian-repos.yml
+- include: Debian.yml
   when: ansible_os_family == "Debian"
 
 - name: Template locales

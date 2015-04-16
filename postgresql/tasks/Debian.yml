@@ -1,13 +1,13 @@
 ---
-- name: Add repo key
+- name: Debian | Add repo key
   apt_key:
     url: '{{ postgresql_apt_key }}'
 
-- name: Add repo
+- name: Debian | Add repo
   apt_repository:
     repo: '{{ postgresql_apt_repo }}'
 
-- name: Packages
+- name: Debian | Packages
   apt:
     pkg: "{{item}}"
     update_cache: yes

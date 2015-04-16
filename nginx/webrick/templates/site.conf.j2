@@ -7,7 +7,7 @@ upstream {{ site_name }} {
 }
 
 server {
-  server_name {{ site_domain | default('""', true) }};
+  server_name {{ site_domain | default('""', true) }} 127.0.0.1;
   listen {{ site_port }};
   root {{ site_path }};
 

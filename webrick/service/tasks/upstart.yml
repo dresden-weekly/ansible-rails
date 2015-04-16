@@ -1,5 +1,5 @@
 ---
-- name: upstart script - Debian
+- name: Debian | upstart script
   template:
     dest: "{{ webrick_upstart_conf }}"
     src: upstart.conf.j2

@@ -1,10 +1,10 @@
 ---
-- name: Find postgresql config-dir-prefix - RedHat
+- name: RedHat | Find postgresql config-dir-prefix
   shell: dirname $(realpath /usr/bin/psql)
   register: rails_bundle_pg_config_prefix
   changed_when: no
 
-- name: Set bundle config for postgresql - RedHat
+- name: RedHat | Set bundle config for postgresql
   command: >
     {{ RUBY_PREFIX }} bundle config build.pg
     --with-pg-config={{ rails_bundle_pg_config_prefix.stdout }}/pg_config

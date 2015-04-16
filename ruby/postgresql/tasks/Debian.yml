@@ -1,4 +1,4 @@
-- name: Packages - Debian
+- name: Debian | Packages
   apt:
     pkg: "{{item}}"
     update_cache: yes

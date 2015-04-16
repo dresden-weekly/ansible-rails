@@ -1,9 +1,4 @@
 ---
-nginx_apt_repo: 'ppa:nginx/stable'
-
-nginx_package_names:
-- nginx
-
 nginx_config_path: '/etc/nginx'
 nginx_config_file: '{{ nginx_config_path }}/nginx.conf'
 nginx_config_mime_types_file: '{{ nginx_config_path }}/mime.types'

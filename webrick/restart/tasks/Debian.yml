@@ -1,5 +1,5 @@
 ---
-- name: Restart - Debian
+- name: Debian | Restart
   shell: >
     rm {{ RAILS_APP_RESTART_PATH }} ;
     {{ profile }}'restart webrick || start webrick'

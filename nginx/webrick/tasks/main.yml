@@ -1,5 +1,5 @@
 ---
-- name: Create site directories - RedHat
+- name: RedHat | Create site directories
   file:
     path: "{{ item }}"
     state: directory

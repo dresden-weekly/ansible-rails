@@ -1,4 +1,4 @@
-- name: Install Debian dependencies
+- name: Debian | Install dependencies
   apt:
     pkg: "{{ item }}"
     update_cache: yes

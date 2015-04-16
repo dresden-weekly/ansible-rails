@@ -1,4 +1,4 @@
-- name: Packages - RedHat
+- name: RedHat | Packages
   yum:
     pkg: "{{item}}"
     update_cache: yes

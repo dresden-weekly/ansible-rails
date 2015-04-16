@@ -1,19 +1,19 @@
 ---
-- name: Enable/disable firewalld - RedHat
+- name: RedHat | Enable/disable firewalld
   service:
     name: firewalld
     enabled: "{{ firewalld_enabled }}"
     state: "{{ 'started' if firewalld_enabled else 'stopped' }}"
   when: ansible_os_family == "RedHat" and firewalld_enabled is defined
 
-- name: Check if firewalld is running - RedHat
+- name: RedHat | Check if firewalld is running
   command: firewall-cmd --state
   register: firewalld_running
   changed_when: no
   failed_when: no
   when: ansible_os_family == "RedHat"
 
-- name: Configure Ports - RedHat
+- name: RedHat | Configure Ports
   firewalld:
     immediate: yes
     permanent: yes
