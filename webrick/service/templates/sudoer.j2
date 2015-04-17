@@ -1,0 +1,4 @@
+{{ webrick_user }} ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ webrick_service_name }}, \
+                                       /bin/systemctl start {{ webrick_service_name }}, \
+                                       /bin/systemctl stop {{ webrick_service_name }}, \
+                                       /bin/systemctl status {{ webrick_service_name }}
