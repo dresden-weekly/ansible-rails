@@ -34,5 +34,5 @@ webrick_upstart_system: "{{ ansible_distribution_release == 'trusty' or ansible_
 webrick_systemd_system: "{{ not (webrick_upstart_system|bool) }}"
 
 # systemd related
-webrick_service_name: "{{ app_name | default('rails') }}-webrick"
+webrick_service_name: "{{ webrick_user }}-{{ app_name | default('rails') }}-webrick"
 webrick_systemd_unit: /usr/lib/systemd/system/{{ webrick_service_name }}.service
