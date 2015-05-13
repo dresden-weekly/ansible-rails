@@ -9,7 +9,9 @@ This repository contains many roles that you can glue together to represent your
 Requirements
 ------------
 
-Ubuntu 12.04 (Precise) or Ubuntu 14.04 (Trusty)
+* Ubuntu 12.04 (Precise)
+* Ubuntu 14.04 (Trusty)
+* CentOS 7
 
 Content Roles
 -------------
@@ -84,7 +86,11 @@ Example Playbook
 Changelog
 ---------
 
-**0.2** (more features!) *planned*
+**0.3** (stables) *planned*
+
+* (Your pull requests are welcome)
+
+**0.2** (more features!) 13.05.2015
 
 * Features
   * [x] multiple machine deployment (see three tier example)
@@ -98,7 +104,8 @@ Changelog
   * [x] Sqlite3 
 * Ruby installation
   * [x] rbenv (contributed by @tnt)
-* (Your pull requests)
+* Linux distribution
+  * [x] CentOS (simple)
 
 **0.1** (first release) 09.01.2015
 
@@ -140,7 +147,8 @@ Roadmap
   * [ ] Generator for secrets.yml
   * [ ] Generator for database.yml
 * Linux distribution
-  * [ ] CentOS
+  * [ ] Ubuntu 15.04
+  * [ ] CentOS (remaining parts)
 
 License
 -------
