@@ -1,0 +1,20 @@
+---
+- name: Ensure git mirror repo is up to date
+  git:
+    repo: "{{ rails_app_git_repo }}"
+    dest: "{{ rails_app_repo_path }}"
+    bare: yes
+    version: "{{ rails_app_git_branch }}"
+    update: yes
+    accept_hostkey: yes
+
+- name: Create release
+  shell: >
+    git archive --format=tar --prefix={{ RAILS_APP_RELEASE_ID }}/ {{ rails_app_git_branch }}
+    {{ rails_deploy_archive | join(' ') }}
+    {{ rails_deploy_custom_archive | join(' ') }}
+    | (cd {{ RAILS_APP_RELEASES_PATH }} && tar -xf -)
+  args:
+    creates: "{{ RAILS_APP_RELEASE_PATH }}"
+    chdir: "{{ rails_app_repo_path }}"
+  register: rails_create_release_result

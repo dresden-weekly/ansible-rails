@@ -1,8 +1,37 @@
-nginx_user: www-data
-nginx_pid: /var/run/nginx.pid
+---
+# name of the system user that runs nginx
+nginx_user: 'www-data'
+
+# number of worker processes
 nginx_worker_processes: 4
+
+# default mime type for responses
+nginx_default_type: 'application/octet-stream'
+
+# log file locations
+nginx_access_log: '/var/log/nginx/access.log'
+nginx_error_log: '/var/log/nginx/error.log'
+
+# event configuration options
 nginx_events:
-  worker_connections: 4096
-nginx_http_conf: {}
-nginx_confd_templates:
-  - confd_https
+  worker_connections: 4096 # number of connection per worker
+
+# configuration options for the http block
+nginx_http_options:
+  sendfile: 'on'
+  tcp_nopush: 'on'
+  tcp_nodelay: 'on'
+  keepalive_timeout: 65
+  types_hash_max_size: 2048
+  server_tokens: 'off'
+
+# included configuration templates
+nginx_include_templates: []
+# - confd_https # configure https
+
+# removed configuration templates
+nginx_exclude_templates: []
+
+# sites that should stay disabled
+nginx_disabled_sites:
+- default

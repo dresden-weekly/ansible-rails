@@ -1,0 +1,8 @@
+---
+nginx_apt_repo: 'ppa:nginx/stable'
+
+nginx_package_names:
+- nginx
+
+# location of the nginx pid file
+nginx_pid: '/var/run/nginx.pid'

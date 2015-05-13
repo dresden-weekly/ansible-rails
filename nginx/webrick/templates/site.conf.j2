@@ -1,15 +1,15 @@
 # {{ ansible_managed }}
 
-upstream {{ site_name | default(app_name, true) }} {
+upstream {{ site_name }} {
 {% for app in groups['app'] -%}
   server {{ hostvars[app].APP_URL }};
 {% endfor -%}
 }
 
 server {
-  server_name {{ site_domain | default(app_domain, true) | default('""', true) }};
+  server_name {{ site_domain | default('""', true) }} 127.0.0.1;
   listen {{ site_port }};
-  root {{ site_path | default(app_path, true) }}/current/public;
+  root {{ site_path }};
 
   location / {
     try_files $uri $uri/index.html $uri.html @app;
@@ -21,7 +21,7 @@ server {
   }
 
   location @app {
-    proxy_pass http://{{ site_name | default(app_name, true) }};
+    proxy_pass http://{{ site_name }};
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_redirect off;
@@ -32,7 +32,7 @@ server {
   error_page 500 502 503 504 /500.html;
 
   location @error_page {
-    root {{ site_path | default(app_path, true) }}/current/public; # location of 500.html file
+    root {{ site_path }}; # location of 500.html file
     internal;
     rewrite ^ /500.html;
     break;

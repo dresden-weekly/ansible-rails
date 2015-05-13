@@ -1,0 +1,38 @@
+---
+# path used for the upstart instance
+webrick_path: "{{ RAILS_APP_BASE_PATH }}"
+
+# user the upstart jobs is bound to
+webrick_user: "{{ RAILS_APP_OWNER | default('root', true) }}"
+
+# prefix added before any ruby invocation
+webrick_ruby_prefix: "{{ RUBY_PREFIX | default('') }}"
+
+# the default port webrick binds to
+webrick_port: 3000
+
+# webrick tcp binding
+webrick_binding: '0.0.0.0'
+
+# application server url
+webrick_app_url: '{{ ansible_all_ipv4_addresses | last }}:{{ webrick_port }}'
+
+# default pathes for capistrano deployment
+webrick_directory: "{{ RAILS_APP_CURRENT_PATH }}"
+webrick_pidfile: "{{ RAILS_APP_PIDS_PATH }}/webrick.pid"
+webrick_logfile: "{{ RAILS_APP_LOG_PATH }}/webrick.log"
+webrick_error_logfile: "{{ RAILS_APP_LOG_PATH }}/webrick_error.log"
+
+# path of the upstart configuration script
+webrick_upstart_conf: >
+  {{ '~/.init/webrick.conf'
+     if webrick_user and webrick_user != 'root'
+     else '/etc/init/webrick.conf'
+  }}
+
+webrick_upstart_system: "{{ ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise' }}"
+webrick_systemd_system: "{{ not (webrick_upstart_system|bool) }}"
+
+# systemd related
+webrick_service_name: "{{ webrick_user }}-{{ app_name | default('rails') }}-webrick"
+webrick_systemd_unit: /usr/lib/systemd/system/{{ webrick_service_name }}.service

@@ -1,33 +1,36 @@
-- name: Configure Locales
+---
+- name: Shell locales
   copy:
     dest: /etc/profile.d/lang.sh
     content: |
-      export LANGUAGE="en_US.UTF-8"
-      export LANG="en_US.UTF-8"
-      export LC_ALL="en_US.UTF-8"
+      export LANGUAGE="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
+      export LANG="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
+      export LC_ALL="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
 
-- name: Add repo key
-  apt_key:
-    url: "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
+- include_vars: "{{ ansible_os_family }}.yml"
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"
 
-- name: Add repo
-  apt_repository:
-    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main'
-
-- name: Install Package
-  apt:
-    pkg: "{{item}}"
-    state: latest
-  with_items:
-  - '{{ postgresql_package }}'
-  - python-psycopg2 # allow ansible to access postgresql
-
-- name: Update template
+- name: Template locales
   shell: >
-    sudo -u postgres psql -c "update pg_database set encoding = pg_char_to_encoding('UTF8'), datctype = 'en_US.UTF-8', datcollate = 'en_US.UTF-8';"
-    && touch ~/.fixed_pg
-  args:
-    creates: ~/.fixed_pg
+    psql -c "update pg_database
+      set
+        encoding = pg_char_to_encoding('{{ postgresql_encoding }}'),
+        datctype = '{{ postgresql_locale }}.{{ postgresql_encoding }}',
+        datcollate = '{{ postgresql_locale }}.{{ postgresql_encoding }}'
+      where
+        encoding != pg_char_to_encoding('{{ postgresql_encoding }}')
+        or datctype != '{{ postgresql_locale }}.{{ postgresql_encoding }}'
+        or datcollate != '{{ postgresql_locale }}.{{ postgresql_encoding }}';"
+  register: postgresql_update_template_result
+  changed_when: >
+    postgresql_update_template_result.stdout is defined
+    and 'UPDATE 0' != postgresql_update_template_result.stdout
+  ignore_errors: yes
+  sudo: yes
+  sudo_user: '{{ postgresql_user }}'
 
 - name: Configure
   template:
@@ -39,29 +42,40 @@
   - pg_hba.conf
   - postgresql.conf
 
-- name: Create user
+- meta: flush_handlers
+
+- name: Users
   postgresql_user:
-    name: "{{ db_user }}"
-    password: "{{ lookup('env', 'DB_PASSWORD') | default(db_password, true) }}"
-    role_attr_flags: "{{ postgresql_users_role_attr_flags | join(',') }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    role_attr_flags: >
+      {{ item.role_attr_flags
+       | default(postgresql_users_role_attr_flags)
+       | join(',')
+      }}
+  when: item.name != ''
+  with_items: postgresql_users
   sudo: yes
   sudo_user: '{{ postgresql_user }}'
-  when: db_user is defined
 
-- name: Create database
+- name: Databases
   postgresql_db:
-    name: "{{ db_name }}"
-    owner: "{{ db_user | default(postgresql_user, true) }}"
-    encoding: UTF8
+    name: "{{ item.name }}"
+    owner: "{{ item.owner | default(postgresql_user, true) }}"
+    encoding: '{{ item.encoding | default(postgresql_encoding) }}'
+    lc_collate: "{{ item.lc_collate | default(postgresql_locale + '.' + postgresql_encoding) }}"
+    lc_ctype: "{{ item.lc_ctype | default(postgresql_locale + '.' + postgresql_encoding) }}"
+    template: "{{ item.template | default('template0') }}"
     state: present
-    lc_collate: en_US.UTF-8
-    lc_ctype: en_US.UTF-8
-    template: template0
+  when: item.name != ''
+  with_items: postgresql_databases
   sudo: yes
   sudo_user: '{{ postgresql_user }}'
 
 - name: Connection URL
   set_fact:
     DATABASE_URL: "{{ lookup('template', '../templates/database_url.j2') | trim }}"
-
-- meta: flush_handlers
+  when: db_name
+    and postgresql_databases | selectattr('name', db_name)
+  tags:
+  - facts

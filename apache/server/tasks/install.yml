@@ -1,0 +1,34 @@
+---
+- name: install | packages
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+    cache_valid_time: 86400
+  with_flattened:
+  - apache_server_packages
+  - apache_server_ssl_packages if apache_server_ssl else []
+
+- name: install | config folders
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+  - "{{ apache_server_config_path }}"
+  - "{{ apache_server_ssl_path }}"
+  - "{{ apache_server_conf_available_path }}"
+  - "{{ apache_server_conf_enabled_path }}"
+  - "{{ apache_server_sites_available_path }}"
+  - "{{ apache_server_sites_enabled_path }}"
+  - "{{ apache_server_sites_include_path }}"
+  - "{{ apache_server_mods_available_path }}"
+  - "{{ apache_server_mods_enabled_path }}"
+
+- name: install | www_root
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ apache_server_user }}"
+    group: "{{ apache_server_group }}"
+  with_items:
+  - "{{ apache_server_www_root }}"

@@ -1,8 +1,5 @@
-{{ app_path }}/shared/log/*.log {
-  compress
-  copytruncate
-  daily
-  delaycompress
-  missingok
-  rotate 7
+{{ rails_logrotate_path }}/{{ rails_logrotate_mask }} {
+{% for option in rails_logrotate_options %}
+  {{ option }}
+{% endfor %}
 }

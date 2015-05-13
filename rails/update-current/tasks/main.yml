@@ -4,9 +4,9 @@
 ---
 - name: Link current
   file:
-    path: "{{ app_path }}/current"
-    src: "{{ RELEASE_PATH }}"
+    src: "{{ RAILS_APP_RELEASE_PATH }}"
+    path: "{{ RAILS_APP_CURRENT_PATH }}"
     state: link
     force: yes
   notify:
-  - restart required
+  - restart rails app

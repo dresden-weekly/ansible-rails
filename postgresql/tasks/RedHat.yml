@@ -1,0 +1,44 @@
+---
+- name: RedHat | get archive index stat info
+  stat:
+    path: /var/cache/yum/pg-{{ postgresql_version }}.html
+  register: postgresql_repo_index_result
+
+- name: RedHat | get archive index
+  shell: curl -sS {{ postgresql_org_archive_dir }} > {{ postgresql_repo_index }}
+  when: not postgresql_repo_index_result.stat.exists
+    or postgresql_repo_index_result.stat.mtime + 604800 < (ansible_date_time.epoch | int)
+
+- name: RedHat | get current repo rpm filename
+  shell: grep -oE "pgdg-centos{{ postgresql_org_version }}[^\"]+\.rpm" {{ postgresql_repo_index }} | tail -1
+  register: postgresql_repo_rpm_filename
+  changed_when: no
+
+- name: RedHat | ensure postgresql.org repo rpm is up-to-date
+  get_url:
+    url: "{{ postgresql_org_archive_dir }}{{ postgresql_repo_rpm_filename.stdout }}"
+    dest: "/var/cache/yum/{{ postgresql_repo_rpm_filename.stdout }}"
+
+- name: RedHat | Install postgresql.org Redhat repo rpm
+  yum:
+    name: "/var/cache/yum/{{ postgresql_repo_rpm_filename.stdout }}"
+
+- name: RedHat | Install packages
+  yum:
+    pkg: "{{item}}"
+    update_cache: yes
+    state: latest
+  with_flattened:
+  - postgresql_packages
+  - postgresql_python_packages # allow ansible to access postgresql
+
+- name: RedHat | Initialize PostgreSQL
+  shell: '/usr/pgsql-{{ postgresql_version }}/bin/postgresql{{ postgresql_org_version }}-setup initdb'
+  args:
+    creates: '{{ postgresql_data_path }}/base'
+
+- name: RedHat | Ensure PostgreSQL-server is running
+  service:
+    name: '{{ postgresql_service }}'
+    state: started
+    enabled: yes

@@ -1,0 +1,18 @@
+---
+- name: Debian | Add repo key
+  apt_key:
+    url: '{{ postgresql_apt_key }}'
+
+- name: Debian | Add repo
+  apt_repository:
+    repo: '{{ postgresql_apt_repo }}'
+
+- name: Debian | Packages
+  apt:
+    pkg: "{{item}}"
+    update_cache: yes
+    state: latest
+    cache_valid_time: 86400
+  with_flattened:
+  - postgresql_packages
+  - postgresql_python_packages # allow ansible to access postgresql

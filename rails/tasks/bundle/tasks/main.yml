@@ -2,17 +2,25 @@
 # perform a bundle run
 #
 ---
+- include_vars: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+
 - name: Bundle install
-  shell: >
-    {{ ruby_bin }}bundle install
-    --binstubs {{ bundle_binstubs | default(app_path + '/shared/bin', true) }}
+  command: >
+    {{ profile }}
+    'bundle install
+    --binstubs {{ bundle_binstubs }}
     --gemfile {{ bundle_gemfile }}
-    --path {{ bundle_path | default(app_path + '/shared/bundle', true) }}
+    --path {{ bundle_path }}
     --without {{ bundle_without | join(' ') }}
-    {{ bundle_flags | join(' ') }}
+    {{ bundle_flags | join(' ') }}'
   args:
-    chdir: "{{ RELEASE_PATH }}"
-  register: result
-  changed_when: "'Installing' in result.stdout"
+    chdir: "{{ RAILS_APP_RELEASE_PATH }}"
+  register: rails_bundle_result
+  changed_when: >
+    rails_bundle_result.stdout is defined
+    and 'Installing' in rails_bundle_result.stdout
   notify:
-  - restart required
+  - restart rails app

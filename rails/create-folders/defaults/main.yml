@@ -1,4 +1,0 @@
-
-rails_deploy_path: # {{ app_path }}
-rails_deploy_owner: # {{ app_user }}
-rails_deploy_group: # {{ app_user }}

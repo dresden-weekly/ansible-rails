@@ -1,29 +1,45 @@
-- name: Add repo
-  apt_repository:
-    repo: 'ppa:nginx/stable'
-
-- name: Install
-  apt:
-    name: nginx
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"
 
 - name: Configure
   template:
+    dest: '{{ nginx_config_file }}'
     src: nginx.conf.j2
-    dest: /etc/nginx/nginx.conf
   notify:
   - restart nginx
 
-- name: Extra Configuration
+- name: Config Includes
   template:
     src: "{{ item }}.conf.j2"
-    dest: "/etc/nginx/conf.d/{{ item }}.conf"
-  with_items: nginx_confd_templates
+    dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
+  with_items: nginx_include_templates
+  notify:
+  - restart nginx
+
+- name: Disable Includes
+  file:
+    dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
+    state: absent
+  with_items: nginx_exclude_templates
   notify:
   - restart nginx
 
 - name: Disable the default config
   file:
-    path: /etc/nginx/sites-enabled/default
+    path: '{{ nginx_sites_enabled_path }}/{{ item }}'
     state: absent
+  with_items: nginx_disabled_sites
   notify:
   - restart nginx
+
+- name: Facts
+  set_fact:
+    NGINX_SERVICE_NAME: '{{ nginx_service_name }}'
+    NGINX_USER: '{{ nginx_user }}'
+    NGINX_CONFIG_INCLUDE_PATH: '{{ nginx_config_include_path }}'
+    NGINX_SITES_AVAILABLE_PATH: '{{ nginx_sites_available_path }}'
+    NGINX_SITES_ENABLED_PATH: '{{ nginx_sites_enabled_path }}'

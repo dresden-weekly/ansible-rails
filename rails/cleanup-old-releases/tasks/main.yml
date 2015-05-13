@@ -3,6 +3,10 @@
 #
 ---
 - name: Cleanup
-  shell: "ls -dt {{ app_path }}/releases/* | egrep '[0-9]+' | tail -n +{{ rails_deploy_old_release_count }} | xargs rm -rfv"
-  register: result
-  changed_when: "'removed' in result.stdout"
+  shell: >
+    ls -dt {{ RAILS_APP_RELEASES_PATH }}/*
+    | egrep '{{ rails_deploy_release_mask }}'
+    | tail -n +{{ rails_deploy_old_release_count }}
+    | xargs rm -rfv
+  register: rails_cleanup_result
+  changed_when: "'removed' in rails_cleanup_result.stdout"

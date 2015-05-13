@@ -1,0 +1,20 @@
+---
+- name: Define release id
+  set_fact:
+    RAILS_APP_RELEASE_ID: "{{ rails_release_id }}"
+  run_once: on # make sure we have a consistent RAILS_APP_RELEASE_ID
+  delegate_to: "{{ groups['app'][0] }}"
+  tags:
+  - facts
+
+- name: Distribute release id
+  set_fact:
+    RAILS_APP_RELEASE_ID: "{{ hostvars[groups['app'][0]].RAILS_APP_RELEASE_ID }}"
+  tags:
+  - facts
+
+- name: Define release path
+  set_fact:
+    RAILS_APP_RELEASE_PATH: "{{ RAILS_APP_RELEASES_PATH }}/{{ RAILS_APP_RELEASE_ID }}"
+  tags:
+  - facts

@@ -2,11 +2,12 @@
 # Perform the db:migrate rake task
 #
 - name: Migrate database
-  shell: "{{ profile }}{{ ruby_bin }}bundle exec rake db:migrate"
+  command: "{{ profile }}'bundle exec rake db:migrate'"
   args:
-    chdir: "{{ RELEASE_PATH }}"
+    chdir: "{{ RAILS_APP_RELEASE_PATH }}"
   run_once: true
-  register: result
-  changed_when: "'migrating' in result.stdout"
+  register: rails_migrate_database_result
+  changed_when: "'migrating' in rails_migrate_database_result.stdout"
+  until: rails_migrate_database_result.rc == 0
   notify:
-  - restart required
+  - restart rails app

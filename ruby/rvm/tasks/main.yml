@@ -1,56 +1,40 @@
-- name: Install dependencies
+---
+- name: packages
   apt:
     pkg: "{{ item }}"
     update_cache: yes
-  with_items:
-  - curl
-  - bison
-  - build-essential # allow building native gems
-  - zlib1g-dev
-  - libssl-dev
-  - libreadline6-dev
-  - libxml2-dev
-  - git-core
-  - libsqlite3-dev # build native sqlite3 driver
-  - nodejs # precompile assets
+    state: present
+    cache_valid_time: 86400
+  with_flattened:
+  - rvm_packages
+  - rvm_custom_packages
 
-- name: Check GPG keys
-  command: 'gpg --list-keys {{ rvm_gpg_keys }}'
-  ignore_errors: yes
-  changed_when: False
-  register: rvm_gpg_keys_check
-  sudo: yes
-  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+- include: gpg_keys.yml
   when: rvm_gpg_keys != ''
 
-- name: Import GPG keys
-  command: 'gpg --keyserver {{ rvm_gpg_key_server }} --recv-keys {{ rvm_gpg_keys }}'
-  changed_when: False
-  sudo: yes
-  sudo_user: "{{ rvm_user | default(app_user, true) }}"
-  when: 'rvm_gpg_keys_check.rc != 0'
-
-- name: Install rvm
-  shell: curl -L https://get.rvm.io | bash -s stable --autolibs=disable --auto-dotfiles
+- name: Install RVM
+  shell: >
+    curl -L https://get.rvm.io
+    | bash -s stable --autolibs=disable --auto-dotfiles
   args:
     creates: ~/.rvm
   sudo: yes
-  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+  sudo_user: "{{ rvm_user }}"
 
-- name: Install ruby
-  shell: "~/.rvm/bin/rvm install {{ lookup('template', '../templates/default_arg.j2') | trim }} {{ item }}"
+- name: ruby versions
+  shell: >
+    ~/.rvm/bin/rvm install
+    {{ '--default' if item == rvm_default else '' }}
+    {{ item }}
   args:
     creates: "~/.rvm/rubies/ruby-{{ item }}"
   sudo: yes
-  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+  sudo_user: "{{ rvm_user }}"
   with_flattened:
   - rvm_rubies
-  - "{{ rvm_default | default(ruby_version, true) }}"
+  - "{{ rvm_default }}"
 
-- name: Export RAILS_ENV
-  lineinfile:
-    dest: ~/.profile
-    regexp: "^export RAILS_ENV="
-    line: "export RAILS_ENV={{ rails_env }}"
-  sudo: true
-  sudo_user: "{{ rvm_user | default(app_user, true) }}"
+- name: facts
+  set_fact:
+    RUBY_PREFIX: '~/.rvm/bin/rvm default do '
+    RUBY_BIN: '/home/{{ rvm_user }}/.rvm/gems/ruby-{{ rvm_default }}/wrappers/ruby'

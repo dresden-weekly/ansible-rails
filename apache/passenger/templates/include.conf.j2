@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+<Directory {{ site_path }}>
+  Options FollowSymLinks
+  AllowOverride None
+  Require all granted
+
+  RailsBaseURI {{ site_url_path }}
+  PassengerMinInstances {{ passenger_min_instances }}
+{% for option, value in apache_site_options.iteritems() %}
+  {{ option }} {{ value }}
+{% endfor %}
+</Directory>
+
+{% if passenger_start_url %}
+PassengerPreStart {{ passenger_start_url }}
+{% endif %}

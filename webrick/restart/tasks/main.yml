@@ -3,11 +3,10 @@
 
 - name: Check for Restart
   stat:
-    path: "{{ app_path }}/restart.txt"
-  register: webrick_restart
+    path: "{{ RAILS_APP_RESTART_PATH }}"
+  register: rails_webrick_restart
 
-- name: Restart
-  shell: >
-    rm {{ app_path }}/restart.txt ;
-    {{ profile }}restart webrick || start webrick
-  when: webrick_restart.stat.exists
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"

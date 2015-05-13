@@ -1,7 +1,11 @@
-#
-# setup a log rotation for shared/log/*.log
-#
-- name: Setup Logrotate
+---
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: configure
   template:
-    dest: "/etc/logrotate.d/{{ app_name }}"
+    dest: "{{ etc_logrotate_path }}/{{ rails_logrotate_name }}"
     src: "logrotate.j2"

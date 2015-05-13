@@ -1,18 +1,14 @@
 - name: Site configuration
   template:
     src: site.conf.j2
-    dest: "/etc/nginx/sites-available/{{ site_name | default(app_name, true) }}"
-    group: "{{ nginx_user }}"
-    owner: "{{ nginx_user }}"
+    dest: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
   notify:
   - restart nginx
 
 - name: Enable the site
   file:
-    path: "/etc/nginx/sites-enabled/{{ site_name | default(app_name, true) }}"
-    src: "/etc/nginx/sites-available/{{ site_name | default(app_name, true)}}"
+    path: "{{ NGINX_SITES_ENABLED_PATH }}/{{ site_name }}"
+    src: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
     state: link
-    group: "{{ nginx_user }}"
-    owner: "{{ nginx_user }}"
   notify:
   - restart nginx

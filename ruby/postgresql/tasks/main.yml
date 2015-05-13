@@ -1,7 +1,6 @@
 # Packages required for postgresql gem
-- name: Packages
-  apt:
-    pkg: "{{item}}"
-    state: latest
-  with_items:
-  - libpq-dev
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"

@@ -1,0 +1,51 @@
+---
+- name: Environment variables
+  lineinfile:
+    dest: ~/.profile
+    regexp: "^export {{ item.key }}="
+    line: "export {{ item.key }}={{ item.value }}"
+  sudo: true
+  sudo_user: "{{ rails_user_name }}"
+  when: item.value != ''
+  with_dict: rails_user_env
+
+- name: Environment from facts
+  lineinfile:
+    dest: ~/.profile
+    regexp: "^export {{ item.1 }}="
+    line: >
+      export {{ item.1 }}={{
+        hostvars[
+          item.0.host
+          | default(groups[item.0.group][item.0.index | default(0)])
+        ][item.1]
+      }}
+  sudo: true
+  sudo_user: "{{ rails_user_name }}"
+  when: >
+    (item.1 not in rails_user_env)
+    and ((
+        (item.0.host is defined)
+        and(item.0.host in hostvars)
+      ) or (
+        (item.0.group is defined)
+        and (item.0.group in groups)
+      )
+    ) and (
+      item.1 in hostvars[
+        item.0.host
+        | default(groups[item.0.group][item.0.index | default(0)])
+      ]
+    )
+  with_subelements:
+  - rails_user_env_facts
+  - 'facts'
+
+- name: Bashrc lines
+  lineinfile:
+    dest: ~/.bashrc
+    line: "{{ item }}"
+    create: true
+  sudo: true
+  sudo_user: "{{ rails_user_name }}"
+  with_items: rails_user_bashrc_lines

@@ -1,0 +1,20 @@
+rbenv_package_names:
+  - curl
+  - bison
+  - build-essential # allow building native gems
+  - zlib1g-dev
+  - libssl-dev
+  - libreadline6-dev
+  - libxml2-dev
+  - git-core
+  - libsqlite3-dev # build native sqlite3 driver
+  - nodejs # precompile assets
+  - autoconf
+  - libyaml-dev
+  - libncurses5-dev
+  - libffi-dev
+  - libgdbm3
+  - libgdbm-dev
+
+# only needed for ruby 2.1.1
+rbenv_ruby_configure_opts: 'RUBY_CONFIGURE_OPTS=--with-readline-dir="/lib/{{ ansible_architecture }}-linux-gnu/libreadline.so.6"'

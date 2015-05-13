@@ -1,18 +1,47 @@
-postgresql_service: postgresql
-postgresql_package: postgresql-9.3
-postgresql_user: postgres
+---
+# the postgresql version (needs to be quoted for getting a `str` not a `float`)
+postgresql_version: '9.3'
+
+# table locale and character encoding
+postgresql_locale: 'en_US'
+postgresql_encoding: 'UTF-8'
+
+# shell locale and character encoding
+postgresql_shell_locale: '{{ postgresql_locale }}'
+postgresql_shell_encoding: "{{ postgresql_encoding | replace('-', '') | lower }}"
+
+# default application database
+db_user: '' # name of the user (empty means no user is created)
+db_password: ''
+db_name: '' # name of the database (empty means no database is created)
+
+# all the created users
+postgresql_users:
+- name: "{{ db_user | default('') }}"
+  password: "{{ db_password | default('') }}" # only needed if user is given
+  # role_attr_flags: "{{ postgresql_users_role_attr_flags }}"
+
+# all the created databases
+postgresql_databases:
+- name: '{{ db_name }}'
+  owner: "{{ db_user | default('') }}" # empty mean 'postgres' user will own it
+  # encoding: '{{ postgresql_encoding }}'
+  # lc_collate: '{{ postgresql_locale }}.{{ postgresql_encoding }}'
+  # lc_ctype: '{{ postgresql_locale }}.{{ postgresql_encoding }}'
+  # template: template0
+
+# default user attr_flags
+postgresql_users_role_attr_flags:
+- CREATEDB
+- NOSUPERUSER
 
 # variables to build postgresql.conf
-postgresql_config_path: /etc/postgresql/9.3/main
-postgresql_data_path: /var/lib/postgresql/9.3/main
-postgresql_pid_file: /var/run/postgresql/9.3-main.pid
 
+postgresql_host: '{{ ansible_all_ipv4_addresses | last }}'
 postgresql_listen:
   - '0.0.0.0'
 postgresql_port: 5432
 postgresql_max_connections: 100
-postgresql_socket_directories:
-  - '/var/run/postgresql'
 
 postgresql_connections:
   ssl: false
@@ -33,15 +62,11 @@ postgresql_autovacuum: {}
 postgresql_client_connection_defaults:
   datestyle: "'iso, mdy'"
   timezone: "'UTC'"
-  lc_messages: "'en_US.utf8'"
-  lc_monetary: "'en_US.utf8'"
-  lc_numeric: "'en_US.utf8'"
-  lc_time: "'en_US.utf8'"
+  lc_messages: "'{{ postgresql_locale }}.{{ postgresql_encoding }}'"
+  lc_monetary: "'{{ postgresql_locale }}.{{ postgresql_encoding }}'"
+  lc_numeric: "'{{ postgresql_locale }}.{{ postgresql_encoding }}'"
+  lc_time: "'{{ postgresql_locale }}.{{ postgresql_encoding }}'"
   default_text_search_config: "'pg_catalog.english'"
 
 postgresql_lock_management: {}
 postgresql_cutomized: {}
-
-postgresql_users_role_attr_flags:
-  - CREATEDB
-  - NOSUPERUSER

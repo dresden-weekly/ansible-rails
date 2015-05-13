@@ -1,0 +1,12 @@
+---
+- name: enable ForwardAgent
+  lineinfile:
+    dest: "/etc/ssh/ssh_config"
+    line: "    ForwardAgent yes"
+    regexp: "^\\s*ForwardAgent"
+    create: yes
+
+- name: sudoer forward_ssh_agent
+  template:
+    src: "forward_ssh_agent.j2"
+    dest: "/etc/sudoers.d/forward_ssh_agent"

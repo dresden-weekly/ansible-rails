@@ -3,8 +3,8 @@
 #
 ---
 - name: Precompile assets
-  shell: "{{ profile }}{{ ruby_bin }}bundle exec rake assets:precompile"
+  command: "{{ profile }}'bundle exec rake assets:precompile'"
   args:
-    chdir: "{{ RELEASE_PATH }}"
-  register: result
-  changed_when: "'Writing' in result.stdout"
+    chdir: "{{ RAILS_APP_RELEASE_PATH }}"
+  register: rails_compile_assets_result
+  changed_when: "'Writing' in rails_compile_assets_result.stdout"
