@@ -1,14 +1,9 @@
-- name: Repo
-  apt_repository:
-    repo: '{{ nginx_apt_repo }}'
-
-- name: Packages
-  apt:
-    name: "{{ item }}"
-    update_cache: yes
-    state: latest
-    cache_valid_time: 86400
-  with_items: nginx_apt_packages
+---
+- include_vars: "{{ ansible_os_family }}.yml"
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"
 
 - name: Configure
   template:

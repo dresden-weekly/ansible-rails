@@ -1,0 +1,2 @@
+webrick_user: "{{ RAILS_APP_OWNER | default('root', true) }}"
+webrick_service_name: "{{ webrick_user }}-{{ app_name | default('rails') }}-webrick"

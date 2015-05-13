@@ -11,6 +11,7 @@
   sudo: yes
   sudo_user: "{{ item }}"
   with_items: users
+  when: ansible_os_family == "Debian"
 
 - include: trusty.yml
   when: (ansible_distribution == 'Ubuntu') and (ansible_lsb.major_release|int >= 14)

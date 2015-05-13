@@ -1,11 +1,5 @@
 ---
-- name: store facts
-  set_fact:
-    APP_URL: "{{ webrick_app_url }}"
-  tags:
-  - facts
-
-- name: upstart script
+- name: Debian | upstart script
   template:
     dest: "{{ webrick_upstart_conf }}"
     src: upstart.conf.j2

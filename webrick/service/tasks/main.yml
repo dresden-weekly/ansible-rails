@@ -1,0 +1,11 @@
+---
+- name: store facts
+  set_fact:
+    APP_URL: "{{ webrick_app_url }}"
+  tags:
+  - facts
+
+- include: systemd.yml
+  when: "{{ webrick_systemd_system|bool }}"
+- include: upstart.yml
+  when: "{{ webrick_upstart_system|bool }}"

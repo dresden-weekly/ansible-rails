@@ -2,9 +2,6 @@
 # name of the system user that runs nginx
 nginx_user: 'www-data'
 
-# location of the nginx pid file
-nginx_pid: '/var/run/nginx.pid'
-
 # number of worker processes
 nginx_worker_processes: 4
 

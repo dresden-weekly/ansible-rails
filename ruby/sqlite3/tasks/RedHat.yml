@@ -1,0 +1,7 @@
+- name: RedHat | Packages
+  yum:
+    pkg: "{{item}}"
+    update_cache: yes
+    state: latest
+  with_items:
+  - sqlite-devel

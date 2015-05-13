@@ -1,0 +1,7 @@
+---
+- name: RedHat | Packages
+  yum:
+    pkg: "{{item}}"
+    update_cache: yes
+    state: present
+  with_items: logrotate_packages

@@ -1,0 +1,11 @@
+---
+- name: RedHat | Restart
+  service: name={{ webrick_service_name }} state=restarted
+  register: rails_webrick_restarted
+  sudo: yes
+  sudo_user: root
+  when: rails_webrick_restart.stat.exists
+
+- name: RedHat | Remove RAILS_APP_RESTART_PATH
+  command: rm {{ RAILS_APP_RESTART_PATH }}
+  when: rails_webrick_restarted is defined and rails_webrick_restarted|success
