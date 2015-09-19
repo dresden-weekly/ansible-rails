@@ -38,3 +38,11 @@
   set_fact:
     RUBY_PREFIX: '~/.rvm/bin/rvm default do '
     RUBY_BIN: '/home/{{ rvm_user }}/.rvm/gems/ruby-{{ rvm_default }}/wrappers/ruby'
+
+- name: install gems
+  shell: >
+    {{RUBY_PREFIX}} gem install {{item}}
+  sudo: yes
+  sudo_user: "{{ rvm_user }}"
+  with_flattened:
+  - rvm_install_gems
