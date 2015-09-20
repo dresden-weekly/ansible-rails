@@ -1,0 +1,44 @@
+# {{ ansible_managed }}
+
+server {
+  listen  80;
+  listen [::]:80;
+  server_name {{ app_hosts }};
+
+  # {% if ssl_cert is defined %}
+  # listen  443 ssl;
+  # ssl_certificate /etc/nginx/cert/myssl.crt;
+  # ssl_certificate_key /etc/nginx/cert/myssl.key;
+  # {% endif %}
+
+  gzip on;
+  client_max_body_size 200M;
+  root {{RAILS_APP_CURRENT_PATH}}/public;
+
+  {% for key,value in passenger_variables.iteritems() %}
+  {{key}} {{value}};
+  {% endfor %}
+
+  location ~ ^/(assets)/ {
+    expires 21d;
+    add_header Pragma public;
+    add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+  }
+
+  location ~ ^/(system|uploads)/ {
+    expires 7d;
+    add_header Pragma public;
+    add_header Cache-Control "public";
+    gzip on;
+  }
+
+  # omniauth require https
+  location /auth {
+    if ( $https != "on") {
+      rewrite ^ https://$http_host$request_uri? permanent;
+    }
+    passenger_enabled on;
+  }
+
+
+}
