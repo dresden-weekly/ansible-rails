@@ -18,7 +18,7 @@ Content Roles
 
 Provisioning:
 
-* **user/profile** store facts to .profile and .bashrc 
+* **user/profile** store facts to .profile and .bashrc
 * [**postgresql**](https://github.com/dresden-weekly/ansible-rails/postgresql) install a PostgreSQL 9.3 database
 * **upstart/userjobs** enables Upstart userjobs
 * [**ruby/rvm**](https://github.com/dresden-weekly/ansible-rails/ruby/rvm) installs a specific Ruby version with rvm
@@ -29,6 +29,7 @@ Provisioning:
 * **rails/create-folders** prepares a folder for Rails releases
 * [**rails/logrotate**](https://github.com/dresden-weekly/ansible-rails/rails/logrotate) create logrotate configuration for Rails logs
 * [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/nginx/server) install nginx webserver
+* **nginx/passenger** install nginx webserver
 * [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/nginx/puma) prepare nginx for puma appserver
 * [**nginx/webrick**](https://github.com/dresden-weekly/ansible-rails/nginx/webrick) prepare nginx for webrick apperserver
 * [**puma/upstart**](https://github.com/dresden-weekly/ansible-rails/puma/upstart) install userjob for puma
@@ -64,7 +65,7 @@ Example Playbook
 [dresden-weekly/ansible-rails-example@simple](https://github.com/dresden-weekly/ansible-rails-example/tree/simple)
 * Git based deployment
 * single tier
-* PostgreSql database 
+* PostgreSql database
 * Nginx Webserver
 * Webrick as application server
 * Support for Vagrant based development
@@ -101,7 +102,7 @@ Changelog
   * [x] Passenger on Apache
 * Database support
   * [x] MySql (see redmine example)
-  * [x] Sqlite3 
+  * [x] Sqlite3
 * Ruby installation
   * [x] rbenv (contributed by @tnt)
 * Linux distribution
