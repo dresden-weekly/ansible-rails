@@ -33,3 +33,18 @@ rails_deploy_shared_folders: # default folders that are shared between releases
 rails_deploy_custom_shared_folders: [] # custom folders that are shared between releases
 
 rails_deploy_custom_create_folders: [] # custom folders that are created for each release
+
+# Link files
+rails_shared_files: []
+# - db/production.sqlite3
+# - config/database.yml
+# - config/secrets.yml
+
+rails_provisioned_files: []
+# - file: config/database.yml
+#   content: |
+#     production:
+#       adapter: postgresql
+#       database: '{{rails_database_name}}'
+#       encoding: UTF8
+#       pool: 30
