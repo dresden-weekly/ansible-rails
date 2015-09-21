@@ -16,3 +16,6 @@ rvm_gpg_key_alternative_url: 'https://rvm.io/mpapis.asc'
 # additional packages
 rvm_custom_packages:
 - nodejs # precompile assets
+
+rvm_install_gems:
+- bundler
