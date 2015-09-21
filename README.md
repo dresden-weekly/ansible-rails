@@ -19,23 +19,23 @@ Content Roles
 Provisioning:
 
 * **user/profile** store facts to .profile and .bashrc
-* [**postgresql**](https://github.com/dresden-weekly/ansible-rails/postgresql) install a PostgreSQL 9.3 database
+* [**postgresql**](https://github.com/dresden-weekly/ansible-rails/tree/develop/postgresql) install a PostgreSQL 9.3 database
 * **upstart/userjobs** enables Upstart userjobs
-* [**ruby/rvm**](https://github.com/dresden-weekly/ansible-rails/ruby/rvm) installs a specific Ruby version with rvm
-* [**ruby/rbenv**](https://github.com/dresden-weekly/ansible-rails/ruby/rbenv) installs a specific Ruby version with rbenv
+* [**ruby/rvm**](https://github.com/dresden-weekly/ansible-rails/tree/develop/ruby/rvm) installs a specific Ruby version with rvm
+* [**ruby/rbenv**](https://github.com/dresden-weekly/ansible-rails/tree/develop/ruby/rbenv) installs a specific Ruby version with rbenv
 * **ruby/postgresql** support for postgresql client gems
 * **ruby/sqlite3** support for sqlite3 client gems
 * **ruby/mysql** support for mysql client gems
 * **rails/create-folders** prepares a folder for Rails releases
-* [**rails/logrotate**](https://github.com/dresden-weekly/ansible-rails/rails/logrotate) create logrotate configuration for Rails logs
-* [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/nginx/server) install nginx webserver
+* [**rails/logrotate**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/logrotate) create logrotate configuration for Rails logs
+* [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/server) install nginx webserver
 * **nginx/passenger** install nginx webserver
-* [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/nginx/puma) prepare nginx for puma appserver
-* [**nginx/webrick**](https://github.com/dresden-weekly/ansible-rails/nginx/webrick) prepare nginx for webrick apperserver
-* [**puma/upstart**](https://github.com/dresden-weekly/ansible-rails/puma/upstart) install userjob for puma
-* [**webrick/service**](https://github.com/dresden-weekly/ansible-rails/webrick/service) setup init system to start webrick
-* [**apache/server**](https://github.com/dresden-weekly/ansible-rails/apache/server) install and configure apache server
-* [**apache/passenger**](https://github.com/dresden-weekly/ansible-rails/apache/passenger) install and configure passenger for apache
+* [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/puma) prepare nginx for puma appserver
+* [**nginx/webrick**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/webrick) prepare nginx for webrick apperserver
+* [**puma/upstart**](https://github.com/dresden-weekly/ansible-rails/tree/develop/puma/upstart) install userjob for puma
+* [**webrick/service**](https://github.com/dresden-weekly/ansible-rails/tree/develop/webrick/service) setup init system to start webrick
+* [**apache/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/apache/server) install and configure apache server
+* [**apache/passenger**](https://github.com/dresden-weekly/ansible-rails/tree/develop/apache/passenger) install and configure passenger for apache
 * **firewalld** configure firewalld (for CentOS)
 * **selinux** currently only enable/disable selinux on CentOS
 
@@ -46,7 +46,7 @@ Deployment:
 * **rails/tasks/bundle** install all bundles gems
 * **rails/tasks/migrate-database** run Rails database migrations
 * **rails/tasks/compile-assets** create the precompiled assets
-* [**rails/publish-assets**](https://github.com/dresden-weekly/ansible-rails/rails/publish-assets) transfer compiled assets from app- to web-servers
+* [**rails/publish-assets**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/publish-assets) transfer compiled assets from app- to web-servers
 * **rails/update-current** change the symlink for the current release
 * **rails/cleanup-old-releases** only keep N last releases
 * **rails/rollback** rollback the the previous and delete the current release
