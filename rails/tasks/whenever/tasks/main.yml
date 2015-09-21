@@ -1,0 +1,5 @@
+- name: Update cronjobs for app
+  command: "{{ profile }}'bundle exec whenever --update-crontab {{app_name}}'"
+  args:
+    chdir: "{{ RAILS_APP_RELEASE_PATH }}"
+  register: rails_whenever_result
