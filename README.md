@@ -47,6 +47,7 @@ Deployment:
 * **rails/tasks/compile-assets** create the precompiled assets
 * [**rails/publish-assets**](https://github.com/dresden-weekly/ansible-rails/rails/publish-assets) transfer compiled assets from app- to web-servers
 * **rails/update-current** change the symlink for the current release
+* [**rails/tasks/whenever**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/tasks/whenever) update crontab of app user using whenever Gem
 * **rails/cleanup-old-releases** only keep N last releases
 
 Dependencies
