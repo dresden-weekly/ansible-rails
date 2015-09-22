@@ -20,6 +20,7 @@ Provisioning:
 
 * **user/profile** store facts to .profile and .bashrc
 * [**postgresql**](https://github.com/dresden-weekly/ansible-rails/tree/develop/postgresql) install a PostgreSQL 9.3 database
+* [**database/backup**](https://github.com/dresden-weekly/ansible-rails/tree/develop/database/backup) Simple rotating SQL dump backups
 * **upstart/userjobs** enables Upstart userjobs
 * [**ruby/rvm**](https://github.com/dresden-weekly/ansible-rails/tree/develop/ruby/rvm) installs a specific Ruby version with rvm
 * [**ruby/rbenv**](https://github.com/dresden-weekly/ansible-rails/tree/develop/ruby/rbenv) installs a specific Ruby version with rbenv
