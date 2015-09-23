@@ -18,7 +18,7 @@ Content Roles
 
 Provisioning:
 
-* **user/profile** store facts to .profile and .bashrc 
+* **user/profile** store facts to .profile and .bashrc
 * [**postgresql**](https://github.com/dresden-weekly/ansible-rails/postgresql) install a PostgreSQL 9.3 database
 * **upstart/userjobs** enables Upstart userjobs
 * [**ruby/rvm**](https://github.com/dresden-weekly/ansible-rails/ruby/rvm) installs a specific Ruby version with rvm
@@ -48,6 +48,7 @@ Deployment:
 * [**rails/publish-assets**](https://github.com/dresden-weekly/ansible-rails/rails/publish-assets) transfer compiled assets from app- to web-servers
 * **rails/update-current** change the symlink for the current release
 * **rails/cleanup-old-releases** only keep N last releases
+* **rails/rollback** rollback the the previous and delete the current release
 
 Dependencies
 ------------
@@ -64,7 +65,7 @@ Example Playbook
 [dresden-weekly/ansible-rails-example@simple](https://github.com/dresden-weekly/ansible-rails-example/tree/simple)
 * Git based deployment
 * single tier
-* PostgreSql database 
+* PostgreSql database
 * Nginx Webserver
 * Webrick as application server
 * Support for Vagrant based development
@@ -101,7 +102,7 @@ Changelog
   * [x] Passenger on Apache
 * Database support
   * [x] MySql (see redmine example)
-  * [x] Sqlite3 
+  * [x] Sqlite3
 * Ruby installation
   * [x] rbenv (contributed by @tnt)
 * Linux distribution

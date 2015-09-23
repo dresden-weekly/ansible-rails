@@ -1,0 +1,42 @@
+- name: Find folder for Rollback
+  shell: >
+    cd {{ RAILS_APP_RELEASES_PATH }};
+    ls -t {{ RAILS_APP_RELEASES_PATH }} | xargs -n 1 readlink -f | sed -n 2p
+  register: rollback_test_result
+
+- name: Find current Folder
+  shell: >
+    cd {{ RAILS_APP_RELEASES_PATH }};
+    ls -t {{ RAILS_APP_RELEASES_PATH }} | xargs -n 1 readlink -f | sed -n 1p
+  register: rollback_current_test_result
+
+- name: Register rollback_path
+  stat: path={{ rollback_test_result.stdout }}
+  register: rollback_path
+
+- name: Register rollback_current_path
+  stat: path={{ rollback_current_test_result.stdout }}
+  register: rollback_current_path
+
+- name: Check if pathes exist
+  set_fact:
+    rollback_path_exists: "{{ rollback_path.stat.isdir is defined and rollback_path.stat.isdir }}"
+    rollback_current_path_exists: "{{ rollback_current_path.stat.isdir is defined and rollback_current_path.stat.isdir }}"
+
+- name: Check if a Rollback is possible
+  set_fact:
+    run_rollback: "{{ rollback_path_exists and rollback_current_path_exists }}"
+
+- name: Link old release
+  file:
+    src: "{{ rollback_test_result.stdout }}"
+    path: "{{ RAILS_APP_CURRENT_PATH }}"
+    state: link
+    force: yes
+  when: run_rollback | bool
+
+- name: Delete current release
+  file:
+    path: "{{ rollback_current_test_result.stdout }}"
+    state: absent
+  when: run_rollback | bool
