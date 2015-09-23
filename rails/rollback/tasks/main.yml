@@ -25,7 +25,7 @@
 
 - name: Check if a Rollback is possible
   set_fact:
-    run_rollback: "{{ rollback_path_exists and rollback_current_path_exists }}"
+    run_rollback: "{{ (rollback_path_exists | bool) and (rollback_current_path_exists | bool) }}"
 
 - name: Link old release
   file:
