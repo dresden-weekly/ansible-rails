@@ -1,8 +1,15 @@
 ---
+- name: Update repo URL (Ansible 1.8.2 fix)
+  shell: >
+    git remote set-url {{ rails_app_git_remote }} {{ rails_app_git_repo }}
+  args:
+    chdir: "{{ rails_app_repo_path }}"
+
 - name: Ensure git mirror repo is up to date
   git:
     repo: "{{ rails_app_git_repo }}"
     dest: "{{ rails_app_repo_path }}"
+    remote: "{{ rails_app_git_remote }}"
     bare: yes
     version: "{{ rails_app_git_branch }}"
     update: yes
