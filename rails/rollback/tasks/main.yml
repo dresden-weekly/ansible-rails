@@ -1,0 +1,84 @@
+- name: Find current linked folder path
+  shell: >
+    readlink current
+  args:
+    chdir: "{{ RAILS_APP_BASE_PATH }}"
+  register: rollback_current_linked_folder_path
+
+- name: Find current linked folder
+  shell: >
+    echo "{{ rollback_current_linked_folder_path.stdout }}" | xargs -d/ -i echo {} | tail -n 2 | sed -n 1p
+  args:
+    chdir: "{{ RAILS_APP_BASE_PATH }}"
+  register: rollback_current_linked_folder
+
+- name: Check if a release matches the current linked folder
+  shell: >
+    for dir in $(ls -t); do
+      if [ "$dir" = "{{ rollback_current_linked_folder.stdout }}" ]; then
+        echo yes; exit;
+      fi;
+    done;
+  args:
+    chdir: "{{ RAILS_APP_RELEASES_PATH }}"
+  register: rollback_current_is_linked
+
+- name: facts
+  set_fact:
+    linked_in_releases: "{{ rollback_current_is_linked.stdout == 'yes' }}"
+
+- name: Find newest release
+  shell: >
+    ls -t | xargs -n 1 readlink -f | sed -n 1p
+  args:
+    chdir: "{{ RAILS_APP_RELEASES_PATH }}"
+  register: rollback_new_current_folder
+  when: not (linked_in_releases | bool)
+
+- name: Find old release
+  shell: >
+    last="";
+    for dir in $(ls); do
+      if [ "$dir" = "{{ rollback_current_linked_folder.stdout }}" ]; then
+        if [ "$last" = "" ]; then exit; fi;
+        readlink -f $last; exit;
+      fi;
+      last=$dir;
+    done;
+    echo $dir;
+  args:
+    chdir: "{{ RAILS_APP_RELEASES_PATH }}"
+  register: rollback_new_current_old_folder
+  when: linked_in_releases | bool
+
+- name: facts
+  set_fact:
+    rollback_new_current_folder_name: "{{ rollback_new_current_folder.stdout }}"
+  when: rollback_new_current_folder.stdout is defined
+
+- name: facts
+  set_fact:
+    rollback_new_current_folder_name: "{{ rollback_new_current_old_folder.stdout }}"
+  when: rollback_new_current_old_folder.stdout is defined
+
+- name: Check new current folder
+  stat: path={{ rollback_new_current_folder_name}}
+  register: rollback_new_current_folder_stat
+
+- name: facts
+  set_fact:
+    rollback_new_current_folder_exists: "{{ rollback_new_current_folder_stat.stat.isdir is defined and rollback_new_current_folder_stat.stat.isdir }}"
+
+- name: Link to old release
+  file:
+    src: "{{ rollback_new_current_folder_name }}"
+    path: "{{ RAILS_APP_CURRENT_PATH }}"
+    state: link
+    force: yes
+  when: rollback_new_current_folder_exists | bool
+
+- name: Delete old release
+  file:
+    path: "{{ rollback_current_linked_folder_path.stdout }}"
+    state: absent
+  when: (linked_in_releases | bool) and (rollback_new_current_folder_exists | bool)
