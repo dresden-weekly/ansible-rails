@@ -11,6 +11,10 @@ rails_app_git_branch: "{{ git_branch }}"
 # path where the repository goes
 rails_app_repo_path: "{{ RAILS_APP_BASE_PATH }}/repo"
 
+rails_repo_ssh_keyfile: "/home/{{app_user}}/.ssh/id_rsa"
+
+rails_primary_node: "{{groups['app'][0] }}"
+
 # handling of deployment files and folder
 rails_deploy_archive: # default files/folders that are exported from git
 - app

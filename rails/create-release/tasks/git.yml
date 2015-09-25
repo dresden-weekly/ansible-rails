@@ -5,6 +5,7 @@
     dest: "{{ rails_app_repo_path }}"
     bare: yes
     version: "{{ rails_app_git_branch }}"
+    key_file: "{{ rails_repo_ssh_keyfile }}"
     update: yes
     accept_hostkey: yes
 
