@@ -1,5 +1,6 @@
 ---
 rails_create_folders:
+- '{{ rails_app_base_path }}'
 - '{{ rails_app_releases_path }}'
 - '{{ rails_app_shared_path }}/config'
 - '{{ rails_app_shared_path }}/bin'
