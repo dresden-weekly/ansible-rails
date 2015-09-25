@@ -39,10 +39,14 @@
     RUBY_PREFIX: '~/.rvm/bin/rvm default do '
     RUBY_BIN: '/home/{{ rvm_user }}/.rvm/gems/ruby-{{ rvm_default }}/wrappers/ruby'
 
-- name: install gems
+- name: Install gems
   shell: >
-    {{RUBY_PREFIX}} gem install {{item}}
+    {{ RUBY_PREFIX }} gem list
+    | if ! grep "^{{ item }} " ; then {{ RUBY_PREFIX }} gem install {{ item }} ; fi
   sudo: yes
   sudo_user: "{{ rvm_user }}"
   with_flattened:
   - rvm_install_gems
+  register: ruby_rvm_gem_install_result
+  changed_when: >
+    "Successfully installed {{ item }}" in ruby_rvm_gem_install_result.stdout
