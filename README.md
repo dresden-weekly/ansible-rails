@@ -29,6 +29,7 @@ Provisioning:
 * **rails/create-folders** prepares a folder for Rails releases
 * [**rails/logrotate**](https://github.com/dresden-weekly/ansible-rails/rails/logrotate) create logrotate configuration for Rails logs
 * [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/nginx/server) install nginx webserver
+* **nginx/passenger** install nginx webserver
 * [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/nginx/puma) prepare nginx for puma appserver
 * [**nginx/webrick**](https://github.com/dresden-weekly/ansible-rails/nginx/webrick) prepare nginx for webrick apperserver
 * [**puma/upstart**](https://github.com/dresden-weekly/ansible-rails/puma/upstart) install userjob for puma
