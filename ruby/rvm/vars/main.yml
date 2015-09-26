@@ -8,4 +8,5 @@ rvm_packages:
 - libssl-dev
 - libreadline6-dev
 - libxml2-dev
+- libgmp3-dev
 - git-core
