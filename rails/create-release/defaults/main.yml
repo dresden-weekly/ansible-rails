@@ -46,7 +46,7 @@ rails_shared_files: []
 
 rails_provisioned_files: []
 # - file: config/database.yml
-#   content: |
+#   yaml:
 #     production:
 #       adapter: postgresql
 #       database: '{{rails_database_name}}'
