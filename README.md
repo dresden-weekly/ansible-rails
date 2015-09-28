@@ -24,6 +24,7 @@ Provisioning:
 * [**ruby/rvm**](https://github.com/dresden-weekly/ansible-rails/tree/develop/ruby/rvm) installs a specific Ruby version with rvm
 * [**ruby/rbenv**](https://github.com/dresden-weekly/ansible-rails/tree/develop/ruby/rbenv) installs a specific Ruby version with rbenv
 * **ruby/postgresql** support for postgresql client gems
+* **ruby/imagemagick** installs the popular image manipulation tool with support for rmagick binding and some image optimization libraries
 * **ruby/sqlite3** support for sqlite3 client gems
 * **ruby/mysql** support for mysql client gems
 * **rails/create-folders** prepares a folder for Rails releases

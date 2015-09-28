@@ -1,0 +1,6 @@
+- name: 'install imagemagick + libmagickwand for rmagick'
+  apt: pkg={{item}}
+  with_flattened:
+    - imagemagick_packages
+    - image_optimization_packages
+
