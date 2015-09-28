@@ -23,10 +23,10 @@
   - rails_deploy_custom_create_folders
 
 
-- name: Provide Rails configuration files
-  copy:
+- name: Provide Rails yaml configuration files
+  template:
+    src: 'config.yml.jinja2'
     dest: "{{ RAILS_APP_SHARED_PATH }}/{{item.file}}"
-    content: '{{item.content}}'
     owner: '{{app_user}}'
     mode: '0600'
   with_items: "{{rails_provisioned_files}}"
