@@ -23,6 +23,7 @@ server {
     expires 21d;
     add_header Pragma public;
     add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+    gzip on;
   }
 
   location ~ ^/(system|uploads)/ {
@@ -34,7 +35,15 @@ server {
 
   # omniauth require https
   location /auth {
-    if ( $https != "on") {
+    # omniauth require https
+    if ($scheme = "http" ) {
+      set $test A;
+    }
+    if ($http_x_forwarded_proto != "https") {
+      set $test "${test}B";
+    }
+    # nginx hack to use multiple conditions
+    if ($test = "AB") {
       rewrite ^ https://$http_host$request_uri? permanent;
     }
     passenger_enabled on;
