@@ -13,7 +13,7 @@ Simple rotating SQL dump written to specified folder (e.g. /var/backup). At the 
     database_backup_base_dir: '/var/backup'
 ```
 
-This will create the folder if not exists and create daily cronjob (default 4am) which dumps the database to ``/var/backup/somedb_production/TIMESTAMP.sql``. It will also keep the 7 most recent dumps and delete older ones.
+This will create the folder if not exists and create daily cronjob (default 4am) which dumps the database to ``/var/backup/somedb_production/TIMESTAMP.sql.gz``. It will also keep the 7 most recent dumps and delete older ones.
 
 
 ## Supported variables:
