@@ -1,0 +1,30 @@
+---
+
+# Assuming Rails databse name
+database_backup_name: "{{app_name}}_{{rails_env}}"
+
+# Backup paths
+database_backup_base_dir: "/var/backup/database"
+database_backup_dir: "{{database_backup_base_dir}}/{{database_backup_name}}"
+
+# Keep that number of backups, e.g. last 7 days
+database_backup_keep: 7
+
+# Crontab hour + minute, e.g. 04:00 am
+database_backup_hour: 4
+database_backup_minute: 0
+
+database_backup_crontab_user: "{{app_user}}"
+
+# either postgresql or mysql
+database_backup_type: postgresql
+
+# Pg-dump assuming trust/ident
+database_backup_pg_job: >
+  pg_dump -c {{database_backup_name}} | gzip > {{database_backup_dir}}/`date +\%F:\%T`.sql.gz && cd {{database_backup_dir}} && rm -f `ls -t | awk 'NR>{{database_backup_keep}}'`
+
+# MySQL Settings:
+database_backup_username: "backup"
+database_backup_password: "backup"
+database_backup_mysql_job: >
+  mysqldump -u"{{database_backup_username}}" -p'{{database_backup_password}}' {{database_backup_name}} | gzip > {{database_backup_dir}}/`date +\%F:\%T`.sql.gz && cd {{database_backup_dir}} && rm -f `ls -t | awk 'NR>{{database_backup_keep}}'`

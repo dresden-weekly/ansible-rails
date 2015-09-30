@@ -1,0 +1,25 @@
+---
+- name: "Database | Backup | Create Backup directory"
+  file:
+    path: "{{database_backup_dir}}"
+    state: directory
+    recurse: true
+    owner: "{{database_backup_crontab_user}}"
+
+- name: "Database | Backup | PostgreSQL Cronjob"
+  cron:
+    name: "backup {{database_backup_name}}"
+    hour: "{{database_backup_hour}}"
+    minute: "{{database_backup_minute}}"
+    job: "{{database_backup_pg_job}}"
+    user: "{{database_backup_crontab_user}}"
+  when: database_backup_type == "postgresql"
+
+- name: "Database | Backup | MySQL Cronjob"
+  cron:
+    name: "backup {{database_backup_name}}"
+    hour: "{{database_backup_hour}}"
+    minute: "{{database_backup_minute}}"
+    job: "{{database_backup_mysql_job}}"
+    user: "{{database_backup_crontab_user}}"
+  when: database_backup_type == "mysql"
