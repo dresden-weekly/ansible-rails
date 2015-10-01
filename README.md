@@ -30,6 +30,7 @@ Provisioning:
 * **ruby/mysql** support for mysql client gems
 * **rails/create-folders** prepares a folder for Rails releases
 * [**rails/logrotate**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/logrotate) create logrotate configuration for Rails logs
+* [**rails/jobs/sidekiq**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/jobs/sidekiq) manage/restart sidekiq as a upstart job
 * [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/server) install nginx webserver
 * **nginx/passenger** install nginx webserver
 * [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/puma) prepare nginx for puma appserver
@@ -46,6 +47,7 @@ Deployment:
 * **rails/create-release** create a new release from a git repo
 * **rails/use-vagrant** create the vagrant release from a vagrant share
 * **rails/tasks/bundle** install all bundles gems
+* **rails/jobs/sidekiq/restart** see Sidekiq role
 * **rails/tasks/migrate-database** run Rails database migrations
 * **rails/tasks/compile-assets** create the precompiled assets
 * [**rails/publish-assets**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/publish-assets) transfer compiled assets from app- to web-servers
