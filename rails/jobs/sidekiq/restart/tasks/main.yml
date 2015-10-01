@@ -1,0 +1,4 @@
+- name: Tell sidekiq to not accept new work
+  shell: "{{ profile }}'reload {{sidekiq_job_name}}'"
+  ignore_errors: true
+  notify: restart sidekiq

@@ -1,0 +1,1 @@
+sidekiq_job_name: '{{app_name}}'

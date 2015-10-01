@@ -1,0 +1,35 @@
+# /etc/init/sidekiq.conf - Sidekiq config
+# {{ansible_managed}}
+
+description "Sidekiq Background {{ app_name }}"
+stop on runlevel [06]
+respawn
+respawn limit 3 30
+console log
+normal exit 0 TERM
+reload signal USR1
+instance {{sidekiq_worker_index}}
+
+script
+exec /bin/bash <<'EOT'
+  export HOME="$(eval echo ~$(id -un))"
+  source $HOME/.profile
+  if [ -d "$HOME/.rbenv/bin" ]; then
+    export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
+  elif [ -f  /etc/profile.d/rvm.sh ]; then
+    source /etc/profile.d/rvm.sh
+  elif [ -f /usr/local/rvm/scripts/rvm ]; then
+    source /usr/local/rvm/scripts/rvm
+  elif [ -f "$HOME/.rvm/scripts/rvm" ]; then
+    source "$HOME/.rvm/scripts/rvm"
+  elif [ -f /usr/local/share/chruby/chruby.sh ]; then
+    source /usr/local/share/chruby/chruby.sh
+    if [ -f /usr/local/share/chruby/auto.sh ]; then
+      source /usr/local/share/chruby/auto.sh
+    fi
+  fi
+  cd {{RAILS_APP_CURRENT_PATH}}
+  logger -t {{sidekiq_upstart_user}} "Starting sidekiq worker {{app_name}}: $PWD"
+  exec bundle exec sidekiq -i {{sidekiq_worker_index}} -e {{sidekiq_rails_env}} -C {{sidekiq_config_file}} -L {{sidekiq_log_file}}
+EOT
+end script
