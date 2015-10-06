@@ -44,6 +44,15 @@ After the userjob / redis:
     sidekiq_configuration_concurrency: 5
 ```
 
+Sidekiq needs Redis to work. Either set the ``sidekiq_configuration_redis_url``
+to another host or install redis on the same node using another Galaxy role,
+e.g. [geerlingguy.redis](https://github.com/geerlingguy/ansible-role-redis).
+
+```yaml
+roles:
+  - role: geerlingguy.redis
+```
+
 2. (Graceful) restart on deploy
 
 Somewhere at the beginning of your deployment:
