@@ -30,7 +30,7 @@ sidekiq_configuration_queues:
 
 ## Usage:
 
-1. Server provisioning
+### 1. Server provisioning
 
 creates the job file
 
@@ -53,7 +53,7 @@ roles:
   - role: geerlingguy.redis
 ```
 
-2. (Graceful) restart on deploy
+### 2. (Graceful) restart on deploy
 
 Somewhere at the beginning of your deployment:
 
