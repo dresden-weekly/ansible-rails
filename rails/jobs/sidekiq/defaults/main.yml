@@ -1,0 +1,15 @@
+sidekiq_upstart_user: '{{app_user}}'
+sidekiq_job_name: '{{app_name}}'
+sidekiq_upstart_conf: '/home/{{sidekiq_upstart_user}}/.init/{{sidekiq_job_name}}.conf'
+sidekiq_worker_index: 0
+sidekiq_rails_env: '{{rails_env}}'
+sidekiq_log_file: '{{ RAILS_APP_SHARED_PATH }}/log/sidekiq.log'
+sidekiq_config_file: '{{ RAILS_APP_SHARED_PATH }}/config/sidekiq.yml'
+sidekiq_concurrency: 25
+sidekiq_configuration_redis_url: 'redis://localhost:6379/0'
+sidekiq_configuration_verbose: true
+sidekiq_configuration_queues:
+  - [important, 10]
+  - [default, 2]
+  - [low, 1]
+

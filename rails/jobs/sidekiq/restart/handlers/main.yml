@@ -1,0 +1,2 @@
+- name: restart sidekiq
+  shell: "{{ profile }}'restart {{sidekiq_job_name}} || start {{sidekiq_job_name}}'"

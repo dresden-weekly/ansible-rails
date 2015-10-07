@@ -1,0 +1,7 @@
+---
+# {{ ansible_managed }}
+:verbose: {{ sidekiq_configuration_verbose }}
+:url: '{{sidekiq_configuration_redis_url}}'
+:concurrency: {{sidekiq_configuration_concurrency}}
+:queues:
+{{sidekiq_configuration_queues | to_nice_yaml}}

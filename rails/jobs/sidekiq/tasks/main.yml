@@ -1,0 +1,14 @@
+- name: sidekiq upstart script
+  template:
+    src: 'sidekiq.conf.j2'
+    dest: '{{ sidekiq_upstart_conf }}'
+  sudo: yes
+  sudo_user: "{{ sidekiq_upstart_user }}"
+
+- name: sidekiq config
+  template:
+    src: 'sidekiq.yml.j2'
+    dest: '{{sidekiq_config_file}}'
+  sudo: yes
+  sudo_user: "{{ sidekiq_upstart_user }}"
+
