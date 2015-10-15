@@ -3,3 +3,10 @@
 {% for key,value in passenger_main_variables.iteritems() %}
 {{key}} {{value}};
 {% endfor %}
+
+{% if passenger_cloak_headers %}
+more_clear_headers 'X-Powered-By';
+more_clear_headers 'X-Request-Id';
+more_clear_headers 'X-Runtime';
+more_set_headers 'Server: nginx';
+{% endif %}
