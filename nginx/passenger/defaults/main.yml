@@ -4,6 +4,9 @@ passenger_main_variables:
   passenger_root: "/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini"
   passenger_ruby: "/usr/bin/passenger_free_ruby"
 
+# Remove identifing headers like Passenger + Nginx version
+passenger_cloak_headers: true
+
 # one or more hosts, like
 # app_hosts: 'www.example.com example.com en.example.com de.example.de'
 app_hosts: '{{app_domain}}'
