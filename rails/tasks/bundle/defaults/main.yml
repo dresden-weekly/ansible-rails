@@ -1,6 +1,16 @@
 ---
+# Use bundler's binstubs
+bundle_generate_binstubs: yes
+
 # path where binaries of the gems are installed
 bundle_binstubs: '{{ RAILS_APP_SHARED_PATH }}/bin'
+
+# disable modification of Gems after deploy, to make sure
+# Gemfile.lock is in sync with Gemfile
+bundle_frozen: no
+
+# parallelize bundle install
+bundle_jobs: '{{ansible_processor_cores}}'
 
 # name of the Gemfile that is used
 bundle_gemfile: 'Gemfile'

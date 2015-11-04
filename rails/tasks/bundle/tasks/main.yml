@@ -11,7 +11,10 @@
   command: >
     {{ profile }}
     'bundle install
-    --binstubs {{ bundle_binstubs }}
+    {% if bundle_generate_binstubs %}--binstubs {{ bundle_binstubs }}
+    {% else %}--no-binstubs {% endif %}
+    {% if bundle_frozen %} --frozen {% endif %}
+    --jobs {{bundle_jobs}}
     --gemfile {{ bundle_gemfile }}
     --path {{ bundle_path }}
     --without {{ bundle_without | join(' ') }}
