@@ -11,6 +11,9 @@
   command: >
     {{ profile }}
     'bundle install
+    {% if bundle_deployment %}
+    --deployment
+    {% endif %}
     {% if bundle_generate_binstubs %}--binstubs {{ bundle_binstubs }}
     {% else %}--no-binstubs {% endif %}
     {% if bundle_frozen %} --frozen {% endif %}

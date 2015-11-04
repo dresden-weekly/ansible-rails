@@ -5,6 +5,9 @@ bundle_generate_binstubs: yes
 # path where binaries of the gems are installed
 bundle_binstubs: '{{ RAILS_APP_SHARED_PATH }}/bin'
 
+# run bundle --deployment
+bundle_deployment: no
+
 # disable modification of Gems after deploy, to make sure
 # Gemfile.lock is in sync with Gemfile
 bundle_frozen: no
