@@ -3,4 +3,5 @@
   ignore_errors: true
 
 - command: '/bin/true'
+  name: 'Make sure sidekiq is started at the end'
   notify: restart sidekiq
