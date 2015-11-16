@@ -1,0 +1,2 @@
+rake_task: 'tmp:cache:clear'
+rake_task_run_once: false
