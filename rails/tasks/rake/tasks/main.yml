@@ -1,0 +1,5 @@
+- name: Run Rake task
+  command: "{{ profile }}'bundle exec rake {{rake_task}}'"
+  args:
+    chdir: "{{ RAILS_APP_RELEASE_PATH }}"
+  run_once: '{{rake_task_run_once}}'

@@ -55,6 +55,7 @@ Deployment:
 * [**rails/tasks/whenever**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/tasks/whenever) update crontab of app user using whenever Gem
 * **rails/cleanup-old-releases** only keep N last releases
 * **rails/rollback** rollback the the previous and delete the current release
+* [**rails/tasks/rake**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/tasks/rake) Run arbitrary Rake task on app
 
 Dependencies
 ------------
@@ -89,6 +90,9 @@ Example Playbook
 * Apache webserver
 * Passenger as application server
 * customized for Redmine
+
+[stefanwienert.de/ansible](http://www.stefanwienert.de/blog/2015/10/29/deploying-rails-with-ansible-with-dresden-weekly-toolbox/)
+* Blog post that explains on how to use this role for deploying a Rails app
 
 Changelog
 ---------
