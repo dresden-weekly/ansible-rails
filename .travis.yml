@@ -1,0 +1,28 @@
+---
+language: python
+python: "2.7"
+
+before_install:
+  # Make sure everything's up to date.
+  - sudo apt-get update -qq
+
+
+env:
+  - SITE=test.yml
+
+install:
+  # Install Ansible.
+  - pip install ansible
+  - ansible --version
+  # Add ansible.cfg to pick up roles path.
+  #- "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
+  - export ANSIBLE_ROLES_PATH=$PWD
+  - 'ansible-galaxy install -r tests/Rolefile.yml'
+  - ls -l
+  - ln -s $PWD $PWD/tests/roles
+  - ls tests/roles
+
+script:
+  - echo $ANSIBLE_ROLES_PATH
+  - pwd
+  - 'ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo'
