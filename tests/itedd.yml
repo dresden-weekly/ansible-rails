@@ -1,0 +1,71 @@
+---
+- hosts: localhost
+  remote_user: root
+  vars:
+    postgresql_encoding: 'UTF-8'
+    postgresql_locale: 'en_US.UTF-8'
+  pre_tasks:
+    - apt: pkg=locales
+    - file:
+        path: '/etc/locale.gen'
+        state: 'absent'
+    - shell: 'locale-gen "en_US.UTF-8"'
+  roles:
+    - role: debops.users
+      users: yes
+      users_list:
+        - name: "{{ app_user }}"
+          groups:
+          - 'www-data'
+          state: 'present'
+
+    - ruby/rvm
+    - ruby/postgresql
+    - ruby/sqlite3
+
+    - rails/folders
+    - rails/logrotate
+    - role: user/profile
+      rails_user_name: "{{ app_user }}"
+      rails_user_bashrc_lines:
+      - "cd {{ RAILS_APP_BASE_PATH }} || true"
+      - "cd {{ RAILS_APP_CURRENT_PATH }} || true"
+      rails_user_env:
+        RAILS_ENV: "{{ rails_env }}"
+        SECRET_KEY_BASE: "{{ app_secret_key_base }}"
+        RAILS_LOG_FILE_PATH: "{{ RAILS_APP_LOG_PATH }}"
+        # DATABASE_URL: "{{ DATABASE_URL }}"
+
+    - role: ANXS.postgresql
+      postgresql_databases:
+        - name: '{{db_name}}'
+
+    - role: upstart/userjobs
+      users:
+      - "{{ app_user }}"
+    - webrick/service
+    - nginx/server
+    - nginx/webrick
+
+
+- hosts:
+  - app
+  sudo: yes
+  sudo_user: '{{ app_user }}'
+  remote_user: '{{ app_user }}'
+  vars:
+    profile: '/bin/bash -lc -- '
+
+  roles:
+  - rails/folders
+
+  - role: rails/create-release
+    rails_deploy_custom_archive:
+    - Gemfile.lock
+
+  - role: rails/tasks/bundle
+  - role: rails/tasks/migrate-database
+  - role: rails/tasks/compile-assets
+  - role: rails/update-current
+  - role: webrick/restart
+  - role: rails/cleanup-old-releases

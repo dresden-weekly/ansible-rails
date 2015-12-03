@@ -1,7 +1,7 @@
 dresden-weekly.Rails
 ====================
 [![Ansible Galaxy](https://img.shields.io/badge/Ansible%20Galaxy-dresden--weekly.Rails-blue.svg)](https://galaxy.ansible.com/list#/roles/2108)
-[![Build Status](https://travis-ci.org/zealot128-os/ansible-rails.svg?branch=travis)](https://travis-ci.org/zealot128-os/ansible-rails)
+[![Build Status](https://travis-ci.org/dresden-weekly/ansible-rails.svg)](https://travis-ci.org/dresden-weekly/ansible-rails)
 
 Our think-tank for modules and playbooks that help to deploy Ruby on Rails applications
 

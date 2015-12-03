@@ -8,7 +8,7 @@ before_install:
 
 
 env:
-  - SITE=test.yml
+  - SITE=itedd.yml
 
 install:
   # Install Ansible.
