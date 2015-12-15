@@ -1,0 +1,31 @@
+rails_env: production
+app_domain: "{{ ansible_all_ipv4_addresses | last }}"
+app_name: 'app'
+app_user: 'app'
+ruby_version: '2.1.7'
+git_url: "https://github.com/itedd/itedd.git"
+git_branch: master
+app_secret_key_base: "{{ lookup('env', 'SECRET_KEY_BASE') | default('0edf6fdcbf610f5ad59c665d15deb17af10ff7b40e8a918f928771f885cfbdec', true) }}"
+app_path: '/home/app/app'
+bundle_flags:
+  - '--quiet'
+  - '--deployment'
+bundle_without:
+  - test
+
+# needed?!
+db_user: itedd
+db_password: secret
+db_name: '{{app_name}}_production'
+
+rails_provisioned_files:
+  - file: config/database.yml
+    yaml:
+      production:
+        adapter: postgresql
+        database: '{{app_name}}_production'
+        username: postgres
+        adapter: postgresql
+        encoding: UTF8
+        pool: 5
+
