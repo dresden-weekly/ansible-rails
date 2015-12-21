@@ -6,6 +6,7 @@ rails_release_id_git_branch: "{{ git_branch }}"
 
 # git repository where rails app taken from
 rails_app_git_repo: "{{ git_url }}"
+rails_app_git_remote: "origin"
 rails_app_git_branch: "{{ git_branch }}"
 
 # path where the repository goes
