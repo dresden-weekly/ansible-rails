@@ -17,8 +17,8 @@
   firewalld:
     immediate: yes
     permanent: yes
-    state: "{{ item.state | default('enabled')}}"
-    zone: "{{ item.zone | default('public')}}"
+    state: "{{ item.state | default('enabled') }}"
+    zone: "{{ item.zone | default('public') }}"
     port: "{{ item.port }}/{{ item.protocol | default('tcp') }}"
   with_items: firewalld_ports
   when: ansible_os_family == "RedHat" and firewalld_running.stdout == 'running'

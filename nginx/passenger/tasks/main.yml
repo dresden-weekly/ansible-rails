@@ -1,24 +1,24 @@
 ---
-- name: apt - add key for passenger repos
+- name: Apt | Add key for passenger repos
   apt_key: url=http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x561F9B9CAC40B2F7 id=AC40B2F7 state=present
 
-- name: apt - add support for https
+- name: Apt | Add support for https
   apt: pkg={{ item }} state=installed update_cache=yes cache_valid_time=3600
   with_items:
-  - apt-transport-https
-  - ca-certificates
+  - "apt-transport-https"
+  - "ca-certificates"
 
-- name: apt - add passenger repo
+- name: Apt | Add passenger repo
   apt_repository: repo='deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ ansible_lsb.codename }} main' state=present update_cache=yes
 
-- name: pkg - install nginx passenger packages
+- name: Pkg | Install nginx passenger packages
   apt: pkg={{ item }} state=installed
   with_items:
-    - nginx-extras
-    - passenger
+    - "nginx-extras"
+    - "passenger"
   notify: nginx restart
 
-- name: service - ensure nginx is running
+- name: Service | Ensure nginx is running
   service: name=nginx state=started enabled=yes
 
-- include: 'config.yml'
+- include: "config.yml"
