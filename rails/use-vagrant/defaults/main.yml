@@ -6,7 +6,7 @@ vagrant_mount_path: /vagrant
 rails_vagrant_release_id: vagrant
 
 # path for the vagrant release
-rails_vagrant_release_path: '{{ RAILS_APP_RELEASES_PATH }}/{{ rails_vagrant_release_id }}'
+rails_vagrant_release_path: "{{ RAILS_APP_RELEASES_PATH }}/{{ rails_vagrant_release_id }}"
 
 # custom folders created inside the vagrant release
 rails_vagrant_custom_create_folders: []

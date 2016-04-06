@@ -4,8 +4,8 @@
     path: "{{ RAILS_APP_SHARED_PATH }}/{{ item }}"
     state: directory
   with_flattened:
-  - rails_deploy_shared_folders
-  - rails_deploy_custom_shared_folders
+  - "{{ rails_deploy_shared_folders }}"
+  - "{{ rails_deploy_custom_shared_folders }}"
 
 - name: Link shared folders
   file:
@@ -14,8 +14,8 @@
     state: link
     force: yes
   with_flattened:
-  - rails_deploy_shared_folders
-  - rails_deploy_custom_shared_folders
+  - "{{ rails_deploy_shared_folders }}"
+  - "{{ rails_deploy_custom_shared_folders }}"
 
 - name: Link shared files
   file:
@@ -24,7 +24,7 @@
     state: link
     force: yes
   with_flattened:
-  - rails_shared_files
+  - "{{ rails_shared_files }}"
 
 - name: Link provisioned files
   file:
@@ -33,4 +33,4 @@
     state: link
     force: yes
   with_flattened:
-  - rails_provisioned_files
+  - "{{ rails_provisioned_files }}"

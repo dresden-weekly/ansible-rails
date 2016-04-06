@@ -1,4 +1,4 @@
 ---
 # number of releases that are kept
 rails_deploy_old_release_count: 5
-rails_deploy_release_mask: '[0-9]+'
+rails_deploy_release_mask: "[0-9]+"

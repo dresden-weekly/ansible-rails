@@ -62,7 +62,7 @@
   when: rollback_new_current_old_folder.stdout is defined
 
 - name: Check new current folder
-  stat: path={{ rollback_new_current_folder_name}}
+  stat: path="{{ rollback_new_current_folder_name }}"
   register: rollback_new_current_folder_stat
 
 - name: facts

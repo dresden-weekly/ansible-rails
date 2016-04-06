@@ -12,23 +12,22 @@
     force: yes
   when: rails_create_release_result.changed
   with_flattened:
-  - rails_deploy_shared_folders
-  - rails_deploy_custom_shared_folders
+  - "{{ rails_deploy_shared_folders }}"
+  - "{{ rails_deploy_custom_shared_folders }}"
 
 - name: Create custom folders
   file:
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: directory
   with_flattened:
-  - rails_deploy_custom_create_folders
-
+  - "{{ rails_deploy_custom_create_folders }}"
 
 - name: Provide Rails yaml configuration files
   template:
-    src: 'config.yml.jinja2'
-    dest: "{{ RAILS_APP_SHARED_PATH }}/{{item.file}}"
-    owner: '{{app_user}}'
-    mode: '0600'
-  with_items: "{{rails_provisioned_files}}"
+    src: "config.yml.jinja2"
+    dest: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
+    owner: "{{ app_user }}"
+    mode: "0600"
+  with_items: "{{ rails_provisioned_files }}"
 
-- include: shared_folders.yml
+- include: "shared_folders.yml"
