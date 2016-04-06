@@ -5,7 +5,7 @@
 - include: Debian.yml
   when: ansible_os_family == "Debian"
 
-- name: configure
+- name: Configure
   template:
     dest: "{{ etc_logrotate_path }}/{{ rails_logrotate_name }}"
     src: "logrotate.j2"
