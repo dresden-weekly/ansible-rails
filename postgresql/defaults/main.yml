@@ -25,9 +25,9 @@ postgresql_users:
 postgresql_databases:
 - name: "{{ db_name }}"
   owner: "{{ db_user | default('') }}" # empty mean 'postgres' user will own it
-  # encoding: '{{ postgresql_encoding }}'
-  # lc_collate: '{{ postgresql_locale }}.{{ postgresql_encoding }}'
-  # lc_ctype: '{{ postgresql_locale }}.{{ postgresql_encoding }}'
+  # encoding: "{{ postgresql_encoding }}"
+  # lc_collate: "{{ postgresql_locale }}.{{ postgresql_encoding }}"
+  # lc_ctype: "{{ postgresql_locale }}.{{ postgresql_encoding }}"
   # template: template0
 
 # default user attr_flags

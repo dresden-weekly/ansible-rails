@@ -1,4 +1,4 @@
-
+---
 - meta: flush_handlers
 
 - name: Check for Restart
@@ -10,4 +10,4 @@
   shell: >
     rm {{ RAILS_APP_RESTART_PATH }} ;
     {{ profile }}'restart puma || start puma'
-  when: rails_puma_restart.stat.exists
+  when: "{{ rails_puma_restart.stat.exists | bool }}"

@@ -1,20 +1,20 @@
 ---
-- name: fact
+- name: Fact
   set_fact:
     APP_URL: "{{ puma_app_url }}"
   tags:
   - facts
 
-- name: config puma.rb
+- name: Config puma.rb
   template:
     dest: "{{ puma_config_file }}"
-    src: puma.rb.j2
-  sudo: yes
-  sudo_user: "{{ puma_user }}"
+    src: "puma.rb.j2"
+  become: yes
+  become_user: "{{ puma_user }}"
 
-- name: upstart script
+- name: Upstart script
   template:
     dest: "{{ puma_upstart_conf }}"
-    src: upstart.conf.j2
-  sudo: yes
-  sudo_user: "{{ puma_user }}"
+    src: "upstart.conf.j2"
+  become: yes
+  become_user: "{{ puma_user }}"
