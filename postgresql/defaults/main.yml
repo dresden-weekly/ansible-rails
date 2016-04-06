@@ -1,13 +1,13 @@
 ---
 # the postgresql version (needs to be quoted for getting a `str` not a `float`)
-postgresql_version: '9.3'
+postgresql_version: "9.3"
 
 # table locale and character encoding
-postgresql_locale: 'en_US'
-postgresql_encoding: 'UTF-8'
+postgresql_locale: "en_US"
+postgresql_encoding: "UTF-8"
 
 # shell locale and character encoding
-postgresql_shell_locale: '{{ postgresql_locale }}'
+postgresql_shell_locale: "{{ postgresql_locale }}"
 postgresql_shell_encoding: "{{ postgresql_encoding | replace('-', '') | lower }}"
 
 # default application database
@@ -23,7 +23,7 @@ postgresql_users:
 
 # all the created databases
 postgresql_databases:
-- name: '{{ db_name }}'
+- name: "{{ db_name }}"
   owner: "{{ db_user | default('') }}" # empty mean 'postgres' user will own it
   # encoding: '{{ postgresql_encoding }}'
   # lc_collate: '{{ postgresql_locale }}.{{ postgresql_encoding }}'
@@ -37,9 +37,9 @@ postgresql_users_role_attr_flags:
 
 # variables to build postgresql.conf
 
-postgresql_host: '{{ ansible_all_ipv4_addresses | last }}'
+postgresql_host: "{{ ansible_all_ipv4_addresses | last }}"
 postgresql_listen:
-  - '0.0.0.0'
+  - "0.0.0.0"
 postgresql_port: 5432
 postgresql_max_connections: 100
 

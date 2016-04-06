@@ -25,7 +25,7 @@
 
 - name: RedHat | Install packages
   yum:
-    pkg: "{{item}}"
+    pkg: "{{ item }}"
     update_cache: yes
     state: latest
   with_flattened:

@@ -29,8 +29,8 @@
     postgresql_update_template_result.stdout is defined
     and 'UPDATE 0' != postgresql_update_template_result.stdout
   ignore_errors: yes
-  sudo: yes
-  sudo_user: '{{ postgresql_user }}'
+  become: yes
+  become_user: "{{ postgresql_user }}"
 
 - name: Configure
   template:
@@ -47,30 +47,32 @@
 - name: Users
   postgresql_user:
     name: "{{ item.name }}"
-    password: "{{ item.password }}"
-    role_attr_flags: >
-      {{ item.role_attr_flags
-       | default(postgresql_users_role_attr_flags)
-       | join(',')
+    password: >
+      {{
+        item.role_attr_flags |
+        default(postgresql_users_role_attr_flags) |
+        join(',') |
+        replace('\\n', '')
       }}
+    role_attr_flags: "CREATEDB,NOSUPERUSER"
   when: item.name != ''
-  with_items: postgresql_users
-  sudo: yes
-  sudo_user: '{{ postgresql_user }}'
+  with_items: "{{ postgresql_users }}"
+  become: yes
+  become_user: "{{ postgresql_user }}"
 
 - name: Databases
   postgresql_db:
     name: "{{ item.name }}"
     owner: "{{ item.owner | default(postgresql_user, true) }}"
-    encoding: '{{ item.encoding | default(postgresql_encoding) }}'
+    encoding: "{{ item.encoding | default(postgresql_encoding) }}"
     lc_collate: "{{ item.lc_collate | default(postgresql_locale + '.' + postgresql_encoding) }}"
     lc_ctype: "{{ item.lc_ctype | default(postgresql_locale + '.' + postgresql_encoding) }}"
     template: "{{ item.template | default('template0') }}"
     state: present
   when: item.name != ''
-  with_items: postgresql_databases
-  sudo: yes
-  sudo_user: '{{ postgresql_user }}'
+  with_items: "{{ postgresql_databases }}"
+  become: yes
+  become_user: "{{ postgresql_user }}"
 
 - name: Connection URL
   set_fact:
