@@ -1,6 +1,6 @@
 ---
 # global server name used to avoid errors with auto detection
-apache_server_name: '{{ ansible_fqdn }}'
+apache_server_name: "{{ ansible_fqdn }}"
 
 # list of ports the server should listen on
 apache_server_ports:
@@ -8,17 +8,17 @@ apache_server_ports:
 - 443 # defaults to protocol HTTPS on all interfaces
 # mapped example:
 # - port: 443
-#   address: '0.0.0.0' # IPv4 or IPv6 adress (default all interfaces)
-#   protocol: 'https'
+#   address: "0.0.0.0" # IPv4 or IPv6 adress (default all interfaces)
+#   protocol: "https"
 
 # user that run the apache server deamon
-apache_server_user: 'www-data'
-apache_server_group: 'www-data'
+apache_server_user: "www-data"
+apache_server_group: "www-data"
 
 # global server options
 apache_server_options: {}
 # examples:
-#  DefaultRuntimeDir : 'logs/'
+#  DefaultRuntimeDir : "logs/"
 
 # select an configure Apache mpm
 apache_server_mpm: prefork # options: perfork, worker, event, ...
@@ -50,15 +50,15 @@ apache_prefork_options:
   MaxSpareServers: 10
 
 # enable mod_ssl
-apache_server_ssl: '{{ 443 in apache_server_ports }}'
+apache_server_ssl: "{{ 443 in apache_server_ports }}"
 
 # apache mods that
 apache_server_mods: []
 # example variants:
 # - ssl
-# - name: 'passenger'
-#   load: '' # content of the ssl.load script
-#   conf: '' # content of the ssl.conf script
+# - name: "passenger"
+#   load: "" # content of the ssl.load script
+#   conf: "" # content of the ssl.conf script
 
 # list of apache mod names that are disabled
 apache_server_disable_mods: []
