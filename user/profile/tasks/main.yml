@@ -1,17 +1,17 @@
 ---
 - name: Environment variables
   lineinfile:
-    dest: ~/.profile
+    dest: "~/.profile"
     regexp: "^export {{ item.key }}="
     line: "export {{ item.key }}={{ item.value }}"
-  sudo: true
-  sudo_user: "{{ rails_user_name }}"
+  become: yes
+  become_user: "{{ rails_user_name }}"
   when: item.value != ''
-  with_dict: rails_user_env
+  with_dict: "{{ rails_user_env }}"
 
 - name: Environment from facts
   lineinfile:
-    dest: ~/.profile
+    dest: "~/.profile"
     regexp: "^export {{ item.1 }}="
     line: >
       export {{ item.1 }}={{
@@ -20,8 +20,8 @@
           | default(groups[item.0.group][item.0.index | default(0)])
         ][item.1]
       }}
-  sudo: true
-  sudo_user: "{{ rails_user_name }}"
+  become: yes
+  become_user: "{{ rails_user_name }}"
   when: >
     (item.1 not in rails_user_env)
     and ((
@@ -38,14 +38,14 @@
       ]
     )
   with_subelements:
-  - rails_user_env_facts
-  - 'facts'
+  - "{{ rails_user_env_facts }}"
+  - "facts"
 
 - name: Bashrc lines
   lineinfile:
     dest: ~/.bashrc
     line: "{{ item }}"
-    create: true
-  sudo: true
-  sudo_user: "{{ rails_user_name }}"
-  with_items: rails_user_bashrc_lines
+    create: yes
+  become: yes
+  become_user: "{{ rails_user_name }}"
+  with_items: "{{ rails_user_bashrc_lines }}"
