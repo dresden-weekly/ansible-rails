@@ -6,6 +6,6 @@
   - facts
 
 - include: systemd.yml
-  when: "{{ webrick_systemd_system|bool }}"
+  when: "{{ webrick_systemd_system | bool }}"
 - include: upstart.yml
-  when: "{{ webrick_upstart_system|bool }}"
+  when: "{{ webrick_upstart_system | bool }}"
