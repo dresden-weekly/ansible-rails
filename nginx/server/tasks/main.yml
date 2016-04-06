@@ -7,8 +7,8 @@
 
 - name: Configure
   template:
-    dest: '{{ nginx_config_file }}'
-    src: nginx.conf.j2
+    dest: "{{ nginx_config_file }}"
+    src: "nginx.conf.j2"
   notify:
   - restart nginx
 
@@ -16,7 +16,7 @@
   template:
     src: "{{ item }}.conf.j2"
     dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
-  with_items: nginx_include_templates
+  with_items: "{{ nginx_include_templates }}"
   notify:
   - restart nginx
 
@@ -24,22 +24,22 @@
   file:
     dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
     state: absent
-  with_items: nginx_exclude_templates
+  with_items: "{{ nginx_exclude_templates }}"
   notify:
   - restart nginx
 
 - name: Disable the default config
   file:
-    path: '{{ nginx_sites_enabled_path }}/{{ item }}'
+    path: "{{ nginx_sites_enabled_path }}/{{ item }}"
     state: absent
-  with_items: nginx_disabled_sites
+  with_items: "{{ nginx_disabled_sites }}"
   notify:
   - restart nginx
 
 - name: Facts
   set_fact:
-    NGINX_SERVICE_NAME: '{{ nginx_service_name }}'
-    NGINX_USER: '{{ nginx_user }}'
-    NGINX_CONFIG_INCLUDE_PATH: '{{ nginx_config_include_path }}'
-    NGINX_SITES_AVAILABLE_PATH: '{{ nginx_sites_available_path }}'
-    NGINX_SITES_ENABLED_PATH: '{{ nginx_sites_enabled_path }}'
+    NGINX_SERVICE_NAME: "{{ nginx_service_name }}"
+    NGINX_USER: "{{ nginx_user }}"
+    NGINX_CONFIG_INCLUDE_PATH: "{{ nginx_config_include_path }}"
+    NGINX_SITES_AVAILABLE_PATH: "{{ nginx_sites_available_path }}"
+    NGINX_SITES_ENABLED_PATH: "{{ nginx_sites_enabled_path }}"

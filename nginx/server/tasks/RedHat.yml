@@ -4,10 +4,10 @@
 
 - name: RedHat | Install packages
   yum:
-    pkg: "{{item}}"
+    pkg: "{{ item }}"
     update_cache: yes
     state: latest
-  with_items: nginx_package_names
+  with_items: "{{ nginx_package_names }}"
 
 - name: RedHat | Reload systemd configs
   shell: systemctl daemon-reload
@@ -15,5 +15,5 @@
 
 - name: RedHat | Enable nginx
   service:
-    name: '{{ nginx_service_name }}'
+    name: "{{ nginx_service_name }}"
     enabled: yes

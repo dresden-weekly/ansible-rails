@@ -1,7 +1,7 @@
 ---
 - name: Repo
   apt_repository:
-    repo: '{{ nginx_apt_repo }}'
+    repo: "{{ nginx_apt_repo }}"
 
 - name: Packages
   apt:
@@ -9,4 +9,4 @@
     update_cache: yes
     state: latest
     cache_valid_time: 86400
-  with_items: nginx_package_names
+  with_items: "{{ nginx_package_names }}"
