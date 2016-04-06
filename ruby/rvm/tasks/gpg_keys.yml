@@ -4,19 +4,19 @@
   failed_when: no
   changed_when: no
   register: rvm_gpg_keys_check
-  sudo: yes
-  sudo_user: "{{ rvm_user }}"
+  become: yes
+  become_user: "{{ rvm_user }}"
 
 - name: Import GPG keys
   command: 'gpg --keyserver {{ rvm_gpg_key_server }} --recv-keys {{ rvm_gpg_keys }}'
   ignore_errors: yes
   register: rvm_import_gpg_keys_result
-  sudo: yes
-  sudo_user: "{{ rvm_user }}"
+  become: yes
+  become_user: "{{ rvm_user }}"
   when: rvm_gpg_keys_check.rc != 0
 
 - name: Alternative GPG keys
   shell: 'curl -sSL {{ rvm_gpg_key_alternative_url }} | gpg --import -'
-  sudo: yes
-  sudo_user: "{{ rvm_user }}"
+  become: yes
+  become_user: "{{ rvm_user }}"
   when: rvm_gpg_keys_check.rc != 0 and rvm_import_gpg_keys_result.rc != 0
