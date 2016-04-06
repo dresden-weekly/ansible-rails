@@ -1,11 +1,11 @@
 ---
 - name: Precise Allow
   template:
-    src: Upstart.conf
-    dest: /etc/dbus-1/system.d/Upstart.conf
+    src: "Upstart.conf"
+    dest: "/etc/dbus-1/system.d/Upstart.conf"
     force: yes
 
 - name: Precise Autostart
   template:
-    src: load_user_jobs.conf
-    dest: /etc/init/load_user_jobs.conf
+    src: "load_user_jobs.conf"
+    dest: "/etc/init/load_user_jobs.conf"

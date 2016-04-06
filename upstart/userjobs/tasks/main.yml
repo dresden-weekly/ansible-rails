@@ -10,7 +10,7 @@
     state: directory
   sudo: yes
   sudo_user: "{{ item }}"
-  with_items: users
+  with_items: "{{ users }}"
   when: ansible_os_family == "Debian"
 
 - include: trusty.yml
