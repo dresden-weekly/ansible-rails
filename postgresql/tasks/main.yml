@@ -47,14 +47,8 @@
 - name: Users
   postgresql_user:
     name: "{{ item.name }}"
-    password: >
-      {{
-        item.role_attr_flags |
-        default(postgresql_users_role_attr_flags) |
-        join(',') |
-        replace('\\n', '')
-      }}
-    role_attr_flags: "CREATEDB,NOSUPERUSER"
+    password: "{{ item.password }}"
+    role_attr_flags: "{{ item.role_attr_flags | default(postgresql_users_role_attr_flags) | join(',') | replace('\\n', '') }}"
   when: item.name != ''
   with_items: "{{ postgresql_users }}"
   become: yes
