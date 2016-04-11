@@ -1,6 +1,10 @@
 ---
+- name: Debian | Remove RAILS_APP_RESTART_PATH
+  file:
+    path: "{{ RAILS_APP_RESTART_PATH }}"
+    state: absent
+  when: rails_webrick_restart.stat.exists
+
 - name: Debian | Restart
-  shell: >
-    rm {{ RAILS_APP_RESTART_PATH }} ;
-    {{ profile }}'restart webrick || start webrick'
+  shell: "{{ profile }}'restart webrick || start webrick'"
   when: rails_webrick_restart.stat.exists
