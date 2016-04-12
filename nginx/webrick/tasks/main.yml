@@ -10,7 +10,7 @@
 
 - name: Site configuration
   template:
-    src: site.conf.j2
+    src: "site.conf.j2"
     dest: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
   notify:
   - restart nginx

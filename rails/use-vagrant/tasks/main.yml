@@ -5,7 +5,7 @@
 # we have link to parts
 #
 ---
-- include: facts.yml
-- include: folders.yml
-- include: links.yml
-- include: ../../create-release/tasks/shared_folders.yml
+- include: "facts.yml"
+- include: "folders.yml"
+- include: "links.yml"
+- include: "../../create-release/tasks/shared_folders.yml"

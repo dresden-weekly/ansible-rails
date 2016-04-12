@@ -1,17 +1,17 @@
 ---
 rails_create_folders:
-- '{{ rails_app_base_path }}'
-- '{{ rails_app_releases_path }}'
-- '{{ rails_app_shared_path }}/config'
-- '{{ rails_app_shared_path }}/bin'
-- '{{ rails_app_shared_path }}/bundle'
-- '{{ rails_app_shared_path }}/public'
-- '{{ rails_app_shared_path }}/tmp'
-- '{{ rails_app_shared_path }}/tmp/cache'
-- '{{ rails_app_shared_path }}/tmp/pids'
-- '{{ rails_app_shared_path }}/tmp/sessions'
-- '{{ rails_app_shared_path }}/tmp/sockets'
-- '{{ rails_app_log_path }}'
+- "{{ rails_app_base_path }}"
+- "{{ rails_app_releases_path }}"
+- "{{ rails_app_shared_path }}/config"
+- "{{ rails_app_shared_path }}/bin"
+- "{{ rails_app_shared_path }}/bundle"
+- "{{ rails_app_shared_path }}/public"
+- "{{ rails_app_shared_path }}/tmp"
+- "{{ rails_app_shared_path }}/tmp/cache"
+- "{{ rails_app_shared_path }}/tmp/pids"
+- "{{ rails_app_shared_path }}/tmp/sessions"
+- "{{ rails_app_shared_path }}/tmp/sockets"
+- "{{ rails_app_log_path }}"
 
 # path used for public webserver assets
 rails_app_current_public_path: "{{ rails_app_current_path }}/public"

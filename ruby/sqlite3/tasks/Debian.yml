@@ -1,6 +1,6 @@
 - name: Debian | Packages
   apt:
-    pkg: "{{item}}"
+    pkg: "{{ item }}"
     update_cache: yes
     state: latest
     cache_valid_time: 86400

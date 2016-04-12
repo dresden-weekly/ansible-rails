@@ -1,4 +1,4 @@
-
+---
 - meta: flush_handlers
 
 - name: Check for Restart
@@ -6,8 +6,12 @@
     path: "{{ RAILS_APP_RESTART_PATH }}"
   register: rails_puma_restart
 
+- name: Debian | Remove RAILS_APP_RESTART_PATH
+  file:
+    path: "{{ RAILS_APP_RESTART_PATH }}"
+    state: absent
+  when: "{{ rails_puma_restart.stat.exists | bool }}"
+
 - name: Restart
-  shell: >
-    rm {{ RAILS_APP_RESTART_PATH }} ;
-    {{ profile }}'restart puma || start puma'
-  when: rails_puma_restart.stat.exists
+  shell: "{{ profile }}'restart puma || start puma'"
+  when: "{{ rails_puma_restart.stat.exists | bool }}"

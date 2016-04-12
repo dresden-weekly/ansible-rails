@@ -1,5 +1,5 @@
 ---
-- name: Ensure git mirror repo is up to date
+- name: Ensure Git mirror repo is up to date
   git:
     repo: "{{ rails_app_git_repo }}"
     dest: "{{ rails_app_repo_path }}"
@@ -18,4 +18,5 @@
   args:
     creates: "{{ RAILS_APP_RELEASE_PATH }}"
     chdir: "{{ rails_app_repo_path }}"
+    warn: no # creating a release is a complex task that can not be done with the git module
   register: rails_create_release_result

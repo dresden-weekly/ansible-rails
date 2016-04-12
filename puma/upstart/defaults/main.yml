@@ -1,6 +1,6 @@
 ---
 # path used for the upstart instance
-puma_path: '{{ RAILS_APP_BASE_PATH }}'
+puma_path: "{{ RAILS_APP_BASE_PATH }}"
 
 # user the upstart jobs is bound to
 puma_user: "{{ RAILS_APP_OWNER | default('root', true) }}"
@@ -20,20 +20,20 @@ puma_port: 9292
 
 # all bindings of the application server
 puma_binds:
-  tcp: '0.0.0.0:{{ puma_port }}'
+  tcp: "0.0.0.0:{{ puma_port }}"
 
 # application server url (adapt for non tcp)
-puma_app_url: '{{ ansible_all_ipv4_addresses | last }}:{{ puma_port }}'
+puma_app_url: "{{ ansible_all_ipv4_addresses | last }}:{{ puma_port }}"
 
 # pathes for all the files
-puma_directory: '{{ RAILS_APP_CURRENT_PATH }}'
-puma_gemfile: '{{ puma_directory }}/Gemfile'
-puma_rackup: '{{ puma_directory }}/config.ru'
-puma_pidfile: '{{ RAILS_APP_PIDS_PATH }}/puma.pid'
+puma_directory: "{{ RAILS_APP_CURRENT_PATH }}"
+puma_gemfile: "{{ puma_directory }}/Gemfile"
+puma_rackup: "{{ puma_directory }}/config.ru"
+puma_pidfile: "{{ RAILS_APP_PIDS_PATH }}/puma.pid"
 puma_error_log: "{{ RAILS_APP_LOG_PATH }}/puma.error.log"
 puma_access_log: "{{ RAILS_APP_LOG_PATH }}/puma.access.log"
 
-puma_config_file: '{{ RAILS_APP_CONFIG_PATH }}/puma.rb'
+puma_config_file: "{{ RAILS_APP_CONFIG_PATH }}/puma.rb"
 
 # path of the upstart configuration script
 puma_upstart_conf: >

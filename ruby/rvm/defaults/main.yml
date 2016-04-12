@@ -1,17 +1,17 @@
 ---
 # the default ruby version
-rvm_default: '{{ ruby_version }}'
+rvm_default: "{{ ruby_version }}"
 
 # additional ruby versions
 rvm_rubies: []
 
 # user that installs rvm
-rvm_user: '{{ app_user }}'
+rvm_user: "{{ app_user }}"
 
 # gpg keys required for rvm installation
-rvm_gpg_keys: '0x3804BB82D39DC0E3'
-rvm_gpg_key_server: 'hkp://pool.sks-keyservers.net' # 'hkp://keys.gnupg.net'
-rvm_gpg_key_alternative_url: 'https://rvm.io/mpapis.asc'
+rvm_gpg_keys: "0x3804BB82D39DC0E3"
+rvm_gpg_key_server: "hkp://pool.sks-keyservers.net" # 'hkp://keys.gnupg.net'
+rvm_gpg_key_alternative_url: "https://rvm.io/mpapis.asc"
 
 # additional packages
 rvm_custom_packages:

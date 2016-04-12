@@ -1,15 +1,15 @@
 ---
-- name: install | packages
+- name: Install | Packages
   apt:
     name: "{{ item }}"
     update_cache: yes
     state: latest
     cache_valid_time: 86400
   with_flattened:
-  - apache_server_packages
-  - apache_server_ssl_packages if apache_server_ssl else []
+  - "{{ apache_server_packages }}"
+  - "{{ apache_server_ssl_packages if apache_server_ssl else [] }}"
 
-- name: install | config folders
+- name: Install | Config folders
   file:
     path: "{{ item }}"
     state: directory
@@ -24,7 +24,7 @@
   - "{{ apache_server_mods_available_path }}"
   - "{{ apache_server_mods_enabled_path }}"
 
-- name: install | www_root
+- name: Install | www_root
   file:
     path: "{{ item }}"
     state: directory

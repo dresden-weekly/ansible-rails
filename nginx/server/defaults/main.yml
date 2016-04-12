@@ -1,16 +1,16 @@
 ---
 # name of the system user that runs nginx
-nginx_user: 'www-data'
+nginx_user: "www-data"
 
 # number of worker processes
 nginx_worker_processes: 4
 
 # default mime type for responses
-nginx_default_type: 'application/octet-stream'
+nginx_default_type: "application/octet-stream"
 
 # log file locations
-nginx_access_log: '/var/log/nginx/access.log'
-nginx_error_log: '/var/log/nginx/error.log'
+nginx_access_log: "/var/log/nginx/access.log"
+nginx_error_log: "/var/log/nginx/error.log"
 
 # event configuration options
 nginx_events:
@@ -18,12 +18,12 @@ nginx_events:
 
 # configuration options for the http block
 nginx_http_options:
-  sendfile: 'on'
-  tcp_nopush: 'on'
-  tcp_nodelay: 'on'
+  sendfile: "on"
+  tcp_nopush: "on"
+  tcp_nodelay: "on"
   keepalive_timeout: 65
   types_hash_max_size: 2048
-  server_tokens: 'off'
+  server_tokens: "off"
 
 # included configuration templates
 nginx_include_templates: []

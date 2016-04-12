@@ -6,20 +6,20 @@
     group: "{{ rails_app_group }}"
     state: directory
   with_flattened:
-  - rails_create_folders
-  - rails_app_custom_folders
+  - "{{ rails_create_folders }}"
+  - "{{ rails_app_custom_folders }}"
 
 - name: facts
   set_fact:
-    RAILS_APP_BASE_PATH: '{{ rails_app_base_path }}'
-    RAILS_APP_OWNER: '{{ rails_app_owner }}'
-    RAILS_APP_GROUP: '{{ rails_app_group }}'
-    RAILS_APP_RELEASES_PATH: '{{ rails_app_releases_path }}'
-    RAILS_APP_CURRENT_PATH: '{{ rails_app_current_path }}'
-    RAILS_APP_CURRENT_PUBLIC_PATH: '{{ rails_app_current_public_path }}'
-    RAILS_APP_SHARED_PATH: '{{ rails_app_shared_path }}'
-    RAILS_APP_CONFIG_PATH: '{{ rails_app_config_path }}'
-    RAILS_APP_LOG_PATH: '{{ rails_app_log_path }}'
-    RAILS_APP_TMP_PATH: '{{ rails_app_tmp_path }}'
-    RAILS_APP_PIDS_PATH: '{{ rails_app_pids_path }}'
-    RAILS_APP_RESTART_PATH: '{{ rails_app_restart_path }}'
+    RAILS_APP_BASE_PATH: "{{ rails_app_base_path }}"
+    RAILS_APP_OWNER: "{{ rails_app_owner }}"
+    RAILS_APP_GROUP: "{{ rails_app_group }}"
+    RAILS_APP_RELEASES_PATH: "{{ rails_app_releases_path }}"
+    RAILS_APP_CURRENT_PATH: "{{ rails_app_current_path }}"
+    RAILS_APP_CURRENT_PUBLIC_PATH: "{{ rails_app_current_public_path }}"
+    RAILS_APP_SHARED_PATH: "{{ rails_app_shared_path }}"
+    RAILS_APP_CONFIG_PATH: "{{ rails_app_config_path }}"
+    RAILS_APP_LOG_PATH: "{{ rails_app_log_path }}"
+    RAILS_APP_TMP_PATH: "{{ rails_app_tmp_path }}"
+    RAILS_APP_PIDS_PATH: "{{ rails_app_pids_path }}"
+    RAILS_APP_RESTART_PATH: "{{ rails_app_restart_path }}"

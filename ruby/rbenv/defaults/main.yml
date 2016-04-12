@@ -2,7 +2,7 @@ rbenv_default: "{{ ruby_version }}"
 
 rbenv_user: "{{ app_user }}"
 
-rbenv_shell_rc: ~/.profile
+rbenv_shell_rc: "~/.profile"
 
 rbenv_rubies: []
 # tested with the following versions:

@@ -19,7 +19,7 @@
   - restart apache
 
 - name: vhost | enable
-  command: 'a2ensite {{ apache_vhost_name }}'
+  command: "a2ensite {{ apache_vhost_name }}"
   register: apache_passenger_vhost_enable_result
   changed_when: "'Enabling site' in apache_passenger_vhost_enable_result.stdout"
   notify:

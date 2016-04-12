@@ -5,5 +5,5 @@
     src: "{{ vagrant_mount }}/{{ item }}"
     state: link
   with_flattened:
-  - rails_vagrant_links
-  - rails_vagrant_custom_links
+  - "{{ rails_vagrant_links }}"
+  - "{{ rails_vagrant_custom_links }}"

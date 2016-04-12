@@ -1,12 +1,12 @@
 ---
 # path where binaries of the gems are installed
-bundle_binstubs: '{{ RAILS_APP_SHARED_PATH }}/bin'
+bundle_binstubs: "{{ RAILS_APP_SHARED_PATH }}/bin"
 
 # name of the Gemfile that is used
-bundle_gemfile: 'Gemfile'
+bundle_gemfile: "Gemfile"
 
 # path where the Gems are stored by Bundler
-bundle_path: '{{ RAILS_APP_SHARED_PATH }}/bundle'
+bundle_path: "{{ RAILS_APP_SHARED_PATH }}/bundle"
 
 # groups that are ignored by Bundler
 bundle_without:
@@ -15,4 +15,4 @@ bundle_without:
 
 # options for the Bundler
 bundle_flags:
-- '--quiet'
+- "--quiet"

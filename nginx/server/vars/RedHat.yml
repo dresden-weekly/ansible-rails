@@ -3,4 +3,4 @@ nginx_package_names:
 - nginx
 
 # location of the nginx pid file
-nginx_pid: '/run/nginx.pid'
+nginx_pid: "/run/nginx.pid"

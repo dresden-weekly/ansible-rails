@@ -8,9 +8,9 @@
   file:
     path: ~/.init
     state: directory
-  sudo: yes
-  sudo_user: "{{ item }}"
-  with_items: users
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ users }}"
   when: ansible_os_family == "Debian"
 
 - include: trusty.yml

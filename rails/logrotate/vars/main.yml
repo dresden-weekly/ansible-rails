@@ -2,4 +2,4 @@
 logrotate_packages:
 - logrotate
 
-etc_logrotate_path: '/etc/logrotate.d'
+etc_logrotate_path: "/etc/logrotate.d"

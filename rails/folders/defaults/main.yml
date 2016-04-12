@@ -3,11 +3,11 @@
 # and store facts for other roles
 #
 # path where the release structure is based on
-rails_app_base_path: '{{ app_path }}'
+rails_app_base_path: "{{ app_path }}"
 
 # server user and group who own the folders
-rails_app_owner: '{{ app_user }}'
-rails_app_group: '{{ app_user }}'
+rails_app_owner: "{{ app_user }}"
+rails_app_group: "{{ app_user }}"
 
 # path where all present releases are stored in
 rails_app_releases_path: "{{ rails_app_base_path }}/releases"
