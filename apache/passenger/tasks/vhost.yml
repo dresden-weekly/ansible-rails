@@ -15,6 +15,7 @@
   template:
     dest: "{{ apache_vhost_include_path }}/{{ site_name }}.conf"
     src: "include.conf.j2"
+    mode: "{{ apache_vhost_include_mode }}"
   notify:
   - restart apache
 
