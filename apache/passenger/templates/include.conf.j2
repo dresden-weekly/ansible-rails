@@ -10,6 +10,9 @@
 {% for option, value in apache_site_options.iteritems() %}
   {{ option }} {{ value }}
 {% endfor %}
+{% for key, value in apache_set_env.iteritems() %}
+  SetEnv {{ key }} {{ value }}
+{% endfor %}
 </Directory>
 
 {% if passenger_start_url %}
