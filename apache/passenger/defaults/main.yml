@@ -17,8 +17,10 @@ apache_vhost_addresses:
 apache_vhost_server_name: "{{ site_domain }}"
 apache_vhost_server_aliases: "{{ app_domain_aliases | default([]) }}"
 apache_vhost_document_root: "{{ site_path }}"
+apache_vhost_include_mode: "0600"
 
 apache_site_options: []
+apache_set_env: []
 
 passenger_min_instances: 1
 passenger_start_url: "http://{{ site_domain }}:{{ site_port }}{{ site_url_path }}"
