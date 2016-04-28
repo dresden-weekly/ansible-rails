@@ -24,7 +24,7 @@ webrick_logfile: "{{ RAILS_APP_LOG_PATH }}/webrick.log"
 webrick_error_logfile: "{{ RAILS_APP_LOG_PATH }}/webrick_error.log"
 
 # path of the upstart configuration script
-webrick_upstart_conf: >
+webrick_upstart_conf: >-
   {{ '~/.init/webrick.conf'
      if webrick_user and webrick_user != 'root'
      else '/etc/init/webrick.conf'

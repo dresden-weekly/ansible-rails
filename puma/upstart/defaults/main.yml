@@ -36,7 +36,7 @@ puma_access_log: "{{ RAILS_APP_LOG_PATH }}/puma.access.log"
 puma_config_file: '{{ RAILS_APP_CONFIG_PATH }}/puma.rb'
 
 # path of the upstart configuration script
-puma_upstart_conf: >
+puma_upstart_conf: >-
   {{ '~/.init/puma.conf'
      if puma_user and puma_user != 'root'
      else '/etc/init/puma.conf'
