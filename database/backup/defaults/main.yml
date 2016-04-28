@@ -20,11 +20,11 @@ database_backup_crontab_user: "{{app_user}}"
 database_backup_type: postgresql
 
 # Pg-dump assuming trust/ident
-database_backup_pg_job: >
+database_backup_pg_job: >-
   pg_dump -c {{database_backup_name}} | gzip > {{database_backup_dir}}/`date +\%F:\%T`.sql.gz && cd {{database_backup_dir}} && rm -f `ls -t | awk 'NR>{{database_backup_keep}}'`
 
 # MySQL Settings:
 database_backup_username: "backup"
 database_backup_password: "backup"
-database_backup_mysql_job: >
+database_backup_mysql_job: >-
   mysqldump -u"{{database_backup_username}}" -p'{{database_backup_password}}' {{database_backup_name}} | gzip > {{database_backup_dir}}/`date +\%F:\%T`.sql.gz && cd {{database_backup_dir}} && rm -f `ls -t | awk 'NR>{{database_backup_keep}}'`

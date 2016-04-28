@@ -13,7 +13,7 @@
   lineinfile:
     dest: "~/.profile"
     regexp: "^export {{ item.1 }}="
-    line: >
+    line: >-
       export {{ item.1 }}={{
         hostvars[
           item.0.host
