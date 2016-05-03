@@ -1,15 +1,15 @@
 ---
-- name: RedHat | systemd unit
+- name: Systemd | Service unit
   template:
     dest: "{{ webrick_systemd_unit }}"
     src: systemd.service.j2
   become: yes
 
-- name: RedHat | enable start at boot
+- name: Systemd | Enable and start at boot
   service: name={{ webrick_service_name }} enabled=yes
   become: yes
 
-- name: RedHat | Allow user to control the service
+- name: Systemd | Allow user to control the service
   template:
     dest: "/etc/sudoers.d/{{ webrick_user }}"
     src: sudoer.j2

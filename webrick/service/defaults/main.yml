@@ -35,4 +35,4 @@ webrick_systemd_system: "{{ not (webrick_upstart_system|bool) }}"
 
 # systemd related
 webrick_service_name: "{{ webrick_user }}-{{ app_name | default('rails') }}-webrick"
-webrick_systemd_unit: /usr/lib/systemd/system/{{ webrick_service_name }}.service
+webrick_systemd_unit: "{{ '' if ansible_distribution_release == 'xenial' else '/usr' }}/lib/systemd/system/{{ webrick_service_name }}.service"
