@@ -12,7 +12,4 @@
   become: yes
   become_user: "{{ puma_user }}"
 
-- include: systemd.yml
-  when: "{{ puma_systemd_system | bool }}"
-- include: upstart.yml
-  when: "{{ puma_upstart_system | bool }}"
+- include: "{{ puma_service_type }}.yml"
