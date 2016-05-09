@@ -9,7 +9,7 @@ Requirements
 * Ubuntu 12.04 (Precise) 
 * Ubuntu 14.04 (Trusty)
 * ssh access to the deploy user of both servers
-* @groups['app']@ should contain the application servers
+* `groups['app']` should contain the application servers, if your host as an other name you can also customize `app_group`
 
 Dependencies
 ------------

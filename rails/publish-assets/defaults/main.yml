@@ -1,5 +1,6 @@
 ---
-rails_app_server: "{{ groups['app'][0] }}"
+rails_app_group: "{{ app_group | default('app') }}"
+rails_app_server: "{{ groups[rails_app_group][0] }}"
 rails_app_server_release_id: "{{ hostvars[rails_app_server].RAILS_APP_RELEASE_ID }}"
 rails_app_server_release_path: "{{ hostvars[rails_app_server].RAILS_APP_RELEASE_PATH }}"
 rails_app_server_assets_path: "{{ rails_app_server_release_path }}/public"
