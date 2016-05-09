@@ -1,4 +1,4 @@
 ---
-- name: restart webrick service
+- name: restart webrick systemd service
   shell: "/bin/bash -lc -- 'systemctl --user restart {{ webrick_service_name }}.service'"
   become_user: "{{ webrick_user }}"
