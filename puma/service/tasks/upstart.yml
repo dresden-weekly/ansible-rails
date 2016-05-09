@@ -1,0 +1,7 @@
+---
+- name: Debian | upstart script
+  template:
+    dest: "{{ puma_upstart_conf | replace('\n', '') }}"
+    src: "upstart.conf.j2"
+  become: yes
+  become_user: "{{ puma_user }}"

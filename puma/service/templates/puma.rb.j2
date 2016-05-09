@@ -1,0 +1,30 @@
+#!/usr/bin/env puma
+# {{ ansible_managed }}
+
+environment ENV['RAILS_ENV'] || 'production'
+
+directory "{{ puma_directory }}"
+rackup "{{ puma_rackup }}"
+pidfile "{{ puma_pidfile }}"
+
+{% for typ,v in puma_binds.iteritems() %}
+bind "{{ typ }}://{{ v }}"
+{% endfor %}
+
+preload_app!
+
+workers Integer(ENV['PUMA_WORKERS'] || {{ puma_workers }})
+threads Integer(ENV['MIN_THREADS']  || {{ puma_thread_min }}), Integer(ENV['MAX_THREADS'] || {{ puma_thread_max }})
+
+stdout_redirect '{{ puma_access_log }}', '{{ puma_error_log }}', true
+
+on_restart do
+  puts 'Refreshing Gemfile'
+  ENV["BUNDLE_GEMFILE"] = "{{ puma_gemfile }}"
+end
+
+on_worker_boot do
+  ActiveSupport.on_load(:active_record) do
+    ActiveRecord::Base.establish_connection
+  end
+end

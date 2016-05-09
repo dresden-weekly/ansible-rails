@@ -1,0 +1,33 @@
+---
+- name: "Systemd | Test if linger is enabled for {{ puma_user }}"
+  shell: "loginctl show-user {{ puma_user }}"
+  changed_when: false
+  failed_when: "{{ 'command not found' in systemd_linger_enabled_test.stderr }}"
+  register: systemd_linger_enabled_test
+  become: yes
+
+- name: "Systemd | Enabled linger for {{ puma_user }}"
+  shell: "loginctl enable-linger {{ puma_user }}"
+  changed_when: true
+  become: yes
+  when: "{{ 'Failed' in systemd_linger_enabled_test.stderr }}"
+  notify: restart puma service
+
+- become_user: "{{ puma_user }}"
+  block:
+    - name: Systemd | Ensure the user units folder exists
+      file:
+        path: "{{ puma_systemd_user_units }}"
+        state: directory
+
+    - name: Systemd | Create service unit
+      template:
+        dest: "{{ puma_systemd_unit }}"
+        src: systemd.service.j2
+      notify: restart puma service
+
+    - name: Systemd | Enable unit at boot
+      shell: "/bin/bash -lc -- 'systemctl --user enable {{ puma_service_name }}.service'"
+      register: enable_unit_result
+      changed_when: "{{ 'Created' in enable_unit_result.stderr }}"
+      notify: restart puma service

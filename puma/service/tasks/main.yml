@@ -1,0 +1,18 @@
+---
+- name: store facts
+  set_fact:
+    APP_URL: "{{ puma_app_url }}"
+  tags:
+  - facts
+
+- name: Config puma.rb
+  template:
+    dest: "{{ puma_config_file }}"
+    src: "puma.rb.j2"
+  become: yes
+  become_user: "{{ puma_user }}"
+
+- include: systemd.yml
+  when: "{{ puma_systemd_system | bool }}"
+- include: upstart.yml
+  when: "{{ puma_upstart_system | bool }}"
