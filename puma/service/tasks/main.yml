@@ -1,5 +1,5 @@
 ---
-- name: Fact
+- name: store facts
   set_fact:
     APP_URL: "{{ puma_app_url }}"
   tags:
@@ -12,9 +12,4 @@
   become: yes
   become_user: "{{ puma_user }}"
 
-- name: Upstart script
-  template:
-    dest: "{{ puma_upstart_conf }}"
-    src: "upstart.conf.j2"
-  become: yes
-  become_user: "{{ puma_user }}"
+- include: "{{ puma_service_type }}.yml"

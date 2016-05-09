@@ -1,14 +1,15 @@
-dresden-weekly.Rails/puma/upstart
+dresden-weekly.Rails/puma/service
 ======================
 
-Configure the puma application server, configure the upstart script and store facts
+Configure the init system to start puma and store facts
 
 Requirements
 ------------
 
 * Ubuntu 12.04 (Trusty)
 * Ubuntu 14.04 (Trusty)
-* Puma has to be embedded in the Ruby gems of the Rails application.
+* Ubuntu 16.04 (Xenial)
+* CentOS 7
 
 Dependencies
 ------------

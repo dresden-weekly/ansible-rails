@@ -41,3 +41,10 @@ puma_upstart_conf: >-
      if puma_user and puma_user != 'root'
      else '/etc/init/puma.conf'
   }}
+
+puma_service_type: "{{ 'upstart' if ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise' else 'systemd' }}"
+
+# systemd related
+puma_service_name: "{{ puma_user }}-{{ app_name | default('rails') }}-puma"
+puma_systemd_user_units: "~/.config/systemd/user"
+puma_systemd_unit: "{{ puma_systemd_user_units }}/{{ puma_service_name }}.service"
