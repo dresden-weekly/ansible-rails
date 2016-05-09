@@ -1,16 +1,33 @@
 ---
-- name: RedHat | systemd unit
-  template:
-    dest: "{{ webrick_systemd_unit }}"
-    src: systemd.service.j2
+- name: "Systemd | Test if linger is enabled for {{ webrick_user }}"
+  shell: "loginctl show-user {{ webrick_user }}"
+  changed_when: false
+  failed_when: "{{ 'command not found' in systemd_linger_enabled_test.stderr }}"
+  register: systemd_linger_enabled_test
   become: yes
 
-- name: RedHat | enable start at boot
-  service: name={{ webrick_service_name }} enabled=yes
+- name: "Systemd | Enabled linger for {{ webrick_user }}"
+  shell: "loginctl enable-linger {{ webrick_user }}"
+  changed_when: true
   become: yes
+  when: "{{ 'Failed' in systemd_linger_enabled_test.stderr }}"
+  notify: restart webrick service
 
-- name: RedHat | Allow user to control the service
-  template:
-    dest: "/etc/sudoers.d/{{ webrick_user }}"
-    src: sudoer.j2
-  become: yes
+- become_user: "{{ webrick_user }}"
+  block:
+    - name: Systemd | Ensure the user units folder exists
+      file:
+        path: "{{ webrick_systemd_user_units }}"
+        state: directory
+
+    - name: Systemd | Create service unit
+      template:
+        dest: "{{ webrick_systemd_unit }}"
+        src: systemd.service.j2
+      notify: restart webrick service
+
+    - name: Systemd | Enable unit at boot
+      shell: "/bin/bash -lc -- 'systemctl --user enable {{ webrick_service_name }}.service'"
+      register: enable_unit_result
+      changed_when: "{{ 'Created' in enable_unit_result.stderr }}"
+      notify: restart webrick service

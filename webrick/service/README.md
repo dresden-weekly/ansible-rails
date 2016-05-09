@@ -8,6 +8,7 @@ Requirements
 
 * Ubuntu 12.04 (Trusty)
 * Ubuntu 14.04 (Trusty)
+* Ubuntu 16.04 (Xenial)
 * CentOS 7
 
 Dependencies
