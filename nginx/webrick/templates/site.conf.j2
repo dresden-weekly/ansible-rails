@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 upstream {{ site_name }} {
-{% for app in groups['app'] -%}
+{% for app in groups[site_app_group] -%}
   server {{ hostvars[app].APP_URL }};
 {% endfor -%}
 }
