@@ -30,8 +30,7 @@ webrick_upstart_conf: >-
      else '/etc/init/webrick.conf'
   }}
 
-webrick_upstart_system: "{{ ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise' }}"
-webrick_systemd_system: "{{ not (webrick_upstart_system|bool) }}"
+webrick_service_type: "{{ 'upstart' if ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise' else 'systemd' }}"
 
 # systemd related
 webrick_service_name: "{{ webrick_user }}-{{ app_name | default('rails') }}-webrick"

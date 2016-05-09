@@ -5,7 +5,4 @@
   tags:
   - facts
 
-- include: systemd.yml
-  when: "{{ webrick_systemd_system | bool }}"
-- include: upstart.yml
-  when: "{{ webrick_upstart_system | bool }}"
+- include: "{{ webrick_service_type }}.yml"
