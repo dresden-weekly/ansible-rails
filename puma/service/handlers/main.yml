@@ -1,4 +1,0 @@
----
-- name: restart puma systemd service
-  shell: "/bin/bash -lc -- 'systemctl --user restart {{ puma_service_name }}.service'"
-  become_user: "{{ puma_user }}"
