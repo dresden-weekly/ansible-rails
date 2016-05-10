@@ -1,10 +1,15 @@
 ---
-- name: Debian | Remove RAILS_APP_RESTART_PATH
-  file:
-    path: "{{ RAILS_APP_RESTART_PATH }}"
-    state: absent
-  when: rails_webrick_restart.stat.exists
+- when: "{{ rails_webrick_restart.stat.exists | bool }}"
+  block:
+    - name: Debian | Remove RAILS_APP_RESTART_PATH
+      file:
+        path: "{{ RAILS_APP_RESTART_PATH }}"
+        state: absent
 
-- name: Debian | Restart
-  shell: "{{ profile }}'restart webrick || start webrick'"
-  when: rails_webrick_restart.stat.exists
+    - name: Debian | Upstart | Restart
+      shell: "{{ profile }}'restart webrick || start webrick'"
+      when: "{{ webrick_service_type == 'upstart' }}"
+
+    - name: Debian | Systemd | Restart
+      shell: "{{ profile }}'systemctl --user restart {{ webrick_service_name }}.service'"
+      when: "{{ webrick_service_type == 'systemd' }}"

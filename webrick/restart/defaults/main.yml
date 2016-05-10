@@ -1,2 +1,8 @@
 webrick_user: "{{ RAILS_APP_OWNER | default('root', true) }}"
+
+webrick_service_type: "{{ 'upstart' if ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise' else 'systemd' }}"
+
+# systemd related
 webrick_service_name: "{{ webrick_user }}-{{ app_name | default('rails') }}-webrick"
+webrick_systemd_user_units: "~/.config/systemd/user"
+webrick_systemd_unit: "{{ webrick_systemd_user_units }}/{{ webrick_service_name }}.service"

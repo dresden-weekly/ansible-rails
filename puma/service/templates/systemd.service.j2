@@ -2,9 +2,10 @@
 Description=Puma Application Server
 
 [Service]
-User={{ puma_user }}
 WorkingDirectory={{ puma_directory }}
-ExecStart=/bin/sh -lc '{{ puma_ruby_prefix }} bundle exec puma -C {{ puma_config_file }}'
+ExecStart=/bin/sh -lc '{{ puma_ruby_prefix }}bundle exec puma -C {{ puma_config_file }}'
+Restart=always
+TimeoutSec=30
 
 [Install]
 WantedBy=default.target
