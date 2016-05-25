@@ -3,7 +3,7 @@
     src: "site.conf.j2"
     dest: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
   notify:
-  - restart nginx
+  - reload nginx
 
 - name: Enable the site
   file:
@@ -11,4 +11,4 @@
     src: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
     state: link
   notify:
-  - restart nginx
+  - reload nginx
