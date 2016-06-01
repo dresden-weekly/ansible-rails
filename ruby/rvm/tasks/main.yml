@@ -9,6 +9,9 @@
   - "{{ rvm_packages }}"
   - "{{ rvm_custom_packages }}"
 
+- include: ruby187.yml
+  when: rvm_default == '1.8.7' or '1.8.7' in rvm_rubies
+
 - include: gpg_keys.yml
   when: rvm_gpg_keys != ''
 
