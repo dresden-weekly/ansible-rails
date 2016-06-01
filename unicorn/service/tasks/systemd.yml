@@ -1,0 +1,30 @@
+---
+- name: "Systemd | Test if linger is enabled for {{ unicorn_user }}"
+  shell: "loginctl show-user {{ unicorn_user }}"
+  changed_when: false
+  failed_when: "{{ 'command not found' in systemd_linger_enabled_test.stderr }}"
+  register: systemd_linger_enabled_test
+  become: yes
+
+- name: "Systemd | Enabled linger for {{ unicorn_user }}"
+  shell: "loginctl enable-linger {{ unicorn_user }}"
+  changed_when: true
+  become: yes
+  when: "{{ 'Failed' in systemd_linger_enabled_test.stderr }}"
+
+- become_user: "{{ unicorn_user }}"
+  block:
+    - name: Systemd | Ensure the user units folder exists
+      file:
+        path: "{{ unicorn_systemd_user_units }}"
+        state: directory
+
+    - name: Systemd | Create service unit
+      template:
+        dest: "{{ unicorn_systemd_unit }}"
+        src: systemd.service.j2
+
+    - name: Systemd | Enable unit at boot
+      shell: "/bin/bash -lc -- 'systemctl --user enable {{ unicorn_service_name }}.service'"
+      register: enable_unit_result
+      changed_when: "{{ 'Created' in enable_unit_result.stderr }}"

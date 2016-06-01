@@ -1,0 +1,13 @@
+---
+- name: RedHat | Restart
+  service: name={{ unicorn_service_name }} state=restarted
+  register: rails_unicorn_restarted
+  become: yes
+  become_user: root
+  when: rails_unicorn_restart.stat.exists
+
+- name: RedHat | Remove RAILS_APP_RESTART_PATH
+  file:
+    path: "{{ RAILS_APP_RESTART_PATH }}"
+    state: absent
+  when: rails_unicorn_restarted is defined and rails_unicorn_restarted|success

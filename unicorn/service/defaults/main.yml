@@ -1,0 +1,38 @@
+---
+# path used for the upstart instance
+unicorn_path: "{{ RAILS_APP_BASE_PATH }}"
+
+# user the upstart jobs is bound to
+unicorn_user: "{{ RAILS_APP_OWNER | default('root', true) }}"
+
+# prefix added before any ruby invocation
+unicorn_ruby_prefix: "{{ RUBY_PREFIX | default('') }}"
+
+# the default port unicorn binds to
+unicorn_port: 8080
+
+# unicorn tcp listen
+unicorn_listen: '0.0.0.0:{{ unicorn_port }}'
+
+# application server url
+unicorn_app_url: '{{ ansible_all_ipv4_addresses | last }}:{{ unicorn_port }}'
+
+# default pathes for capistrano deployment
+unicorn_directory: "{{ RAILS_APP_CURRENT_PATH }}"
+unicorn_pidfile: "{{ RAILS_APP_PIDS_PATH }}/unicorn.pid"
+unicorn_logfile: "{{ RAILS_APP_LOG_PATH }}/unicorn.log"
+unicorn_error_logfile: "{{ RAILS_APP_LOG_PATH }}/unicorn_error.log"
+
+# path of the upstart configuration script
+unicorn_upstart_conf: >-
+  {{ '~/.init/unicorn.conf'
+     if unicorn_user and unicorn_user != 'root'
+     else '/etc/init/unicorn.conf'
+  }}
+
+unicorn_service_type: "{{ 'upstart' if ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise' else 'systemd' }}"
+
+# systemd related
+unicorn_service_name: "{{ unicorn_user }}-{{ app_name | default('rails') }}-unicorn"
+unicorn_systemd_user_units: "~/.config/systemd/user"
+unicorn_systemd_unit: "{{ unicorn_systemd_user_units }}/{{ unicorn_service_name }}.service"
