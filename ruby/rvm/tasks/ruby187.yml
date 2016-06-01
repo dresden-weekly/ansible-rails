@@ -1,7 +1,7 @@
 ---
-- name: Packages
+- name: Install Autoconf
   apt:
-    pkg: "{{ autoconf }}"
+    pkg: autoconf
     update_cache: yes
     state: present
     cache_valid_time: 86400
