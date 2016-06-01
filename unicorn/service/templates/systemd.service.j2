@@ -1,0 +1,12 @@
+[Unit]
+Description=Unicorn Application Server
+
+[Service]
+WorkingDirectory={{ unicorn_directory }}
+Environment=RAILS_ENV=${RAILS_ENV:=production}
+ExecStart=/bin/bash -lc '{{ unicorn_ruby_prefix }}bundle exec unicorn --listen={{ unicorn_listen }} --pid={{ unicorn_pidfile }} >{{ unicorn_logfile }} 2>{{ unicorn_error_logfile }}'
+Restart=always
+TimeoutSec=30
+
+[Install]
+WantedBy=default.target

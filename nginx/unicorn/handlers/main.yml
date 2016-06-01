@@ -1,0 +1,8 @@
+---
+- name: nginx restart
+  service: name=nginx state=restarted
+  become: yes
+
+- name: nginx reload
+  service: name=nginx state=reloaded
+  become: yes

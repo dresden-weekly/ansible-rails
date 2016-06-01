@@ -1,0 +1,7 @@
+---
+- name: Debian | upstart script
+  template:
+    dest: "{{ unicorn_upstart_conf | replace('\n', '') }}"
+    src: "upstart.conf.j2"
+  become: yes
+  become_user: "{{ unicorn_user }}"

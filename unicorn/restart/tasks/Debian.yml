@@ -1,0 +1,15 @@
+---
+- when: "{{ rails_unicorn_restart.stat.exists | bool }}"
+  block:
+    - name: Debian | Remove RAILS_APP_RESTART_PATH
+      file:
+        path: "{{ RAILS_APP_RESTART_PATH }}"
+        state: absent
+
+    - name: Debian | Upstart | Restart
+      shell: "{{ profile }}'restart unicorn || start unicorn'"
+      when: "{{ unicorn_service_type == 'upstart' }}"
+
+    - name: Debian | Systemd | Restart
+      shell: "{{ profile }}'systemctl --user restart {{ unicorn_service_name }}.service'"
+      when: "{{ unicorn_service_type == 'systemd' }}"

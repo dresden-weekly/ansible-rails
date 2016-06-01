@@ -1,0 +1,12 @@
+
+- meta: flush_handlers
+
+- name: Check for Restart
+  stat:
+    path: "{{ RAILS_APP_RESTART_PATH }}"
+  register: rails_unicorn_restart
+
+- include: RedHat.yml
+  when: ansible_os_family == "RedHat"
+- include: Debian.yml
+  when: ansible_os_family == "Debian"

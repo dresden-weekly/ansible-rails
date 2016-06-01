@@ -1,0 +1,8 @@
+unicorn_user: "{{ RAILS_APP_OWNER | default('root', true) }}"
+
+unicorn_service_type: "{{ 'upstart' if ansible_distribution_release == 'trusty' or ansible_distribution_release == 'precise' else 'systemd' }}"
+
+# systemd related
+unicorn_service_name: "{{ unicorn_user }}-{{ app_name | default('rails') }}-unicorn"
+unicorn_systemd_user_units: "~/.config/systemd/user"
+unicorn_systemd_unit: "{{ unicorn_systemd_user_units }}/{{ unicorn_service_name }}.service"

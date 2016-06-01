@@ -1,0 +1,8 @@
+---
+- name: store facts
+  set_fact:
+    APP_URL: "{{ unicorn_app_url }}"
+  tags:
+  - facts
+
+- include: "{{ unicorn_service_type }}.yml"

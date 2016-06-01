@@ -1,0 +1,4 @@
+{{ unicorn_user }} ALL=(ALL) NOPASSWD: /bin/systemctl restart {{ unicorn_service_name }}, \
+                                       /bin/systemctl start {{ unicorn_service_name }}, \
+                                       /bin/systemctl stop {{ unicorn_service_name }}, \
+                                       /bin/systemctl status {{ unicorn_service_name }}
