@@ -5,7 +5,6 @@
   command: "{{ profile }}'bundle exec rake db:migrate'"
   args:
     chdir: "{{ RAILS_APP_RELEASE_PATH }}"
-  run_once: true
   register: rails_migrate_database_result
   changed_when: "'migrating' in rails_migrate_database_result.stdout"
   until: rails_migrate_database_result.rc == 0
