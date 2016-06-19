@@ -41,7 +41,37 @@
 - name: Facts
   set_fact:
     RUBY_PREFIX: '~/.rvm/bin/rvm default do '
-    RUBY_BIN: '/home/{{ rvm_user }}/.rvm/gems/ruby-{{ rvm_default }}/wrappers/ruby'
+    #RUBY_BIN: '/home/{{ rvm_user }}/.rvm/gems/ruby-{{ rvm_default }}/wrappers/ruby'
+
+- name: Ruby Path
+  shell: >
+    {{ RUBY_PREFIX }} which ruby
+  become: yes
+  become_user: "{{ rvm_user }}"
+  register: ruby_rvm_ruby_path_result
+  changed_when: no
+
+- name: Facts
+  set_fact:
+   RUBY_BIN: '{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}'
+
+- name: Gem Version
+  shell: >
+    {{ RUBY_PREFIX }} gem --version
+  become: yes
+  become_user: "{{ rvm_user }}"
+  register: ruby_rvm_gem_version_result
+  changed_when: no
+
+- name: Gem Update System
+  shell: >
+    {{ RUBY_PREFIX }} gem update --system {{ rvm_gem_version }}
+  become: yes
+  become_user: "{{ rvm_user }}"
+  when: rvm_gem_version != ruby_rvm_gem_version_result
+  register: ruby_rvm_gem_update_system_result
+  changed_when: >
+    "Aborting" not in ruby_rvm_gem_update_system_result.stdout
 
 - name: Install gems
   shell: >
