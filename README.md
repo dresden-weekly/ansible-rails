@@ -25,21 +25,22 @@ Provisioning:
 * **upstart/userjobs** enables Upstart userjobs
 * [**ruby/rvm**](https://github.com/dresden-weekly/ansible-rails/tree/develop/ruby/rvm) installs a specific Ruby version with rvm
 * [**ruby/rbenv**](https://github.com/dresden-weekly/ansible-rails/tree/develop/ruby/rbenv) installs a specific Ruby version with rbenv
-* **ruby/postgresql** support for postgresql client gems
+* **ruby/postgresql** support for PostgreSQL client gems
 * **ruby/imagemagick** installs the popular image manipulation tool with support for rmagick binding and some image optimization libraries
 * **ruby/sqlite3** support for sqlite3 client gems
-* **ruby/mysql** support for mysql client gems
+* **ruby/mysql** support for Mysql client gems
 * **rails/create-folders** prepares a folder for Rails releases
 * [**rails/logrotate**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/logrotate) create logrotate configuration for Rails logs
 * [**rails/jobs/sidekiq**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/jobs/sidekiq) manage/restart sidekiq as a upstart job
-* [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/server) install nginx webserver
-* **nginx/passenger** install nginx webserver
-* [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/puma) prepare nginx for puma appserver
-* [**nginx/webrick**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/webrick) prepare nginx for webrick apperserver
-* [**puma/upstart**](https://github.com/dresden-weekly/ansible-rails/tree/develop/puma/upstart) install userjob for puma
-* [**webrick/service**](https://github.com/dresden-weekly/ansible-rails/tree/develop/webrick/service) setup init system to start webrick
-* [**apache/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/apache/server) install and configure apache server
-* [**apache/passenger**](https://github.com/dresden-weekly/ansible-rails/tree/develop/apache/passenger) install and configure passenger for apache
+* [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/server) install Nginx webserver
+* **nginx/passenger** install Nginx webserver
+* [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/puma) prepare nginx for Puma appserver
+* [**nginx/webrick**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/webrick) prepare nginx for Webrick apperserver
+* [**puma/upstart**](https://github.com/dresden-weekly/ansible-rails/tree/develop/puma/upstart) install userjob for Puma
+* [**webrick/service**](https://github.com/dresden-weekly/ansible-rails/tree/develop/webrick/service) setup init system to start Webrick
+* [**apache/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/apache/server) install and configure Apache server
+* [**apache/passenger**](https://github.com/dresden-weekly/ansible-rails/tree/develop/apache/passenger) install and configure Passenger for apache
+* [**apache/vhost**](https://github.com/dresden-weekly/ansible-rails/tree/develop/apache/vhost) add an Apache vhost configuration
 * **firewalld** configure firewalld (for CentOS)
 * **selinux** currently only enable/disable selinux on CentOS
 

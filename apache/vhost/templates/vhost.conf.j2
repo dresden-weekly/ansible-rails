@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+<VirtualHost {{ apache_vhost_addresses | join(' ') }}>
+  ServerName {{ apache_vhost_server_name }}
+{% for server_alias in apache_vhost_server_aliases %}
+  ServerAlias {{ server_alias }}
+{% endfor %}
+
+  DocumentRoot {{ apache_vhost_document_root }}
+
+  {% for option, value in apache_vhost_options.iteritems() %}
+  {{ option }} {{ value }}
+  {% endfor %}
+
+  IncludeOptional {{ apache_vhost_include_path }}/*.conf
+</VirtualHost>
