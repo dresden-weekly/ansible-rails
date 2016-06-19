@@ -1,0 +1,15 @@
+
+site_name: "{{ app_name }}"
+site_port: 80
+site_domain: "{{ app_domain }}"
+site_domain_aliases: "{{ app_domain_aliases | default([]) }}"
+site_url_path: "/"
+
+apache_vhost_name: "{{ site_domain }}"
+apache_vhost_addresses:
+- "*:{{ site_port }}"
+apache_vhost_server_name: "{{ site_domain }}"
+apache_vhost_server_aliases: "{{ site_domain_aliases | default([]) }}"
+apache_vhost_document_root: "{{ site_path }}"
+
+apache_vhost_options: {}

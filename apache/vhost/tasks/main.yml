@@ -1,0 +1,19 @@
+---
+- name: vhost | include folder
+  file:
+    path: "{{ apache_vhost_include_path }}"
+    state: directory
+
+- name: vhost | config
+  template:
+    dest: "{{ APACHE_SERVER_SITES_AVAILABLE_PATH }}/{{ apache_vhost_name }}.conf"
+    src: "vhost.conf.j2"
+  notify:
+  - restart apache
+
+- name: vhost | enable
+  command: "a2ensite {{ apache_vhost_name }}"
+  register: apache_vhost_enable_result
+  changed_when: "'Enabling site' in apache_vhost_enable_result.stdout"
+  notify:
+  - restart apache
