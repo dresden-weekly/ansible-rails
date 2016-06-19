@@ -1,18 +1,21 @@
 # {{ ansible_managed }}
 
+RailsBaseURI {{ site_url_path }}
+{% if passenger_ruby %}
+PassengerRuby {{ passenger_ruby }}
+{% endif %}
+PassengerMinInstances {{ passenger_min_instances }}
+{% for option, value in apache_site_options.iteritems() %}
+{{ option }} {{ value }}
+{% endfor %}
+{% for key, value in apache_set_env.iteritems() %}
+SetEnv {{ key }} {{ value }}
+{% endfor %}
+
 <Directory {{ site_path }}>
   Options FollowSymLinks
   AllowOverride None
   Require all granted
-
-  RailsBaseURI {{ site_url_path }}
-  PassengerMinInstances {{ passenger_min_instances }}
-{% for option, value in apache_site_options.iteritems() %}
-  {{ option }} {{ value }}
-{% endfor %}
-{% for key, value in apache_set_env.iteritems() %}
-  SetEnv {{ key }} {{ value }}
-{% endfor %}
 </Directory>
 
 {% if passenger_start_url %}

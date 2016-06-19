@@ -8,6 +8,7 @@
     APACHE_SERVER_CONF_AVAILABLE_PATH: "{{ apache_server_conf_available_path }}"
     APACHE_SERVER_SITES_AVAILABLE_PATH: "{{ apache_server_sites_available_path }}"
     APACHE_SERVER_SITES_INCLUDE_PATH: "{{ apache_server_sites_include_path }}"
+    APACHE_SERVER_MODS_AVAILABLE_PATH: "{{ apache_server_mods_available_path }}"
     APACHE_SERVER_SERVICE: "{{ apache_server_service }}"
     APACHE_SERVER_USER: "{{ apache_server_user }}"
     APACHE_SERVER_GROUP: "{{ apache_server_group }}"
