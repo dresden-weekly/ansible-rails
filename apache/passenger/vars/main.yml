@@ -3,3 +3,11 @@ apache_passenger_package: "libapache2-mod-passenger"
 apache_passenger_mod: "passenger"
 
 apache_vhost_include_path: "{{ APACHE_SERVER_SITES_INCLUDE_PATH }}/{{ apache_vhost_name }}"
+
+apache_passenger_gem_packages:
+  - libcurl4-openssl-dev
+  - apache2-dev
+  - libapr1-dev
+  - libaprutil1-dev
+
+apache_passenger_gem_name: "passenger"
