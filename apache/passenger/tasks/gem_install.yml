@@ -14,7 +14,7 @@
       {{ RUBY_PREFIX }} gem install {{ item }} --version "{{ apache_passenger_gem_version }}"
     fi
   become: yes
-  become_user: "{{ rvm_user }}"
+  become_user: "{{ app_user }}"
   with_flattened:
   - "{{ apache_passenger_gem_name }}"
   register: apache_passenger_gem_install_result
@@ -25,14 +25,14 @@
   shell: |
     {{ RUBY_PREFIX }} passenger-install-apache2-module --auto
   become: yes
-  become_user: "{{ rvm_user }}"
+  become_user: "{{ app_user }}"
   when: apache_passenger_gem_install_result.changed
 
 - name: extract passenger gem path
   shell: |
     {{ RUBY_PREFIX }} ruby -e 'require "rubygems"; puts Gem::Specification.find_by_name("{{ apache_passenger_gem_name }}").gem_dir'
   become: yes
-  become_user: "{{ rvm_user }}"
+  become_user: "{{ app_user }}"
   changed_when: no
   register: apache_passenger_gem_path_result
 
@@ -41,14 +41,6 @@
     find {{ apache_passenger_gem_path_result.stdout_lines[0] }} -name mod_passenger.so
   changed_when: no
   register: apache_passenger_module_path_result
-
-- name: extract gemdir
-  shell: |
-    {{ RUBY_PREFIX }} rvm gemdir
-  become: yes
-  become_user: "{{ rvm_user }}"
-  changed_when: no
-  register: apache_rvm_gemdir_result
 
 - name: module loader
   copy:
@@ -64,7 +56,7 @@
     content: |
       <IfModule mod_passenger.c>
         PassengerRoot {{ apache_passenger_gem_path_result.stdout_lines[0] }}
-        PassengerDefaultRuby {{ apache_rvm_gemdir_result.stdout_lines[0] }}/wrappers/ruby
+        PassengerDefaultRuby {{ RUBY_BIN }}
       </IfModule>
   notify:
   - restart apache
