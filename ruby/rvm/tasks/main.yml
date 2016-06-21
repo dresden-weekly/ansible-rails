@@ -41,11 +41,10 @@
 - name: Facts
   set_fact:
     RUBY_PREFIX: '~/.rvm/bin/rvm default do '
-    #RUBY_BIN: '/home/{{ rvm_user }}/.rvm/gems/ruby-{{ rvm_default }}/wrappers/ruby'
 
 - name: Ruby Path
   shell: >
-    {{ RUBY_PREFIX }} which ruby
+    {{ RUBY_PREFIX }} rvm gemdir
   become: yes
   become_user: "{{ rvm_user }}"
   register: ruby_rvm_ruby_path_result
@@ -53,7 +52,7 @@
 
 - name: Facts
   set_fact:
-   RUBY_BIN: '{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}'
+   RUBY_BIN: '{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}/wrappers/ruby'
 
 - name: Gem Version
   shell: >
