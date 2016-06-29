@@ -25,9 +25,16 @@
   apache2_module:
     name: "{{ item if item is string else item.name }}"
     state: present
-  with_flattened:
-  - "{{ apache_server_mods }}"
-  - "{{ ['ssl'] if apache_server_ssl else [] }}"
+  with_items: "{{ apache_server_mods }}"
+  notify:
+  - restart apache
+
+- name: Mods | SSL Enable
+  apache2_module:
+    name: "ssl"
+    state: present
+  when: apache_server_ssl
+    and ('ssl' not in apache_server_mods)
   notify:
   - restart apache
 
