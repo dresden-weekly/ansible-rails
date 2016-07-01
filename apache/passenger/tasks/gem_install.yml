@@ -7,6 +7,16 @@
     cache_valid_time: 86400
   with_items: "{{ apache_passenger_gem_packages }}"
 
+- name: install compatible rack version
+  command: >
+    {{ RUBY_PREFIX }} gem install rack --version '1.6.4'
+  become: yes
+  become_user: "{{ app_user }}"
+  register: rack_gem_install_result
+  changed_when: >
+    "Successfully installed" in rack_gem_install_result.stdout
+  when: rvm_default | version_compare('2.2', '<')
+
 - name: install gem
   shell: |
     if ! {{ RUBY_PREFIX }} gem list -i {{ item }} --version "{{ apache_passenger_gem_version }}"
