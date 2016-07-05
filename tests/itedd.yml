@@ -1,6 +1,7 @@
 ---
 - hosts: all
   vars:
+    app_group: localhost
     postgresql_encoding: 'UTF-8'
     postgresql_locale: 'en_US'
   pre_tasks:
@@ -19,6 +20,9 @@
       user:
         name: "{{ app_user }}"
         shell: /bin/bash
+
+    - debug:
+        msg: "{{ groups }}"
 
   roles:
     - dresden-weekly.Rails/postgresql
