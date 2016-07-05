@@ -9,7 +9,8 @@ rvm_rubies: []
 rvm_user: "{{ app_user }}"
 
 # gem version for default ruby (empty means lastest)
-rvm_gem_version: "{{ gem_version | default('', true) }}"
+gem_version: ''
+rvm_gem_version: "{{ gem_version }}"
 
 # gpg keys required for rvm installation
 rvm_gpg_keys: "0x3804BB82D39DC0E3"
