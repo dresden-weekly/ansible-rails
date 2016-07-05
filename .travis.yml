@@ -17,6 +17,7 @@ install:
   # Add ansible.cfg to pick up roles path.
   #- "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
   - export ANSIBLE_ROLES_PATH=$PWD
+  - export ANSIBLE_CONFIG=$PWD/ansible.cfg
   - 'ansible-galaxy install -r tests/Rolefile.yml'
   - ls -l
   - ln -s $PWD $PWD/tests/roles
