@@ -1,29 +1,57 @@
 ---
-language: python
-python: "2.7"
-
-before_install:
-  # Make sure everything's up to date.
-  - sudo apt-get update -qq
-
+sudo: required
 
 env:
-  - SITE=itedd.yml
+  - distribution: centos
+    version: 6
+    init: /sbin/init
+    run_opts: ""
+  - distribution: centos
+    version: 7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: ubuntu
+    version: 16.04
+    init: /sbin/init
+    run_opts: ""
+  - distribution: ubuntu
+    version: 14.04
+    init: /sbin/init
+    run_opts: ""
+  - distribution: ubuntu
+    version: 12.04
+    init: /sbin/init
+    run_opts: ""
 
-install:
-  # Install Ansible.
-  - pip install ansible
-  - ansible --version
-  # Add ansible.cfg to pick up roles path.
-  #- "{ echo '[defaults]'; echo 'roles_path = ../'; } >> ansible.cfg"
-  - export ANSIBLE_ROLES_PATH=$PWD
-  - export ANSIBLE_CONFIG=$PWD/ansible.cfg
-  - 'ansible-galaxy install -r tests/Rolefile.yml'
-  - ls -l
-  - ln -s $PWD $PWD/tests/roles
-  - ls tests/roles
+services:
+  - docker
+
+before_install:
+  # - sudo apt-get update
+  # Pull container
+  - 'sudo docker pull ${distribution}:${version}'
+  # Customize container
+  - 'sudo docker build --rm=true --file=tests/Dockerfile.${distribution}-${version} --tag=${distribution}-${version}:ansible tests'
 
 script:
-  - echo $ANSIBLE_ROLES_PATH
-  - pwd
-  - 'ansible-playbook -i tests/inventory tests/$SITE --connection=local --sudo'
+  - container_id=$(mktemp)
+    # Run container in detached state
+  - 'sudo docker run --detach --volume="${PWD}":/etc/ansible/roles/dresden-weekly.Rails:ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"'
+
+  # Ansible syntax check.
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/itedd.yml --syntax-check'
+
+  # Test role.
+  - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/itedd.yml'
+
+  # Test role idempotence.
+  - >
+    sudo docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/itedd.yml
+    | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && exit 1)
+  # Clean up
+  - 'sudo docker stop "$(cat ${container_id})"'
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

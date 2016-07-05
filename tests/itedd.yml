@@ -1,6 +1,5 @@
 ---
-- hosts: localhost
-  remote_user: root
+- hosts: all
   vars:
     postgresql_encoding: 'UTF-8'
     postgresql_locale: 'en_US.UTF-8'
@@ -17,13 +16,16 @@
         shell: /bin/bash
 
   roles:
-    - ruby/rvm
-    - ruby/postgresql
-    - ruby/sqlite3
+    - dresden-weekly.Rails/postgresql
 
-    - rails/folders
-    - rails/logrotate
-    - role: user/profile
+    - dresden-weekly.Rails/ruby/rvm
+    - dresden-weekly.Rails/ruby/postgresql
+    - dresden-weekly.Rails/ruby/sqlite3
+
+    - dresden-weekly.Rails/rails/folders
+    - dresden-weekly.Rails/rails/logrotate
+
+    - role: dresden-weekly.Rails/user/profile
       rails_user_name: "{{ app_user }}"
       rails_user_bashrc_lines:
       - "cd {{ RAILS_APP_BASE_PATH }} || true"
@@ -34,20 +36,18 @@
         RAILS_LOG_FILE_PATH: "{{ RAILS_APP_LOG_PATH }}"
         # DATABASE_URL: "{{ DATABASE_URL }}"
 
-    - role: ANXS.postgresql
-      postgresql_databases:
-        - name: '{{db_name}}'
+    # - role: ANXS.postgresql
+    #   postgresql_databases:
+    #     - name: '{{db_name}}'
 
-    - role: upstart/userjobs
+    - role: dresden-weekly.Rails/upstart/userjobs
       users:
       - "{{ app_user }}"
-    - webrick/service
-    - nginx/server
-    - nginx/webrick
+    - dresden-weekly.Rails/webrick/service
+    - dresden-weekly.Rails/nginx/server
+    - dresden-weekly.Rails/nginx/webrick
 
-
-- hosts:
-  - app
+- hosts: all
   become: yes
   become_user: '{{ app_user }}'
   remote_user: '{{ app_user }}'
@@ -55,15 +55,15 @@
     profile: '/bin/bash -lc -- '
 
   roles:
-  - rails/folders
+  - dresden-weekly.Rails/rails/folders
 
-  - role: rails/create-release
+  - role: dresden-weekly.Rails/rails/create-release
     rails_deploy_custom_archive:
     - Gemfile.lock
 
-  - role: rails/tasks/bundle
-  - role: rails/tasks/migrate-database
-  - role: rails/tasks/compile-assets
-  - role: rails/update-current
-  - role: webrick/restart
-  - role: rails/cleanup-old-releases
+  - role: dresden-weekly.Rails/rails/tasks/bundle
+  - role: dresden-weekly.Rails/rails/tasks/migrate-database
+  - role: dresden-weekly.Rails/rails/tasks/compile-assets
+  - role: dresden-weekly.Rails/rails/update-current
+  - role: dresden-weekly.Rails/webrick/restart
+  - role: dresden-weekly.Rails/rails/cleanup-old-releases
