@@ -1,9 +1,41 @@
 ---
 - hosts: local
   vars:
+    rails_env: production
     app_group: local
+    app_user: deploy
+    app_path: '/home/deploy/itedd'
+    app_name: itedd
+    site_id: example
+
+    git_url: "https://github.com/itedd/itedd.git"
+    git_branch: master
+
+    ruby_version: 2.1.7
+
+    db_user: itedd
+    db_password: secret
+    db_name: itedd
+
     postgresql_encoding: 'UTF-8'
     postgresql_locale: 'en_US'
+
+    bundle_flags:
+      - '--quiet'
+      - '--deployment'
+    bundle_without:
+      - test
+
+    # rails_provisioned_files:
+    #   - file: config/database.yml
+    #     yaml:
+    #       production:
+    #         adapter: postgresql
+    #         database: 'itedd'
+    #         username: itedd
+    #         encoding: UTF8
+    #         pool: 5
+
   pre_tasks:
     - file:
         path: '/etc/locale.gen'
