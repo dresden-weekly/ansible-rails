@@ -17,6 +17,7 @@
     db_password: secret
     db_name: itedd
 
+    postgresql_version: "{{ '9.4' if ansible_distribution_release == 'xenial' else '9.3'"
     postgresql_encoding: 'UTF-8'
     postgresql_locale: 'en_US'
 
