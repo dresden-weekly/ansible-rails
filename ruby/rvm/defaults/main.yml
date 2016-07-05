@@ -8,7 +8,7 @@ rvm_rubies: []
 # user that installs rvm
 rvm_user: "{{ app_user }}"
 
-# gem version for default ruby (empty means lastest)
+# gem version for default ruby (empty means no changes)
 gem_version: ''
 rvm_gem_version: "{{ gem_version }}"
 

@@ -67,7 +67,7 @@
     {{ RUBY_PREFIX }} gem update --system {{ rvm_gem_version }}
   become: yes
   become_user: "{{ rvm_user }}"
-  when: rvm_gem_version != ruby_rvm_gem_version_result
+  when: rvm_gem_version != '' and rvm_gem_version != ruby_rvm_gem_version_result.stdout
   register: ruby_rvm_gem_update_system_result
   changed_when: >
     "Aborting" not in ruby_rvm_gem_update_system_result.stdout
