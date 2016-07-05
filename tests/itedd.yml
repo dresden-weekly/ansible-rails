@@ -4,7 +4,12 @@
     postgresql_encoding: 'UTF-8'
     postgresql_locale: 'en_US.UTF-8'
   pre_tasks:
-    - apt: pkg=locales
+    - apt:
+        name: "{{ item }}"
+      with_items:
+        - locales
+        - apt-transport-https
+
     - file:
         path: '/etc/locale.gen'
         state: 'absent'
