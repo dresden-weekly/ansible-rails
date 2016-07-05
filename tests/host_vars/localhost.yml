@@ -25,7 +25,6 @@ rails_provisioned_files:
         adapter: postgresql
         database: '{{app_name}}_production'
         username: postgres
-        adapter: postgresql
         encoding: UTF8
         pool: 5
 
