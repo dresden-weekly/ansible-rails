@@ -10,15 +10,13 @@
         path: '/etc/locale.gen'
         state: 'absent'
     - shell: 'locale-gen "en_US.UTF-8"'
-  roles:
-    - role: debops.users
-      users: yes
-      users_list:
-        - name: "{{ app_user }}"
-          groups:
-          - 'www-data'
-          state: 'present'
 
+    - name: Create App User
+      user:
+        name: "{{ app_user }}"
+        shell: /bin/bash
+
+  roles:
     - ruby/rvm
     - ruby/postgresql
     - ruby/sqlite3
