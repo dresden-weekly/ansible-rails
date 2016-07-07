@@ -1,4 +1,12 @@
 ---
+- set_fact:
+    upstart_start_on_event: user-jobs
+  when: (ansible_distribution == 'Ubuntu') and (ansible_lsb.major_release|int <= 13)
+
+- set_fact:
+    upstart_start_on_event: startup
+  when: (ansible_distribution == 'Ubuntu') and (ansible_lsb.major_release|int >= 14)
+
 - name: Debian | upstart script
   template:
     dest: "{{ webrick_upstart_conf | replace('\n', '') }}"
