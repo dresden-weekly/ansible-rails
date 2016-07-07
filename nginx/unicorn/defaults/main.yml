@@ -5,3 +5,6 @@ site_domain: "{{ app_domain }}"
 site_domain_aliases: "{{ app_domain_aliases | default([]) }}"
 site_path: "{{ RAILS_APP_CURRENT_PUBLIC_PATH }}"
 site_app_group: "{{ app_group | default('app') }}"
+
+nginx_app_headers: {}
+#  X-Forwarded-Proto: https
