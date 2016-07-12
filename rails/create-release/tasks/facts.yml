@@ -2,14 +2,6 @@
 - name: Define release ID
   set_fact:
     RAILS_APP_RELEASE_ID: "{{ rails_release_id }}"
-  run_once: on # make sure we have a consistent RAILS_APP_RELEASE_ID
-  delegate_to: "{{ rails_primary_node }}"
-  tags:
-  - facts
-
-- name: Distribute release ID
-  set_fact:
-    RAILS_APP_RELEASE_ID: "{{ hostvars[rails_primary_node].RAILS_APP_RELEASE_ID }}"
   tags:
   - facts
 
