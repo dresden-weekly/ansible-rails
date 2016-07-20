@@ -1,5 +1,6 @@
 ---
 - hosts: local
+  become: yes
   vars:
     rails_env: production
     app_secret_key_base: "0edf6fdcbf610f5ad59c665d15deb17af10ff7b40e8a918f928771f885cfbdec"
@@ -28,6 +29,8 @@
       - '--deployment'
     bundle_without:
       - test
+
+    profile: '/bin/bash -lc -- '
 
     # rails_provisioned_files:
     #   - file: config/database.yml
@@ -78,23 +81,25 @@
     - dresden-weekly.Rails/nginx/server
     - dresden-weekly.Rails/nginx/webrick
 
-- hosts: all
-  become: yes
-  become_user: '{{ app_user }}'
-  remote_user: '{{ app_user }}'
-  vars:
-    profile: '/bin/bash -lc -- '
+    - role: dresden-weekly.Rails/rails/folders
+      remote_user: '{{ app_user }}'
 
-  roles:
-  - dresden-weekly.Rails/rails/folders
 
-  - role: dresden-weekly.Rails/rails/create-release
-    rails_deploy_custom_archive:
-    - Gemfile.lock
+    - role: dresden-weekly.Rails/rails/create-release
+      rails_release_id: "static" # prevent multiple release_ids
+      remote_user: '{{ app_user }}'
+      rails_deploy_custom_archive:
+      - Gemfile.lock
 
-  - role: dresden-weekly.Rails/rails/tasks/bundle
-  - role: dresden-weekly.Rails/rails/tasks/migrate-database
-  - role: dresden-weekly.Rails/rails/tasks/compile-assets
-  - role: dresden-weekly.Rails/rails/update-current
-  - role: dresden-weekly.Rails/webrick/restart
-  - role: dresden-weekly.Rails/rails/cleanup-old-releases
+    - role: dresden-weekly.Rails/rails/tasks/bundle
+      remote_user: '{{ app_user }}'
+    - role: dresden-weekly.Rails/rails/tasks/migrate-database
+      remote_user: '{{ app_user }}'
+    - role: dresden-weekly.Rails/rails/tasks/compile-assets
+      remote_user: '{{ app_user }}'
+    - role: dresden-weekly.Rails/rails/update-current
+      remote_user: '{{ app_user }}'
+    - role: dresden-weekly.Rails/webrick/restart
+      remote_user: '{{ app_user }}'
+    - role: dresden-weekly.Rails/rails/cleanup-old-releases
+      remote_user: '{{ app_user }}'
