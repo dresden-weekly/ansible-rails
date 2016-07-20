@@ -80,24 +80,29 @@
     - dresden-weekly.Rails/nginx/webrick
 
     - role: dresden-weekly.Rails/rails/folders
-      remote_user: '{{ app_user }}'
+      become_user: '{{ app_user }}'
 
 
     - role: dresden-weekly.Rails/rails/create-release
       rails_release_id: "static" # prevent multiple release_ids
-      remote_user: '{{ app_user }}'
+      become_user: '{{ app_user }}'
       rails_deploy_custom_archive:
       - Gemfile.lock
 
     - role: dresden-weekly.Rails/rails/tasks/bundle
-      remote_user: '{{ app_user }}'
+      become_user: '{{ app_user }}'
+
     - role: dresden-weekly.Rails/rails/tasks/migrate-database
-      remote_user: '{{ app_user }}'
+      become_user: '{{ app_user }}'
+
     - role: dresden-weekly.Rails/rails/tasks/compile-assets
-      remote_user: '{{ app_user }}'
+      become_user: '{{ app_user }}'
+
     - role: dresden-weekly.Rails/rails/update-current
-      remote_user: '{{ app_user }}'
+      become_user: '{{ app_user }}'
+
     - role: dresden-weekly.Rails/webrick/restart
-      remote_user: '{{ app_user }}'
+      become_user: '{{ app_user }}'
+
     - role: dresden-weekly.Rails/rails/cleanup-old-releases
-      remote_user: '{{ app_user }}'
+      become_user: '{{ app_user }}'
