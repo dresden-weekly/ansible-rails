@@ -45,6 +45,7 @@
         path: '/etc/locale.gen'
         state: 'absent'
     - shell: 'locale-gen "en_US.UTF-8"'
+      changed_when: no
 
     - name: Create App User
       user:
