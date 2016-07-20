@@ -2,7 +2,7 @@
 
 description "Webrick Application Server"
 
-start on user-jobs
+start on {{ upstart_start_on_event }}
 stop on runlevel [06]
 
 respawn
