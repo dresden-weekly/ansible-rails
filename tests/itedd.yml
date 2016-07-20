@@ -21,8 +21,6 @@
     db_name: itedd
 
     postgresql_version: "9.5"
-    # postgresql_encoding: 'UTF-8'
-    # postgresql_locale: 'en_US'
 
     bundle_flags:
       - '--quiet'
@@ -43,10 +41,10 @@
     #         pool: 5
 
   pre_tasks:
-    # - file:
-    #     path: '/etc/locale.gen'
-    #     state: 'absent'
-    # - shell: 'locale-gen "en_US.UTF-8"'
+    - file:
+        path: '/etc/locale.gen'
+        state: 'absent'
+    - shell: 'locale-gen "en_US.UTF-8"'
 
     - name: Create App User
       user:
