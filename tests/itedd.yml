@@ -71,10 +71,6 @@
         RAILS_LOG_FILE_PATH: "{{ RAILS_APP_LOG_PATH }}"
         DATABASE_URL: "{{ DATABASE_URL }}"
 
-    # - role: ANXS.postgresql
-    #   postgresql_databases:
-    #     - name: '{{db_name}}'
-
     - role: dresden-weekly.Rails/upstart/userjobs
       users:
       - "{{ app_user }}"
