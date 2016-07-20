@@ -13,6 +13,18 @@
 - include: Debian.yml
   when: ansible_os_family == "Debian"
 
+- name: Configure
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ postgresql_config_path }}/{{ item }}"
+  notify:
+  - restart postgresql
+  with_items:
+  - pg_hba.conf
+  - postgresql.conf
+
+- meta: flush_handlers
+
 - name: Template locales
   shell: >
     psql -c "update pg_database
@@ -31,18 +43,6 @@
   ignore_errors: yes
   become: yes
   become_user: "{{ postgresql_user }}"
-
-- name: Configure
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ postgresql_config_path }}/{{ item }}"
-  notify:
-  - restart postgresql
-  with_items:
-  - pg_hba.conf
-  - postgresql.conf
-
-- meta: flush_handlers
 
 - name: Users
   postgresql_user:
