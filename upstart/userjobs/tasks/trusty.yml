@@ -15,7 +15,12 @@
   with_items: "{{ users }}"
 
 - name: Trusty | Start Session Init
-  command: "start session_init USER={{ item.item }}"
+  shell: |
+    export XDG_RUNTIME_DIR="/run/user/$(id -u {{ item.item }})"
+    mkdir -p "$XDG_RUNTIME_DIR"
+    chmod 0700 "$XDG_RUNTIME_DIR"
+    chown "{{ item.item }}:$(id -g -n {{ item.item }})" "$XDG_RUNTIME_DIR"
+    start session_init USER={{ item.item }}
   when: "'running' not in item.stdout"
   with_items: "{{ session_init_status.results }}"
 

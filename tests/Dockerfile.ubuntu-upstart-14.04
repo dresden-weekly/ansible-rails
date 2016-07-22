@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM ubuntu-upstart:14.04
 
 # Install Ansible
 RUN apt-get update && apt-get install -y \

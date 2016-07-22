@@ -14,7 +14,7 @@ env:
   #   version: 16.04
   #   init: /sbin/init
   #   run_opts: ""
-  - distribution: ubuntu
+  - distribution: ubuntu-upstart
     version: 14.04
     init: /sbin/init
     run_opts: ""
@@ -43,9 +43,6 @@ script:
 
   # Test role.
   - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/itedd.yml'
-
-  - 'sudo docker exec --tty "$(cat ${container_id})" ps faux'
-  - 'sudo docker exec --tty "$(cat ${container_id})" status session_init USER=deploy'
 
   # Test role idempotence.
   - >-
