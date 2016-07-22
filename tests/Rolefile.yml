@@ -1,6 +1,0 @@
-
-- src: "debops.users"
-  version: "v0.1.0"
-- src: 'https://github.com/ANXS/postgresql.git'
-  version: 'master'
-  name: 'ANXS.postgresql'
