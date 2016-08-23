@@ -34,6 +34,10 @@ on_worker_boot do
     ActiveRecord::Base.establish_connection
   end
   if defined?(CustomPumaConfig) && CustomPumaConfig.respond_to?(:on_worker_boot)
-    CustomPumaConfig.on_worker_boot
+    begin
+      CustomPumaConfig.on_worker_boot
+    rescue Exception
+      STDERR.puts "Error while loading custom puma config\n#{$!.message}\n\t#{$!.backtrace.join("\n\t")}".gsub(/^$\n/, '')
+    end
   end
 end
