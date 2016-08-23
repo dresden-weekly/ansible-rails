@@ -23,8 +23,17 @@ on_restart do
   ENV["BUNDLE_GEMFILE"] = "{{ puma_gemfile }}"
 end
 
+before_fork do
+  if defined?(::ActiveRecord) && defined?(::ActiveRecord::Base)
+    ActiveRecord::Base.connection_pool.disconnect!
+  end
+end
+
 on_worker_boot do
-  ActiveSupport.on_load(:active_record) do
+  if defined?(::ActiveRecord) && defined?(::ActiveRecord::Base)
     ActiveRecord::Base.establish_connection
+  end
+  if defined?(CustomPumaConfig) && CustomPumaConfig.respond_to?(:on_worker_boot)
+    CustomPumaConfig.on_worker_boot
   end
 end
