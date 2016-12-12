@@ -8,6 +8,10 @@
     key_file: "{{ rails_repo_ssh_keyfile }}"
     update: yes
     accept_hostkey: yes
+  environment:
+    GIT_CREDENTIAL_HOST: "{{ rails_app_git_repo_host }}"
+    GIT_CREDENTIAL_USERNAME: "{{ rails_app_git_user }}"
+    GIT_CREDENTIAL_PASSWORD: "{{ rails_app_git_passphrase }}"
 
 - name: Create release
   shell: >
