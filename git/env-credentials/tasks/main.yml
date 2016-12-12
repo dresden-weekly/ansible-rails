@@ -2,7 +2,7 @@
 - name: copy script
   copy:
     src: "git-credential-helper-env.sh"
-    dest: "/usr/local/bin/git-credential-helper-env.sh"
+    dest: "/usr/local/bin/git-credential-env"
     mode: "u=rwx,go=rx"
 
 - name: configure script
@@ -11,4 +11,4 @@
     value: "env"
     scope: "{{ git_credential_scope }}"
     repo: "{{ git_credential_repo_path }}"
-  become: "{{ git_credential_config_user }}"
+  become_user: "{{ git_credential_config_user }}"
