@@ -1,0 +1,6 @@
+---
+git_credential_host: "{{ git_url | regex_replace('^https?://(?:.*@|)([^/]*)/.*$', '\\1') }}"
+git_credential_repo_path: "{{ omit }}"
+git_credential_scope: "global"
+
+git_credential_config_user: "{{ app_user }}"

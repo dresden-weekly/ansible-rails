@@ -8,6 +8,12 @@ rails_release_id_git_branch: "{{ git_branch }}"
 rails_app_git_repo: "{{ git_url }}"
 rails_app_git_branch: "{{ git_branch }}"
 
+# used for credentials in https
+rails_app_git_repo_http: "{{ ('http' in rails_app_git_repo) or ('https' in rails_app_git_repo) }}"
+rails_app_git_repo_host: "{{ rails_app_git_repo | regex_replace('^https?://(?:.*@|)([^/]*)/.*$', '\\1') if rails_app_git_repo_http else omit }}"
+rails_app_git_user: "{{ git_user if rails_app_git_repo_http else omit }}"
+rails_app_git_passphrase: "{{ git_passphrase if rails_app_git_repo_http else omit }}"
+
 # path where the repository goes
 rails_app_repo_path: "{{ RAILS_APP_BASE_PATH }}/repo"
 
