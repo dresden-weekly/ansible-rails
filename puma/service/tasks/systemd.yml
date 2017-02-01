@@ -14,6 +14,12 @@
 
 - become_user: "{{ puma_user }}"
   block:
+    - name: "Systemd | Ensure complete .profile"
+      lineinfile:
+        dest: "~/.profile"
+        regexp: "^export XDG_RUNTIME_DIR="
+        line: "export XDG_RUNTIME_DIR=/run/user/`id -u`"
+
     - name: Systemd | Ensure the user units folder exists
       file:
         path: "{{ puma_systemd_user_units }}"
