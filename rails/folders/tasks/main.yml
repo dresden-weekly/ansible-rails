@@ -23,3 +23,4 @@
     RAILS_APP_TMP_PATH: "{{ rails_app_tmp_path }}"
     RAILS_APP_PIDS_PATH: "{{ rails_app_pids_path }}"
     RAILS_APP_RESTART_PATH: "{{ rails_app_restart_path }}"
+  tags: [always]
