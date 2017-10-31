@@ -1,0 +1,8 @@
+# - name: Tell mailroom to not accept new work
+#   shell: 'sudo -n /bin/systemctl kill -s USR1 {{mailroom_job_name}}'
+#   ignore_errors: true
+
+- command: '/bin/true'
+  name: 'Make sure mailroom is started at the end'
+  notify: restart mailroom (systemd)
+
