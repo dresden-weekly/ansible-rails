@@ -1,0 +1,29 @@
+# {{ ansible_managed }}
+user              www-data  www-data;
+
+worker_processes  {{nginx_worker_processes}};
+
+pid        /var/run/nginx.pid;
+
+worker_rlimit_nofile 1024;
+
+events {
+        worker_connections {{nginx_worker_connections}};
+}
+
+http {
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+        sendfile "on";
+        tcp_nopush "on";
+        tcp_nodelay "on";
+        keepalive_timeout "{{nginx_keepalive}}";
+        access_log "/var/log/nginx/access.log";
+        error_log "/var/log/nginx/error.log";
+        types_hash_max_size 2048;
+
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+}
+

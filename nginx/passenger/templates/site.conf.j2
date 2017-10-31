@@ -12,10 +12,10 @@ server {
   # {% endif %}
 
   gzip on;
-  client_max_body_size 200M;
+  client_max_body_size {{nginx_max_body_size}};
   root {{RAILS_APP_CURRENT_PATH}}/public;
 
-  {% for key,value in passenger_variables.iteritems() %}
+  {% for key,value in passenger_variables.items() | list %}
   {{key}} {{value}};
   {% endfor %}
 
@@ -24,9 +24,11 @@ server {
     add_header Pragma public;
     add_header Cache-Control "public, must-revalidate, proxy-revalidate";
     gzip on;
+    # enable delivery of prebuilt .gz files
+    gzip_static  on;
   }
 
-  location ~ ^/(system|uploads)/ {
+  location ~ {{nginx_public_folder_to_cache}} {
     expires 7d;
     add_header Pragma public;
     add_header Cache-Control "public";
@@ -49,5 +51,16 @@ server {
     passenger_enabled on;
   }
 
+  {% if passenger_enable_message_bus is defined and passenger_enable_message_bus %}
+  # improve message_bus performance https://github.com/SamSaffron/message_bus#passenger
+   location /message-bus {
+     passenger_app_group_name {{app_name}}_websocket;
+     passenger_force_max_concurrent_requests_per_process 0;
+   }
+  {% endif %}
 
+  {% if nginx_site_config is defined %}
+  {{ nginx_site_config }}
+  {% endif %}
 }
+# vim: ft=nginx
