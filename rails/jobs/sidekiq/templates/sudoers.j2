@@ -1,0 +1,7 @@
+# {{ansible_managed}}
+%{{sidekiq_upstart_user}} ALL= NOPASSWD: /bin/systemctl start {{sidekiq_job_name}}
+%{{sidekiq_upstart_user}} ALL= NOPASSWD: /bin/systemctl stop {{sidekiq_job_name}}
+%{{sidekiq_upstart_user}} ALL= NOPASSWD: /bin/systemctl restart {{sidekiq_job_name}}
+%{{sidekiq_upstart_user}} ALL= NOPASSWD: /bin/systemctl status {{sidekiq_job_name}}
+%{{sidekiq_upstart_user}} ALL= NOPASSWD: /bin/systemctl kill -s USR1 {{sidekiq_job_name}}
+

@@ -31,7 +31,7 @@ Provisioning:
 * **ruby/mysql** support for Mysql client gems
 * **rails/create-folders** prepares a folder for Rails releases
 * [**rails/logrotate**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/logrotate) create logrotate configuration for Rails logs
-* [**rails/jobs/sidekiq**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/jobs/sidekiq) manage/restart sidekiq as a upstart job
+* [**rails/jobs/sidekiq**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/jobs/sidekiq) manage/restart sidekiq as a upstart job or Systemd unit
 * [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/server) install Nginx webserver
 * **nginx/passenger** install Nginx webserver
 * [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/puma) prepare nginx for Puma appserver

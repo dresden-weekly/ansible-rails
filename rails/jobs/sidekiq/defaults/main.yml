@@ -1,5 +1,5 @@
 sidekiq_upstart_user: "{{ app_user }}"
-sidekiq_job_name: "{{ app_name }}"
+sidekiq_job_name: "sidekiq-{{ app_name }}"
 sidekiq_upstart_conf: "/home/{{ sidekiq_upstart_user }}/.init/{{ sidekiq_job_name }}.conf"
 sidekiq_worker_index: 0
 sidekiq_rails_env: "{{ rails_env }}"

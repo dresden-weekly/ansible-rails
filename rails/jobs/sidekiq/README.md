@@ -1,10 +1,10 @@
 ## Sidekiq
 
-This role creates a sidekiq worker that is managed via Upstart.
+This role creates a sidekiq worker that is managed via Upstart or Systemd.
 
 It requires:
 
-* Userjobs Role from Ansible-Rails
+* (Ubuntu 14 only): Userjobs Role from Ansible-Rails
 * Some installed and running Redis (not provided by Ansible-Rails) respectively given redis_url reachable
 
 It will create a upstart-job in ``~/.init/APP_NAME.conf``
@@ -13,13 +13,13 @@ Variables:
 
 ```yaml
 sidekiq_upstart_user: '{{app_user}}'
-sidekiq_job_name: '{{app_name}}'
+sidekiq_job_name: "sidekiq-{{ app_name }}"
 sidekiq_upstart_conf: '/home/{{sidekiq_upstart_user}}/.init/{{sidekiq_job_name}}.conf'
 sidekiq_worker_index: 0
 sidekiq_rails_env: '{{rails_env}}'
 sidekiq_log_file: '{{ RAILS_APP_SHARED_PATH }}/log/sidekiq.log'
 sidekiq_config_file: '{{ RAILS_APP_SHARED_PATH }}/config/sidekiq.yml'
-sidekiq_concurrency: 10
+sidekiq_configuration_concurrency: 10
 sidekiq_configuration_redis_url: 'redis://localhost:6379/0'
 sidekiq_configuration_verbose: true
 sidekiq_configuration_queues:
@@ -37,9 +37,10 @@ creates the job file
 After the userjob / redis:
 
 ```yaml
-  - role: dresden-weekly.Rails/upstart/userjobs
+  - role: ../roles/dresden-weekly.rails/upstart/userjobs
     users:
       - "{{app_user}}"
+    when: 'ansible_service_mgr != "systemd"'
   - role: dresden-weekly.Rails/rails/jobs/sidekiq
     sidekiq_configuration_concurrency: 5
 ```
