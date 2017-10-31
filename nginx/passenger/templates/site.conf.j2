@@ -15,7 +15,7 @@ server {
   client_max_body_size 200M;
   root {{RAILS_APP_CURRENT_PATH}}/public;
 
-  {% for key,value in passenger_variables.iteritems() %}
+  {% for key,value in passenger_variables.items() | list %}
   {{key}} {{value}};
   {% endfor %}
 

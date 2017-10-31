@@ -3,24 +3,24 @@
 ServerName {{ apache_server_name }}
 {% endif %}
 
-{% for option, value in apache_server_options.iteritems() %}
+{% for option, value in apache_server_options.items() | list %}
 {{ option }} {{ value }}
 {% endfor %}
 
 <IfModule mpm_event_module>
-{% for option, value in apache_event_options.iteritems() %}
+{% for option, value in apache_event_options.items() | list %}
   {{ option }} {{ value }}
 {% endfor %}
 </IfModule>
 
 <IfModule mpm_worker_module>
-{% for option, value in apache_worker_options.iteritems() %}
+{% for option, value in apache_worker_options.items() | list %}
   {{ option }} {{ value }}
 {% endfor %}
 </IfModule>
 
 <IfModule mpm_prefork_module>
-{% for option, value in apache_prefork_options.iteritems() %}
+{% for option, value in apache_prefork_options.items() | list %}
   {{ option }} {{ value }}
 {% endfor %}
 </IfModule>
