@@ -1,0 +1,29 @@
+nodejs_version: 'nodejs-v6x'
+
+nodejs_install:
+- build-essential
+
+nodejs_version_map:
+  nodejs-v7x: '7.x'
+  nodejs-v6x: '6.x'
+  nodejs-v5x: '5.x'
+  nodejs-v4x: '4.x'
+  nodejs-v012: '0.12'
+  nodejs-v010: '0.10'
+  iojs-v3x: 'iojs_3.x'
+  iojs-v2x: 'iojs_2.x'
+  iojs-v1x: 'iojs_1.x'
+
+nodejs_dependencies:
+  - curl
+
+yarn_repositories:
+- type: deb
+  url: 'https://dl.yarnpkg.com/debian/ stable'
+  component: main
+
+yarn_dependencies_pre:
+- apt-transport-https
+
+yarn_dependencies:
+- yarn

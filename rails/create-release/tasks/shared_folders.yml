@@ -6,6 +6,7 @@
   with_flattened:
   - "{{ rails_deploy_shared_folders }}"
   - "{{ rails_deploy_custom_shared_folders }}"
+  - "{{ rails_deploy_custom_shared_webpacker_folders if rails_webpacker else [] }}"
 
 - name: Link shared folders
   file:
@@ -16,6 +17,7 @@
   with_flattened:
   - "{{ rails_deploy_shared_folders }}"
   - "{{ rails_deploy_custom_shared_folders }}"
+  - "{{ rails_deploy_custom_shared_webpacker_folders if rails_webpacker else [] }}"
 
 - name: Link shared files
   file:
