@@ -1,0 +1,9 @@
+- name: restart clamav-freshclam
+  service: name=clamav-freshclam state=restarted
+  listen: restart virus
+- name: restart clamav-daemon
+  service: name=clamav-daemon state=restarted
+  listen: restart virus
+- name: reload daemon
+  command: systemctl daemon-reload
+

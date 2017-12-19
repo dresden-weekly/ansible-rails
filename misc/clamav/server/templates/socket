@@ -1,0 +1,18 @@
+# {{ansible_managed}}
+[Unit]
+Description=Socket for Clam AntiVirus userspace daemon
+Documentation=man:clamd(8) man:clamd.conf(5) http://www.clamav.net/lang/en/doc/
+# Check for database existence
+ConditionPathExistsGlob=/var/lib/clamav/main.{c[vl]d,inc}
+ConditionPathExistsGlob=/var/lib/clamav/daily.{c[vl]d,inc}
+
+[Socket]
+ListenStream=/run/clamav/clamd.ctl
+ListenStream={{clamav_port}}
+SocketUser=clamav
+SocketGroup=clamav
+RemoveOnStop=True
+
+[Install]
+WantedBy=sockets.target
+

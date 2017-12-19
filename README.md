@@ -45,6 +45,7 @@ Provisioning:
 * **firewalld** configure firewalld (for CentOS)
 * **selinux** currently only enable/disable selinux on CentOS
 * [**yarn**](https://github.com/dresden-weekly/ansible-rails/tree/develop/yarn) Installs nodejs + yarn (default nodejs-6.x)
+* [**clamav**](https://github.com/dresden-weekly/ansible-rails/tree/develop/clamav) Virus scanner daemon and frontend role
 
 Deployment:
 

@@ -1,0 +1,2 @@
+clamd_port: 3310
+clamd_host: 127.0.0.1

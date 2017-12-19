@@ -1,0 +1,26 @@
+- apt:
+    install_recommends: no
+    update_cache: yes
+    pkg:
+      - clamav-daemon
+      - clamav-freshclam
+      - libclamunrar7
+- lineinfile:
+    dest: /etc/clamav/clamd.conf
+    line: "TCPSocket {{clamav_port}}"
+  notify: restart virus
+- template:
+    src: 'socket'
+    dest: /lib/systemd/system/clamav-daemon.socket
+  notify: reload daemon
+- copy:
+    content: ""
+    dest: /etc/systemd/system/clamav-daemon.socket.d/extend.conf
+  notify: reload daemon
+  when: 'ansible_distribution_release == "xenial"'
+
+- name: trigger reload
+  command: /bin/true
+  notify:
+    - reload daemon
+    - restart virus

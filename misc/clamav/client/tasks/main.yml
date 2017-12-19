@@ -1,0 +1,11 @@
+- apt:
+    pkg: clamdscan
+    install_recommends: no
+  name: Install clamdscan (client only)
+  tags: [clamav]
+
+- template:
+    src: clamd.conf
+    dest: /etc/clamav/clamd.conf
+  name: Overriding clamd config (/etc/clamav/clamd.conf)
+  tags: [clamav]
