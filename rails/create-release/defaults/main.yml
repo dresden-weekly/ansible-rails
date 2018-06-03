@@ -44,6 +44,18 @@ rails_deploy_custom_shared_folders: [] # custom folders that are shared between 
 
 rails_deploy_custom_create_folders: [] # custom folders that are created for each release
 
+# Webpacker / yarn default settings
+rails_webpacker: no
+rails_deploy_webpacker_archive:
+- yarn.lock
+- package.json
+- .babelrc
+- .postcssrc.yml
+
+rails_deploy_webpacker_pack_dir: public/packs
+rails_deploy_custom_shared_webpacker_folders: ['{{rails_deploy_webpacker_pack_dir}}', 'node_modules']
+
+
 # Link files
 rails_shared_files: []
 # - db/production.sqlite3
