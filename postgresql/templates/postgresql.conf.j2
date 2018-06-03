@@ -21,7 +21,7 @@ listen_addresses = '{{ postgresql_listen | join(',') }}'
 port = {{ postgresql_port }}
 max_connections = {{ postgresql_max_connections }}
 unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
-{% for k,v in postgresql_connections.iteritems() %}
+{% for k,v in postgresql_connections.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -29,7 +29,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # RESOURCE USAGE (except WAL)
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_resources.iteritems() %}
+{% for k,v in postgresql_resources.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -37,7 +37,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # WRITE AHEAD LOG
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_write_ahead_log.iteritems() %}
+{% for k,v in postgresql_write_ahead_log.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -45,7 +45,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # REPLICATION
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_replication.iteritems() %}
+{% for k,v in postgresql_replication.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -53,7 +53,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # QUERY TUNING
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_query_tuning.iteritems() %}
+{% for k,v in postgresql_query_tuning.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -61,7 +61,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # ERROR REPORTING AND LOGGING
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_logging.iteritems() %}
+{% for k,v in postgresql_logging.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -69,7 +69,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # RUNTIME STATISTICS
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_runtime_statistics.iteritems() %}
+{% for k,v in postgresql_runtime_statistics.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -77,7 +77,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # AUTOVACUUM PARAMETERS
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_autovacuum.iteritems() %}
+{% for k,v in postgresql_autovacuum.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -85,7 +85,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # CLIENT CONNECTION DEFAULTS
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_client_connection_defaults.iteritems() %}
+{% for k,v in postgresql_client_connection_defaults.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -93,7 +93,7 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # LOCK MANAGEMENT
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_lock_management.iteritems() %}
+{% for k,v in postgresql_lock_management.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}
 
@@ -101,6 +101,6 @@ unix_socket_directories = '{{ postgresql_socket_directories | join(',') }}'
 # CUSTOMIZED OPTIONS
 #------------------------------------------------------------------------------
 
-{% for k,v in postgresql_cutomized.iteritems() %}
+{% for k,v in postgresql_cutomized.items() | list %}
 {{ k }} = {{ v }}
 {% endfor %}

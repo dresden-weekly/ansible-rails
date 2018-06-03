@@ -5,10 +5,10 @@ RailsBaseURI {{ site_url_path }}
 PassengerRuby {{ passenger_ruby }}
 {% endif %}
 PassengerMinInstances {{ passenger_min_instances }}
-{% for option, value in apache_site_options.iteritems() %}
+{% for option, value in apache_site_options.items() | list %}
 {{ option }} {{ value }}
 {% endfor %}
-{% for key, value in apache_set_env.iteritems() %}
+{% for key, value in apache_set_env.items() | list %}
 SetEnv {{ key }} {{ value }}
 {% endfor %}
 

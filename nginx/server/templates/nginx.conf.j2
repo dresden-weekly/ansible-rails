@@ -5,7 +5,7 @@ pid {{ nginx_pid }};
 worker_processes {{ nginx_worker_processes }};
 
 events {
-{% for k,v in nginx_events.iteritems() %}
+{% for k,v in nginx_events.items() | list %}
   {{ k }} {{ v }};
 {% endfor %}
 }
@@ -17,7 +17,7 @@ http {
   access_log {{ nginx_access_log }};
   error_log {{ nginx_error_log }};
 
-{% for k,v in nginx_http_options.iteritems() %}
+{% for k,v in nginx_http_options.items() | list %}
   {{ k }} {{ v }};
 {% endfor %}
 

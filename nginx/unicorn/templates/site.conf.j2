@@ -24,7 +24,7 @@ server {
     proxy_pass http://{{ site_name }};
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-{% for name, value in nginx_app_headers.iteritems() -%}
+{% for name, value in nginx_app_headers.items() | list -%}
     proxy_set_header {{ name }} {{ value }};
 {% endfor -%}
     proxy_redirect off;
