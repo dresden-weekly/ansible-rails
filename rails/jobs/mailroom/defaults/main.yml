@@ -1,0 +1,4 @@
+mailroom_job_name: "mailroom-{{ app_name }}"
+mailroom_config_file: "{{ RAILS_APP_SHARED_PATH }}/config/mailroom.yml"
+mailroom_user: "{{app_user}}"
+mailroom_workdir: "{{RAILS_APP_CURRENT_PATH}}"

@@ -1,0 +1,19 @@
+- name: Create {{mailroom_job_name}}.service for systemd
+  template:
+    src: mailroom.service.j2
+    dest: /lib/systemd/system/{{mailroom_job_name}}.service
+  register: mailroomtpl
+
+- systemd:
+    state: started
+    enabled: true
+    daemon_reload: true
+    name: "{{mailroom_job_name}}"
+  when: mailroomtpl.changed
+  ignore_errors: true
+  name: "Enable/Reload systemd"
+
+- template:
+    src: 'sudoers.j2'
+    dest: '/etc/sudoers.d/{{mailroom_job_name}}'
+  name: "Enable passwordless sudo for job control of {{mailroom_job_name}}"

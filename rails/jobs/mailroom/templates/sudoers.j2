@@ -1,0 +1,5 @@
+# {{ansible_managed}}
+%{{mailroom_user}} ALL= NOPASSWD: /bin/systemctl start {{mailroom_job_name}}
+%{{mailroom_user}} ALL= NOPASSWD: /bin/systemctl stop {{mailroom_job_name}}
+%{{mailroom_user}} ALL= NOPASSWD: /bin/systemctl restart {{mailroom_job_name}}
+%{{mailroom_user}} ALL= NOPASSWD: /bin/systemctl status {{mailroom_job_name}}

@@ -1,0 +1,1 @@
+mailroom_job_name: "mailroom-{{ app_name }}"
