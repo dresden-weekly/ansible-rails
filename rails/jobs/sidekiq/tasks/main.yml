@@ -1,13 +1,4 @@
-- name: Sidekiq upstart script
-  template:
-    src: "sidekiq.conf.j2"
-    dest: "{{ sidekiq_upstart_conf }}"
-  become: yes
-  become_user: "{{ sidekiq_upstart_user }}"
-
-- name: sidekiq config
-  template:
-    src: "sidekiq.yml.j2"
-    dest: "{{ sidekiq_config_file }}"
-  become: yes
-  become_user: "{{ sidekiq_upstart_user }}"
+- include: "upstart.yml"
+  when: 'ansible_service_mgr != "systemd"'
+- include: "systemd.yml"
+  when: 'ansible_service_mgr == "systemd"'

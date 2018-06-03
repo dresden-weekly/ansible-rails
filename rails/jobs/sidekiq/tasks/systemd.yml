@@ -1,0 +1,20 @@
+- name: Create {{sidekiq_job_name}}.service for systemd
+  template:
+    src: sidekiq.service.j2
+    dest: /lib/systemd/system/{{sidekiq_job_name}}.service
+  register: sidekiqtpl
+
+
+- systemd:
+    state: started
+    enabled: true
+    daemon_reload: true
+    name: "{{sidekiq_job_name}}"
+  when: sidekiqtpl.changed
+  ignore_errors: true
+  name: "Enable/Reload systemd"
+
+- template:
+    src: 'sudoers.j2'
+    dest: '/etc/sudoers.d/{{sidekiq_job_name}}'
+  name: "Enable passwordless sudo for job control of {{sidekiq_job_name}}"

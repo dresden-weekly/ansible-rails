@@ -1,2 +1,5 @@
-- name: restart sidekiq
+- name: restart sidekiq (upstart)
   shell: "{{ profile }}'restart {{ sidekiq_job_name }} || start {{ sidekiq_job_name }}'"
+
+- name: restart sidekiq (systemd)
+  shell: 'sudo -n /bin/systemctl restart {{sidekiq_job_name}}'
