@@ -7,7 +7,7 @@ directory "{{ puma_directory }}"
 rackup "{{ puma_rackup }}"
 pidfile "{{ puma_pidfile }}"
 
-{% for typ,v in puma_binds.iteritems() %}
+{% for typ,v in puma_binds.items() | list %}
 bind "{{ typ }}://{{ v }}"
 {% endfor %}
 

@@ -32,6 +32,7 @@ Provisioning:
 * **rails/create-folders** prepares a folder for Rails releases
 * [**rails/logrotate**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/logrotate) create logrotate configuration for Rails logs
 * [**rails/jobs/sidekiq**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/jobs/sidekiq) manage/restart sidekiq as a upstart job or Systemd unit
+* [**rails/jobs/mailroom**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/mailroom/sidekiq) manage/restart Mailroom as an systemd job (Ubuntu 16+) to listen for incoming emails in time
 * [**nginx/server**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/server) install Nginx webserver
 * **nginx/passenger** install Nginx webserver
 * [**nginx/puma**](https://github.com/dresden-weekly/ansible-rails/tree/develop/nginx/puma) prepare nginx for Puma appserver
@@ -43,6 +44,7 @@ Provisioning:
 * [**apache/vhost**](https://github.com/dresden-weekly/ansible-rails/tree/develop/apache/vhost) add an Apache vhost configuration
 * **firewalld** configure firewalld (for CentOS)
 * **selinux** currently only enable/disable selinux on CentOS
+* [**yarn**](https://github.com/dresden-weekly/ansible-rails/tree/develop/yarn) Installs nodejs + yarn (default nodejs-6.x)
 
 Deployment:
 

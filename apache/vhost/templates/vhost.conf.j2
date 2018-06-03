@@ -7,7 +7,7 @@
 
   DocumentRoot {{ apache_vhost_document_root }}
 
-  {% for option, value in apache_vhost_options.iteritems() %}
+  {% for option, value in apache_vhost_options.items() | list %}
   {{ option }} {{ value }}
   {% endfor %}
 

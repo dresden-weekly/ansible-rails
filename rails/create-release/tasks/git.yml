@@ -17,6 +17,7 @@
   shell: >
     git archive --format=tar --prefix={{ RAILS_APP_RELEASE_ID }}/ {{ rails_app_git_branch }}
     {{ rails_deploy_archive | join(' ') }}
+    {{ rails_deploy_webpacker_archive | join(' ') if rails_webpacker else "" }}
     {{ rails_deploy_custom_archive | join(' ') }}
     | (cd {{ RAILS_APP_RELEASES_PATH }} && tar -xf -)
   args:
