@@ -4,7 +4,7 @@
 
 ### Provide shared files
 
-Files like ``database.yml``, ``secrets.yml`` and Rails ``Rails.application.config_for(:somefile)`` yaml files can be provided by this role.
+Files like ``database.yml``, ``secrets.yml`` and Rails ``Rails.application.config_for(:somefile)`` yaml or verbatim (plain) files can be provided by this role.
 
 ```yaml
 rails_provisioned_files:
@@ -20,6 +20,11 @@ rails_provisioned_files:
       production:
         secret_key_base: '...'
         twitter_api_key: '...'
+  - file: config/somekey.crt
+    plain: |
+      some verbatim config
+  - file: config/somekey.crt
+    plain: "{{some_variable_for_file_content}}"
 ```
 
 Those file will be placed relativ to the shared folders and symlinked into the release/current folders.

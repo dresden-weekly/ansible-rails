@@ -28,6 +28,16 @@
     dest: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
     owner: "{{ app_user }}"
     mode: "0600"
+  when: "item.yaml is defined"
+  with_items: "{{ rails_provisioned_files }}"
+
+- name: Provide plain configuration files
+  copy:
+    content: "{{item.plain}}"
+    dest: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
+    owner: "{{ app_user }}"
+    mode: "0600"
+  when: "item.plain is defined"
   with_items: "{{ rails_provisioned_files }}"
 
 - include: "shared_folders.yml"
