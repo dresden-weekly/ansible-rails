@@ -1,12 +1,19 @@
 ---
-- name: Repo
+- name: Debian | Repo
   apt_repository:
     repo: "{{ nginx_apt_repo }}"
 
-- name: Packages
+- name: Debian | Packages
   apt:
     name: "{{ item }}"
     update_cache: yes
     state: latest
     cache_valid_time: 86400
   with_items: "{{ nginx_package_names }}"
+
+- name: Debian | Enable nginx
+  service:
+    name: "{{ nginx_service_name }}"
+    enabled: yes
+  notify:
+  - restart nginx
