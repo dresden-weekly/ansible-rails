@@ -70,6 +70,13 @@
     - role: dresden-weekly.Rails/upstart/userjobs
       users:
       - "{{ app_user }}"
+      when: ansible_service_mgr == "upstart"
+      
+    - role: dresden-weekly.Rails/systemd/usermanager
+      users:
+      - "{{ app_user }}"
+      when: ansible_service_mgr == "systemd"
+
     - dresden-weekly.Rails/webrick/service
     - dresden-weekly.Rails/nginx/server
     - dresden-weekly.Rails/nginx/webrick

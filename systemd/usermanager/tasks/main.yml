@@ -1,0 +1,9 @@
+- include_tasks: Debian.yml
+  when: ansible_os_family == "Debian"
+
+
+- name: Enable systemd User Manager
+  systemd:
+    name: user@{{ item }}
+    state: started
+  loop: "{{ users }}"
