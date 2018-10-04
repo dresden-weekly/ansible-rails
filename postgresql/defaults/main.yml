@@ -3,12 +3,12 @@
 postgresql_version: "9.3"
 
 # table locale and character encoding
-postgresql_locale: "en_US"
+postgresql_locale: "C"
 postgresql_encoding: "UTF-8"
 
 # shell locale and character encoding
 postgresql_shell_locale: "{{ postgresql_locale }}"
-postgresql_shell_encoding: "{{ postgresql_encoding | replace('-', '') | lower }}"
+postgresql_shell_encoding: "{{ postgresql_encoding }}"
 
 # default application database
 db_user: '' # name of the user (empty means no user is created)
