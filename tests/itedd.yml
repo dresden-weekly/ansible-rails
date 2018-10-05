@@ -47,6 +47,12 @@
         shell: /bin/bash
 
   roles:
+  
+    - role: dresden-weekly.Rails/systemd/usermanager
+      users:
+      - "{{ app_user }}"
+      when: ansible_service_mgr == "systemd"
+      
     - dresden-weekly.Rails/postgresql
 
     - dresden-weekly.Rails/ruby/rvm
