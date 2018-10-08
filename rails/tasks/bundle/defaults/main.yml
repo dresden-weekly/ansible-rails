@@ -15,16 +15,6 @@ bundle_frozen: no
 # parallelize bundle install
 bundle_jobs: '{{ansible_processor_cores}}'
 
-# run bundle --deployment
-bundle_deployment: no
-
-# disable modification of Gems after deploy, to make sure
-# Gemfile.lock is in sync with Gemfile
-bundle_frozen: no
-
-# parallelize bundle install
-bundle_jobs: '{{ansible_processor_cores}}'
-
 # name of the Gemfile that is used
 bundle_gemfile: "Gemfile"
 
