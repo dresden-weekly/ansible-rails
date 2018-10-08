@@ -6,7 +6,7 @@
     path: "{{ RAILS_APP_RESTART_PATH }}"
   register: rails_puma_restart
 
-- when: "{{ rails_puma_restart.stat.exists | bool }}"
+- when: rails_puma_restart.stat.exists
   block:
     - name: Debian | Remove RAILS_APP_RESTART_PATH
       file:
@@ -15,8 +15,10 @@
 
     - name: Debian | Upstart | Restart
       shell: "{{ profile }}'restart puma || start puma'"
-      when: "{{ puma_service_type == 'upstart' }}"
+      when: >
+        'upstart' == puma_service_type
 
     - name: Debian | Systemd | Restart
       shell: "{{ profile }}'systemctl --user restart {{ puma_service_name }}.service'"
-      when: "{{ puma_service_type == 'systemd' }}"
+      when: >
+        'systemd' == puma_service_type

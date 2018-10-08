@@ -6,7 +6,8 @@
   args:
     chdir: "{{ RAILS_APP_RELEASE_PATH }}"
   register: rails_migrate_database_result
-  changed_when: "'migrating' in rails_migrate_database_result.stdout"
+  changed_when: >
+    'migrating' in rails_migrate_database_result.stdout
   until: rails_migrate_database_result.rc == 0
   notify:
   - restart rails app

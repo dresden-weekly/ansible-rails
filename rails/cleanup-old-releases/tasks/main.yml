@@ -9,4 +9,5 @@
     | tail -n +{{ rails_deploy_old_release_count }}
     | xargs rm -rfv
   register: rails_cleanup_result
-  changed_when: "'removed' in rails_cleanup_result.stdout"
+  changed_when: >
+    'removed' in rails_cleanup_result.stdout

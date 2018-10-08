@@ -1,4 +1,4 @@
 - include: "upstart.yml"
-  when: 'ansible_service_mgr != "systemd"'
+  when: ansible_service_mgr != "systemd"
 - include: "systemd.yml"
-  when: 'ansible_service_mgr == "systemd"'
+  when: ansible_service_mgr == "systemd"

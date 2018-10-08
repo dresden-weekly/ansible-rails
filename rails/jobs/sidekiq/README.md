@@ -40,7 +40,7 @@ After the userjob / redis:
   - role: ../roles/dresden-weekly.rails/upstart/userjobs
     users:
       - "{{app_user}}"
-    when: 'ansible_service_mgr != "systemd"'
+    when: ansible_service_mgr != "systemd"
   - role: dresden-weekly.Rails/rails/jobs/sidekiq
     sidekiq_configuration_concurrency: 5
 ```
