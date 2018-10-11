@@ -2,14 +2,12 @@
 - name: Distribute release id
   set_fact:
     RAILS_APP_RELEASE_ID: "{{ rails_app_server_release_id }}"
-  tags:
-  - facts
+  tags: [always]
 
 - name: Define release path
   set_fact:
     RAILS_APP_RELEASE_PATH: "{{ RAILS_APP_RELEASES_PATH }}/{{ RAILS_APP_RELEASE_ID }}"
-  tags:
-  - facts
+  tags: [always]
 
 - name: Create folders
   file:

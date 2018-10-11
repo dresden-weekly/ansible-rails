@@ -2,7 +2,6 @@
 - name: store facts
   set_fact:
     APP_URL: "{{ webrick_app_url }}"
-  tags:
-  - facts
+  tags: [always]
 
 - include: "{{ webrick_service_type }}.yml"

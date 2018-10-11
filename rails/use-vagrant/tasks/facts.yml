@@ -3,5 +3,4 @@
   set_fact:
     RAILS_APP_RELEASE_ID: "{{ rails_vagrant_release_id }}"
     RAILS_APP_RELEASE_PATH: "{{ rails_vagrant_release_path }}"
-  tags:
-  - facts
+  tags: [always]

@@ -2,8 +2,7 @@
 - name: store facts
   set_fact:
     APP_URL: "{{ puma_app_url }}"
-  tags:
-  - facts
+  tags: [always]
 
 - name: Config puma.rb
   template:

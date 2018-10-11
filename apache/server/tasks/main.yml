@@ -12,5 +12,4 @@
     APACHE_SERVER_SERVICE: "{{ apache_server_service }}"
     APACHE_SERVER_USER: "{{ apache_server_user }}"
     APACHE_SERVER_GROUP: "{{ apache_server_group }}"
-  tags:
-  - facts
+  tags: [always]

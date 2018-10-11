@@ -72,6 +72,5 @@
   set_fact:
     DATABASE_URL: "{{ lookup('template', '../templates/database_url.j2') | trim }}"
   when: db_name != ''
-  tags:
-  - facts
   #  and (postgresql_databases | selectattr('name', 'equalto', db_name))
+  tags: [always]
