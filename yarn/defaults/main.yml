@@ -1,4 +1,4 @@
-nodejs_version: 'nodejs-v11x'
+nodejs_version: 'nodejs-v6x'
 
 nodejs_install:
 - build-essential
