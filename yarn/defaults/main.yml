@@ -4,6 +4,10 @@ nodejs_install:
 - build-essential
 
 nodejs_version_map:
+  nodejs-v11x: '11.x'
+  nodejs-v10x: '10.x'
+  nodejs-v9x: '9.x'
+  nodejs-v8x: '8.x'
   nodejs-v7x: '7.x'
   nodejs-v6x: '6.x'
   nodejs-v5x: '5.x'
