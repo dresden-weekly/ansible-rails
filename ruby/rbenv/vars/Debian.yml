@@ -17,4 +17,4 @@ rbenv_package_names:
   - libgdbm-dev
 
 # only needed for ruby 2.1.1
-rbenv_ruby_configure_opts: 'RUBY_CONFIGURE_OPTS=--with-readline-dir="/lib/{{ ansible_architecture }}-linux-gnu/libreadline.so.6"'
+# rbenv_ruby_configure_opts: 'RUBY_CONFIGURE_OPTS=--with-readline-dir="/lib/{{ ansible_architecture }}-linux-gnu/libreadline.so.6"'
