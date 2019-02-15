@@ -19,6 +19,3 @@ rbenv_package_names:
 
 # requires a seperate task that's run before any that installs EPEL packages
 rbenv_epel_repo: epel-release
-
-# only needed for rubies 2.1.0 and 2.1.1 on Ubuntu:
-# rbenv_ruby_configure_opts: 'RUBY_CONFIGURE_OPTS=--with-readline-dir="/usr/lib64/libreadline.so"'
