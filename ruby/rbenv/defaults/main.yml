@@ -14,3 +14,5 @@ rbenv_rubies: []
 # - 2.1.5
 # - 2.2.0
 # - 2.2.1
+
+rbenv_ruby_configure_opts: "{{ 'RUBY_CONFIGURE_OPTS=--with-readline-dir=\"/lib/{{ ansible_architecture }}-linux-gnu/libreadline.so.6\"' if ruby_version == '2.1.1' else '' }}"
