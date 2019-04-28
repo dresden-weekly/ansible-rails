@@ -10,3 +10,5 @@ rvm_packages:
 - libxml2-dev
 - libgmp-dev
 - git-core
+
+rvm_gpg_keys_list: "{{ rvm_gpg_keys.split(' ')}}"

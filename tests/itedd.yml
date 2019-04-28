@@ -15,6 +15,8 @@
     git_branch: master
 
     ruby_version: 2.1.7
+    rvm_install_gems:
+    - "bundler -v 1.17.1"
 
     db_user: itedd
     db_password: secret
