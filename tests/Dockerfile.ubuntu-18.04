@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
   software-properties-common \
   systemd \
   git \
+  curl \
   sudo \
   apt-transport-https \
   locales \
