@@ -25,3 +25,13 @@
     chdir: "{{ rails_app_repo_path }}"
     warn: no # creating a release is a complex task that can not be done with the git module
   register: rails_create_release_result
+
+- name: Create GIT_REVISION file in project root
+  shell: >
+    git rev-parse {{ rails_app_git_branch }}
+    | tr -d '\n'
+    > {{ RAILS_APP_RELEASE_PATH }}/{{ rails_release_create_git_version_file_name }}
+  args:
+    chdir: "{{ rails_app_repo_path }}"
+    warn: no
+  when: rails_release_create_git_version_file_name is defined and rails_release_create_git_version_file_name
