@@ -19,4 +19,4 @@ RUN wget "https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacemen
 # Install Ansible inventory file
 RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
-ENTRYPOINT ["/bin/systemd"]
+CMD ["/usr/bin/systemctl"]

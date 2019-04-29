@@ -28,7 +28,7 @@ env:
 
   - distribution: ubuntu
     version: 18.04
-    init: "/bin/systemd"
+    init: /usr/bin/systemctl
     run_opts: ""
     site: hrfilter
 services:
