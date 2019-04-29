@@ -3,6 +3,7 @@ FROM ubuntu:18.04
 # Install Ansible
 RUN apt-get update && apt-get install -y \
   software-properties-common \
+  systemd \
   git \
   sudo \
   apt-transport-https \
@@ -13,3 +14,4 @@ RUN apt-get update && apt-get install -y \
 # Install Ansible inventory file
 RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
+ENTRYPOINT ["/bin/systemd"]
