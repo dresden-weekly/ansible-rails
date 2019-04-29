@@ -1,6 +1,5 @@
 - name: Debian | Install dependencies
   apt:
-    pkg: "{{ item }}"
     update_cache: yes
     state: latest
-  with_items: "{{ rbenv_package_names }}"
+    pkg: "{{ rbenv_package_names }}"

@@ -1,14 +1,12 @@
 - name: install dependencies
   apt:
-    name: "{{ item }}"
     update_cache: true
     cache_valid_time: 3600
-  with_items: "{{ nodejs_dependencies }}"
+    pkg: "{{ nodejs_dependencies }}"
 
 - name: install additional
   apt:
-    name: "{{ item }}"
-  with_items: "{{ nodejs_install }}"
+    pkg: "{{ nodejs_install }}"
 
 - name: add repository and install its signing key
   shell: curl -sL https://deb.nodesource.com/setup_{{ nodejs_version_map[nodejs_version] }} | bash -
@@ -17,6 +15,6 @@
 
 - name: install nodejs
   apt:
-    name: "{{ 'nodejs' if 'nodejs' in nodejs_version else 'iojs' }}"
+    pkg: "{{ 'nodejs' if 'nodejs' in nodejs_version else 'iojs' }}"
     update_cache: true
     state: latest
