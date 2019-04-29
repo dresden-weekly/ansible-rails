@@ -29,7 +29,7 @@ env:
   - distribution: ubuntu
     version: 18.04
     init: /usr/bin/systemctl
-    run_opts: ""
+    run_opts: "--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
     site: hrfilter
 services:
   - docker
@@ -40,6 +40,7 @@ before_install:
   - 'sudo docker pull ${distribution}:${version}'
   # Customize container
   - 'sudo docker build --rm=true --file=tests/Dockerfile.${distribution}-${version} --tag=${distribution}-${version}:ansible tests'
+  - 'sudo docker run --rm --privileged -v /:/host solita/ubuntu-systemd setup'
 
 script:
   - container_id=$(mktemp)
