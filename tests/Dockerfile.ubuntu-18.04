@@ -3,7 +3,6 @@ FROM ubuntu:18.04
 # Install Ansible
 RUN apt-get update && apt-get install -y \
   software-properties-common \
-  python-software-properties \
   git \
   sudo \
   apt-transport-https \
