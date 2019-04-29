@@ -1,8 +1,6 @@
 passenger_main_variables:
   passenger_max_pool_size: 30
   passenger_pool_idle_time: 0
-  passenger_root: "/usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini"
-  passenger_ruby: "/usr/bin/passenger_free_ruby"
 
 # Remove identifing headers like Passenger + Nginx version
 passenger_cloak_headers: true
@@ -17,4 +15,4 @@ passenger_variables:
   passenger_min_instances: 1
   passenger_max_preloader_idle_time: 0
 
-nginx_config_file: "{{app_name}}.conf"
+passenger_site_config_file: "{{app_name}}.conf"

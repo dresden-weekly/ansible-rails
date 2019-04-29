@@ -1,9 +1,22 @@
+# this file will be created by passenger updates
+- copy:
+    dest: /etc/nginx/conf.d/mod-http-passenger.conf
+    content: |
+      ### Begin automatically installed Phusion Passenger config snippet ###
+      passenger_root /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;
+      passenger_ruby /usr/bin/passenger_free_ruby;
+      ### End automatically installed Phusion Passenger config snippet ###
+  name: "Create default passenger module config"
+
 - template: dest=/etc/nginx/conf.d/passenger.conf src=passenger.conf.j2
   notify: nginx reload
+  name: "Link Passenger global config"
 
-- template: dest=/etc/nginx/sites-available/{{nginx_config_file}} src=site.conf.j2
+- template: dest=/etc/nginx/sites-available/{{passenger_site_config_file}} src=site.conf.j2
   notify: nginx reload
+  name: "Create site config"
 
-- file: src=/etc/nginx/sites-available/{{nginx_config_file}} dest=/etc/nginx/sites-enabled/{{app_name}} state=link owner=root group=root
+- file: src=/etc/nginx/sites-available/{{passenger_site_config_file}} dest=/etc/nginx/sites-enabled/{{app_name}} state=link owner=root group=root
   notify: nginx reload
+  name: "Link site config"
 

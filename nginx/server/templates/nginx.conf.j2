@@ -4,6 +4,10 @@ user {{ nginx_user }};
 pid {{ nginx_pid }};
 worker_processes {{ nginx_worker_processes }};
 
+{% if ansible_distribution_version is version('17.04', '>=') %}
+include /etc/nginx/modules-enabled/*.conf;
+{% endif %}
+
 events {
 {% for k,v in nginx_events.items() | list %}
   {{ k }} {{ v }};
