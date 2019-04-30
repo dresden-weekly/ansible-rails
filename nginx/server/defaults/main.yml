@@ -39,3 +39,6 @@ nginx_exclude_templates: []
 # sites that should stay disabled
 nginx_disabled_sites:
 - default
+
+# install from ppa on Debian system, otherwise use shipped
+nginx_install_from_ppa: true

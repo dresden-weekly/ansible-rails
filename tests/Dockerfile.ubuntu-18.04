@@ -1,16 +1,20 @@
-FROM ubuntu-upstart:14.04
+FROM ubuntu:bionic
 
-# Install Ansible
 RUN apt-get update && apt-get install -y \
   software-properties-common \
-  python-software-properties \
   git \
-  sudo \
+	python \
   curl \
+  sudo \
   apt-transport-https \
   locales \
 && apt-add-repository -y ppa:ansible/ansible \
 && apt-get update && apt-get install -y ansible
 
-# Install Ansible inventory file
+RUN curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py --output /usr/bin/systemctl && \
+	chmod +x /usr/bin/systemctl
+
 RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
+
+VOLUME [ "/sys/fs/cgroup", "/run", "/tmp" ]
+

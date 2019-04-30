@@ -15,9 +15,9 @@
   apt_repository: repo='deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ ansible_lsb.codename }} main' state=present update_cache=yes
 
 - name: Pkg | Install nginx passenger packages
-  apt:
-    state: present
-    pkg:
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - "libnginx-mod-http-passenger"
     - "nginx-extras"
     - "passenger"
   notify: nginx restart

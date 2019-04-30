@@ -18,11 +18,19 @@ env:
     version: 14.04
     init: /sbin/init
     run_opts: ""
+    site: itedd
+
   - distribution: ubuntu
     version: 12.04
     init: /sbin/init
     run_opts: ""
+    site: itedd
 
+  - distribution: ubuntu
+    version: 18.04
+    init: /sbin/init
+    run_opts: "--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
+    site: hrfilter
 services:
   - docker
 
@@ -36,17 +44,19 @@ before_install:
 script:
   - container_id=$(mktemp)
     # Run container in detached state
-  - 'sudo docker run --ulimit nofile=1024 --detach --volume="${PWD}":"/etc/ansible/roles/dresden-weekly.Rails":ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"'
+  - 'sudo docker run --privileged --ulimit nofile=1024 --detach --volume="${PWD}":"/etc/ansible/roles/dresden-weekly.Rails":ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"'
 
-  # Ansible syntax check.
-  - 'sudo docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/itedd.yml --syntax-check'
+  - 'sudo docker exec -e ANSIBLE_FORCE_COLOR=1 "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/${site}/playbook.yml --syntax-check || travis_terminate 1;'
 
   # Test role.
-  - 'sudo docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/itedd.yml'
+  - 'sudo docker exec -e ANSIBLE_FORCE_COLOR=1 "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/${site}/playbook.yml || travis_terminate 1;'
+
+  # Post install checks - App running?
+  - 'sudo docker exec "$(cat ${container_id})" env TERM=xterm bash /etc/ansible/roles/dresden-weekly.Rails/tests/${site}/check.sh || travis_terminate 1;'
 
   # Test role idempotence.
   - >-
-    sudo docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/itedd.yml
+    sudo docker exec "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/${site}.yml
     | tee >(sed "s/\\x1B\\[\\([0-9]\\{1,2\}\\(;[0-9]\\{1,2\\}\\)\\?\\)\\?[mGK]//g" | cat >/tmp/output);
     cat /tmp/output
     | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)

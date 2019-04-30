@@ -2,6 +2,7 @@
 - name: Debian | Repo
   apt_repository:
     repo: "{{ nginx_apt_repo }}"
+  when: nginx_install_from_ppa
 
 - name: Debian | Packages
   apt:

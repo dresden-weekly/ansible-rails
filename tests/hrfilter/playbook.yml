@@ -1,0 +1,199 @@
+---
+- hosts: local
+  gather_facts: false
+  pre_tasks:
+    # - name: 'install python'
+    #   raw: apt-get -y update && apt-get -y install python-simplejson
+    - name: install systemctl.py
+      get_url:
+        url: "https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py"
+        dest: /usr/bin/systemctl
+        mode: 0755
+      when: "ansible_connection == 'docker'"
+
+    - name: install python for systemctl.py
+      package: name=python
+      when: "ansible_connection == 'docker'"
+
+    - name: ensure run directory for ansible check_systemd
+      file: name="/run/systemd/system/" state="directory"
+      when: "ansible_connection == 'docker'"
+
+
+- hosts: local
+  become: yes
+  vars:
+    rails_env: production
+    app_secret_key_base: "0edf6fdcbf610f5ad59c665d15deb17af10ff7b40e8a918f928771f885cfbdec"
+    app_group: local
+    app_user: deploy
+    app_path: '/home/deploy/hrfilter'
+    app_name: hrfilter
+    app_domain: "{{ ansible_all_ipv4_addresses | last }}"
+    git_url: "https://github.com/zealot128/filter-app.git"
+    git_branch: master
+    ruby_version: 2.5.3
+    db_user: dbuser
+    db_password: secret
+    db_name: db
+    postgresql_version: "9.6"
+    postgresql_users_role_attr_flags: [CREATEDB, SUPERUSER] # superuser to create extensions
+    bundle_flags:
+      - '--quiet'
+      - '--deployment'
+    bundle_without:
+      - test
+    profile: '/bin/bash -lc -- '
+    rails_sidekiq_enabled: true
+    sidekiq_configuration_queues:
+      - [important, 10]
+      - [default, 2]
+      - [mailers, 1]
+    sidekiq_configuration_concurrency: 1
+
+    rails_deploy_custom_shared_folders: [ 'public/system', 'storage' ]
+    rails_provisioned_files:
+    - file: config/email.yml
+      yaml:
+        :user_name: emailuser
+        :password: emailpassword
+        :address: myemailhost.com
+        :port: '25'
+        :openssl_verify_mode: none
+        :authentication: :plain
+    - file: config/secrets.yml
+      yaml:
+        production:
+          firebase_project_id: "abc"
+          firebase_server_key: "abc"
+          domain_name: hrfilter.de
+          http_username: admin
+          http_password: password
+          secret_key_base: '{{ app_secret_key_base }}'
+          twitter_consumer_key: "abc"
+          twitter_consumer_secret: "abc"
+          twitter_access_token: "abc"
+          twitter_access_token_secret: "abc"
+    - file: config/application.yml
+      yaml:
+        production:
+          site_name: 'HRfilter.de'
+          short_name: 'Hrfilter'
+          from: 'noreply@hrfilter.de'
+          key: 'hrfilter'
+          host: www.hrfilter.de
+          person: Max Mustermann
+          google_site_verification: ""
+          intro: ""
+          tracking_code: ""
+
+    - file: config/database.yml
+      yaml:
+        production:
+          adapter: postgresql
+          database: "{{db_name}}"
+          username: "{{db_user}}"
+          password: "{{db_password}}"
+          encoding: unicode
+          pool: 5
+  tasks:
+    - file:
+        path: '/etc/locale.gen'
+        state: 'absent'
+    - shell: 'locale-gen "en_US.UTF-8"'
+      changed_when: no
+
+    - apt:
+        pkg: 'redis-server'
+      name: "Install Redis"
+
+    - service:
+        name: 'redis-server'
+        state: started
+
+    #- name: Create App User
+    #  user:
+    #    name: "{{ app_user }}"
+    #    shell: /bin/bash
+    #- import_role:
+    #    name: dresden-weekly.Rails/postgresql
+    #- apt: pkg='postgresql-contrib-{{postgresql_version}}'
+
+    #- import_role:
+    #    name: dresden-weekly.Rails/ruby/imagemagick
+    #- import_role:
+    #    name: dresden-weekly.Rails/yarn
+    #- import_role:
+    #    name: dresden-weekly.Rails/ruby/rvm
+    #- import_role:
+    #    name: dresden-weekly.Rails/ruby/postgresql
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/folders
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/logrotate
+    #- import_role:
+    #    name: dresden-weekly.Rails/user/profile
+    #  vars:
+    #    rails_user_name: "{{ app_user }}"
+    #    rails_user_bashrc_lines:
+    #    - "cd {{ RAILS_APP_BASE_PATH }} || true"
+    #    - "cd {{ RAILS_APP_CURRENT_PATH }} || true"
+    #    rails_user_env:
+    #      RAILS_ENV: "{{ rails_env }}"
+    #      RAILS_LOG_FILE_PATH: "{{ RAILS_APP_LOG_PATH }}"
+
+    #- import_role:
+    #    name: dresden-weekly.Rails/nginx/server
+    #  vars:
+    #    # MUST use the distribution shipped, otherwise Passenger does not work
+    #    nginx_install_from_ppa: false
+    #- import_role:
+    #    name: dresden-weekly.Rails/nginx/passenger
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/jobs/sidekiq
+
+    ## Deploy part ###########################
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/folders
+    #  become_user: '{{ app_user }}'
+
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/create-release
+    #  vars:
+    #    rails_release_id: "static" # prevent multiple release_ids
+    #    rails_deploy_custom_archive:
+    #    - bin
+    #    - Gemfile.lock
+    #  become_user: '{{ app_user }}'
+
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/jobs/sidekiq/restart
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/tasks/bundle
+    #  become_user: '{{ app_user }}'
+
+    ## Normally, we would migrate. For this example using a schema:load works better
+    ## because of old migrations
+    ##
+    ## - import_role:
+    ##     name: dresden-weekly.Rails/rails/tasks/migrate-database
+    ##   become_user: '{{ app_user }}'
+    #- name: "Schema:load intial database schema"
+    #  command: "{{ profile }}'bundle exec rake db:schema:load && bundle exec rails r Setting.read_yaml && touch {{RAILS_APP_BASE_PATH}}/.schema_was_run_do_not_remove'"
+    #  args:
+    #    chdir: "{{ RAILS_APP_RELEASE_PATH }}"
+    #    creates: "{{RAILS_APP_BASE_PATH}}/.schema_was_run_do_not_remove"
+    #  become_user: '{{ app_user }}'
+
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/tasks/compile-assets
+    #  become_user: '{{ app_user }}'
+
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/update-current
+    #  become_user: '{{ app_user }}'
+
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/cleanup-old-releases
+    #  become_user: '{{ app_user }}'
+
