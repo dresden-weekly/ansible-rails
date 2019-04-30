@@ -2,8 +2,23 @@
 - hosts: local
   gather_facts: false
   pre_tasks:
-    - name: 'install python'
-      raw: apt-get -y update && apt-get -y install python-simplejson
+    # - name: 'install python'
+    #   raw: apt-get -y update && apt-get -y install python-simplejson
+    - name: install systemctl.py
+      get_url:
+        url: "https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py"
+        dest: /usr/bin/systemctl
+        mode: 0755
+      when: "ansible_connection == 'docker'"
+
+    - name: install python for systemctl.py
+      package: name=python
+      when: "ansible_connection == 'docker'"
+
+    - name: ensure run directory for ansible check_systemd
+      file: name="/run/systemd/system/" state="directory"
+      when: "ansible_connection == 'docker'"
+
 
 - hosts: local
   become: yes
@@ -92,89 +107,93 @@
         pkg: 'redis-server'
       name: "Install Redis"
 
-    - name: Create App User
-      user:
-        name: "{{ app_user }}"
-        shell: /bin/bash
-    - import_role:
-        name: dresden-weekly.Rails/postgresql
-    - apt: pkg='postgresql-contrib-{{postgresql_version}}'
+    - service:
+        name: 'redis-server'
+        state: started
 
-    - import_role:
-        name: dresden-weekly.Rails/ruby/imagemagick
-    - import_role:
-        name: dresden-weekly.Rails/yarn
-    - import_role:
-        name: dresden-weekly.Rails/ruby/rvm
-    - import_role:
-        name: dresden-weekly.Rails/ruby/postgresql
-    - import_role:
-        name: dresden-weekly.Rails/rails/folders
-    - import_role:
-        name: dresden-weekly.Rails/rails/logrotate
-    - import_role:
-        name: dresden-weekly.Rails/user/profile
-      vars:
-        rails_user_name: "{{ app_user }}"
-        rails_user_bashrc_lines:
-        - "cd {{ RAILS_APP_BASE_PATH }} || true"
-        - "cd {{ RAILS_APP_CURRENT_PATH }} || true"
-        rails_user_env:
-          RAILS_ENV: "{{ rails_env }}"
-          RAILS_LOG_FILE_PATH: "{{ RAILS_APP_LOG_PATH }}"
+    #- name: Create App User
+    #  user:
+    #    name: "{{ app_user }}"
+    #    shell: /bin/bash
+    #- import_role:
+    #    name: dresden-weekly.Rails/postgresql
+    #- apt: pkg='postgresql-contrib-{{postgresql_version}}'
 
-    - import_role:
-        name: dresden-weekly.Rails/nginx/server
-      vars:
-        # MUST use the distribution shipped, otherwise Passenger does not work
-        nginx_install_from_ppa: false
-    - import_role:
-        name: dresden-weekly.Rails/nginx/passenger
-    - import_role:
-        name: dresden-weekly.Rails/rails/jobs/sidekiq
+    #- import_role:
+    #    name: dresden-weekly.Rails/ruby/imagemagick
+    #- import_role:
+    #    name: dresden-weekly.Rails/yarn
+    #- import_role:
+    #    name: dresden-weekly.Rails/ruby/rvm
+    #- import_role:
+    #    name: dresden-weekly.Rails/ruby/postgresql
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/folders
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/logrotate
+    #- import_role:
+    #    name: dresden-weekly.Rails/user/profile
+    #  vars:
+    #    rails_user_name: "{{ app_user }}"
+    #    rails_user_bashrc_lines:
+    #    - "cd {{ RAILS_APP_BASE_PATH }} || true"
+    #    - "cd {{ RAILS_APP_CURRENT_PATH }} || true"
+    #    rails_user_env:
+    #      RAILS_ENV: "{{ rails_env }}"
+    #      RAILS_LOG_FILE_PATH: "{{ RAILS_APP_LOG_PATH }}"
 
-    # Deploy part ###########################
-    - import_role:
-        name: dresden-weekly.Rails/rails/folders
-      become_user: '{{ app_user }}'
+    #- import_role:
+    #    name: dresden-weekly.Rails/nginx/server
+    #  vars:
+    #    # MUST use the distribution shipped, otherwise Passenger does not work
+    #    nginx_install_from_ppa: false
+    #- import_role:
+    #    name: dresden-weekly.Rails/nginx/passenger
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/jobs/sidekiq
 
-    - import_role:
-        name: dresden-weekly.Rails/rails/create-release
-      vars:
-        rails_release_id: "static" # prevent multiple release_ids
-        rails_deploy_custom_archive:
-        - bin
-        - Gemfile.lock
-      become_user: '{{ app_user }}'
+    ## Deploy part ###########################
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/folders
+    #  become_user: '{{ app_user }}'
 
-    - import_role:
-        name: dresden-weekly.Rails/rails/jobs/sidekiq/restart
-    - import_role:
-        name: dresden-weekly.Rails/rails/tasks/bundle
-      become_user: '{{ app_user }}'
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/create-release
+    #  vars:
+    #    rails_release_id: "static" # prevent multiple release_ids
+    #    rails_deploy_custom_archive:
+    #    - bin
+    #    - Gemfile.lock
+    #  become_user: '{{ app_user }}'
 
-    # Normally, we would migrate. For this example using a schema:load works better
-    # because of old migrations
-    #
-    # - import_role:
-    #     name: dresden-weekly.Rails/rails/tasks/migrate-database
-    #   become_user: '{{ app_user }}'
-    - name: "Schema:load intial database schema"
-      command: "{{ profile }}'bundle exec rake db:schema:load && bundle exec rails r Setting.read_yaml && touch {{RAILS_APP_BASE_PATH}}/.schema_was_run_do_not_remove'"
-      args:
-        chdir: "{{ RAILS_APP_RELEASE_PATH }}"
-        creates: "{{RAILS_APP_BASE_PATH}}/.schema_was_run_do_not_remove"
-      become_user: '{{ app_user }}'
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/jobs/sidekiq/restart
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/tasks/bundle
+    #  become_user: '{{ app_user }}'
 
-    - import_role:
-        name: dresden-weekly.Rails/rails/tasks/compile-assets
-      become_user: '{{ app_user }}'
+    ## Normally, we would migrate. For this example using a schema:load works better
+    ## because of old migrations
+    ##
+    ## - import_role:
+    ##     name: dresden-weekly.Rails/rails/tasks/migrate-database
+    ##   become_user: '{{ app_user }}'
+    #- name: "Schema:load intial database schema"
+    #  command: "{{ profile }}'bundle exec rake db:schema:load && bundle exec rails r Setting.read_yaml && touch {{RAILS_APP_BASE_PATH}}/.schema_was_run_do_not_remove'"
+    #  args:
+    #    chdir: "{{ RAILS_APP_RELEASE_PATH }}"
+    #    creates: "{{RAILS_APP_BASE_PATH}}/.schema_was_run_do_not_remove"
+    #  become_user: '{{ app_user }}'
 
-    - import_role:
-        name: dresden-weekly.Rails/rails/update-current
-      become_user: '{{ app_user }}'
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/tasks/compile-assets
+    #  become_user: '{{ app_user }}'
 
-    - import_role:
-        name: dresden-weekly.Rails/rails/cleanup-old-releases
-      become_user: '{{ app_user }}'
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/update-current
+    #  become_user: '{{ app_user }}'
+
+    #- import_role:
+    #    name: dresden-weekly.Rails/rails/cleanup-old-releases
+    #  become_user: '{{ app_user }}'
 

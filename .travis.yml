@@ -28,7 +28,7 @@ env:
 
   - distribution: ubuntu
     version: 18.04
-    init: /usr/bin/systemctl
+    init: /sbin/init
     run_opts: "--security-opt seccomp=unconfined --tmpfs /run --tmpfs /run/lock -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
     site: hrfilter
 services:
@@ -40,12 +40,11 @@ before_install:
   - 'sudo docker pull ${distribution}:${version}'
   # Customize container
   - 'sudo docker build --rm=true --file=tests/Dockerfile.${distribution}-${version} --tag=${distribution}-${version}:ansible tests'
-  - 'sudo docker run --rm --privileged -v /:/host solita/ubuntu-systemd setup'
 
 script:
   - container_id=$(mktemp)
     # Run container in detached state
-  - 'sudo docker run --ulimit nofile=1024 --detach --volume="${PWD}":"/etc/ansible/roles/dresden-weekly.Rails":ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"'
+  - 'sudo docker run --privileged --ulimit nofile=1024 --detach --volume="${PWD}":"/etc/ansible/roles/dresden-weekly.Rails":ro ${run_opts} ${distribution}-${version}:ansible "${init}" > "${container_id}"'
 
   - 'sudo docker exec -e ANSIBLE_FORCE_COLOR=1 "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/dresden-weekly.Rails/tests/${site}/playbook.yml --syntax-check || travis_terminate 1;'
 

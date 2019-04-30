@@ -1,7 +1,5 @@
-# FROM ubuntu:18.04
-FROM solita/ubuntu-systemd:18.04
+FROM ubuntu:bionic
 
-# Install Ansible
 RUN apt-get update && apt-get install -y \
   software-properties-common \
   git \
@@ -13,13 +11,10 @@ RUN apt-get update && apt-get install -y \
 && apt-add-repository -y ppa:ansible/ansible \
 && apt-get update && apt-get install -y ansible
 
-# RUN curl "https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py" --output /usr/bin/systemctl && \
-# 	chmod +x /usr/bin/systemctl && \
-# 	mkdir /run/systemd/system/
+RUN curl https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py --output /usr/bin/systemctl && \
+	chmod +x /usr/bin/systemctl
 
-# RUN test -L /bin/systemctl || ln -sf /usr/bin/systemctl /bin/systemctl
-
-# Install Ansible inventory file
 RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 
-# CMD ["/usr/bin/systemctl"]
+VOLUME [ "/sys/fs/cgroup", "/run", "/tmp" ]
+
