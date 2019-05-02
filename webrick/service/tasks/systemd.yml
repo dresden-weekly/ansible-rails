@@ -14,6 +14,36 @@
   when: >
     'Failed' in systemd_linger_enabled_test.stderr
 
+
+
+- name: ps aux
+  command: "ps aux"
+  register: psaux 
+- debug: var=psaux
+
+
+
+- name: systemctl status
+  command: "systemctl status user@deploy"
+  register: systemctl
+  failed_when: false
+- debug: var=systemctl
+
+- become_user: "{{ webrick_user }}"
+  block:      
+    - name: env
+      command: "env"
+      register: envc 
+    - debug: var=envc
+
+    
+- command: "sudo -iu {{ webrick_user }} env"
+  register: envs
+- debug: var=envs
+
+
+
+
 - become_user: "{{ webrick_user }}"
   block:
     - name: "Systemd | Ensure complete .profile"
@@ -21,6 +51,13 @@
         dest: "~/.profile"
         regexp: "^export XDG_RUNTIME_DIR="
         line: "export XDG_RUNTIME_DIR=/run/user/`id -u`"
+
+- become_user: "{{ webrick_user }}"
+  block:
+    - name: env
+      command: "env"
+      register: envc 
+    - debug: var=envc
 
     - name: Systemd | Ensure the user units folder exists
       file:
@@ -31,6 +68,14 @@
       template:
         dest: "{{ webrick_systemd_unit }}"
         src: systemd.service.j2
+      failed_when: false
+
+    - name: Systemd | Enable unit at boot
+      shell: "/bin/bash -lc -- 'env'"
+      register: envb
+
+    - debug: var=envb
+
 
     - name: Systemd | Enable unit at boot
       shell: "/bin/bash -lc -- 'systemctl --user enable {{ webrick_service_name }}.service'"
