@@ -1,6 +1,6 @@
 ---
 - name: Check GPG keys
-  command: 'gpg --list-keys {{ item }}'
+  command: 'gpg2 --list-keys {{ item }}'
   failed_when: no
   changed_when: no
   register: rvm_gpg_keys_checks
@@ -9,7 +9,7 @@
   with_items: "{{ rvm_gpg_keys_list }}"
 
 - name: Import GPG keys
-  command: 'gpg --keyserver {{ rvm_gpg_key_server }} --recv-keys {{ rvm_gpg_keys_list[item.0] }}'
+  command: 'gpg2 --keyserver {{ rvm_gpg_key_server }} --recv-keys {{ rvm_gpg_keys_list[item.0] }}'
   ignore_errors: yes
   register: rvm_import_gpg_keys_result
   become: yes
@@ -23,7 +23,7 @@
   when: item.item.1.rc != 0
 
 - name: Alternative GPG keys
-  shell: 'curl -sSL {{ rvm_gpg_key_alternative_url }} | gpg --import -'
+  shell: 'curl -sSL {{ rvm_gpg_key_alternative_url }} | gpg2 --import -'
   become: yes
   become_user: "{{ rvm_user }}"
   when: rvm_gpg_failed is defined and rvm_gpg_failed
