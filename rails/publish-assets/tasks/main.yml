@@ -1,12 +1,8 @@
 ---
-- name: Distribute release id
+- name: Distribute release id and path
   set_fact:
     RAILS_APP_RELEASE_ID: "{{ rails_app_server_release_id }}"
-  tags: [always]
-
-- name: Define release path
-  set_fact:
-    RAILS_APP_RELEASE_PATH: "{{ RAILS_APP_RELEASES_PATH }}/{{ RAILS_APP_RELEASE_ID }}"
+    RAILS_APP_RELEASE_PATH: "{{ RAILS_APP_RELEASES_PATH }}/{{ rails_app_server_release_id }}"
   tags: [always]
 
 - name: Create folders
@@ -23,7 +19,7 @@
   shell: >
     scp -r -3
     {{ app_user }}@{{ rails_app_server }}:{{ rails_app_server_assets_path }}
-    {{ app_user }}@{{ inventory_hostname }}:{{ RAILS_APP_RELEASE_PATH }}/
+    {{ app_user }}@{{ ansible_hostname }}:{{ RAILS_APP_RELEASE_PATH }}/
   become: no # ssh_agent is used
   delegate_to: 127.0.0.1
   when: not rails_publish_assets_path_result.stat.exists

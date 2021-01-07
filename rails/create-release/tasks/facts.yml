@@ -1,10 +1,6 @@
 ---
-- name: Define release ID
+- name: Define release ID and path
   set_fact:
     RAILS_APP_RELEASE_ID: "{{ rails_release_id }}"
-  tags: [always]
-
-- name: Define release path
-  set_fact:
-    RAILS_APP_RELEASE_PATH: "{{ RAILS_APP_RELEASES_PATH }}/{{ RAILS_APP_RELEASE_ID }}"
+    RAILS_APP_RELEASE_PATH: "{{ RAILS_APP_RELEASES_PATH }}/{{ rails_release_id }}"
   tags: [always]
