@@ -13,8 +13,10 @@ postgresql_packages:
 postgresql_python_packages:
 - python-psycopg2
 
-postgresql_config_path: "/var/lib/pgsql/{{ postgresql_version }}/data"
-postgresql_data_path: "/var/lib/pgsql/{{ postgresql_version }}/data"
+postgresql_config_basepath: "/var/lib/pgsql"
+postgresql_data_basepath: "/var/lib/pgsql"
+postgresql_config_path: "{{ postgresql_config_basepath }}/{{ postgresql_version }}/data"
+postgresql_data_path: "{{ postgresql_data_basepath }}/{{ postgresql_version }}/data"
 postgresql_pid_file: "/tmp/.s.PGSQL.5432.pid"
 
 postgresql_service: "postgresql-{{ postgresql_version }}"

@@ -68,6 +68,15 @@
   become: yes
   become_user: "{{ postgresql_user }}"
 
+- name: Relotate
+  include_tasks: relocate.yml
+  loop:
+    - "{{ postgresql_config_basepath }}"
+    - "{{ postgresql_data_basepath }}"
+  loop_control:
+    loop_var: src_basepath
+  when: postgresql_relocate_basepath != ''
+
 - name: Connection URL
   set_fact:
     DATABASE_URL: "{{ lookup('template', '../templates/database_url.j2') | trim }}"

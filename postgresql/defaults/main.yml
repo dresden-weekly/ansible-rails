@@ -70,3 +70,6 @@ postgresql_client_connection_defaults:
 
 postgresql_lock_management: {}
 postgresql_cutomized: {}
+
+# set to relocate the database and config to this path
+postgresql_relocate_basepath: ''
