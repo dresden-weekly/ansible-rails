@@ -72,7 +72,7 @@
 - name: Relotate
   include_tasks: relocate.yml
   loop:
-    - "{{ postgresql_config_basepath }}"
+    # - "{{ postgresql_config_basepath }}" # pg_upgradecluster scripts fail with this!
     - "{{ postgresql_data_basepath }}"
   loop_control:
     loop_var: src_basepath

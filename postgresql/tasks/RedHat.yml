@@ -25,12 +25,9 @@
 
 - name: RedHat | Install packages
   yum:
-    pkg: "{{ item }}"
-    update_cache: yes
+    pkg: "{{ [postgresql_packages, postgresql_python_packages] | flatten }}"
     state: latest
-  with_flattened:
-  - "{{ postgresql_packages }}"
-  - "{{ postgresql_python_packages }}" # allow ansible to access postgresql
+    update_cache: yes
 
 - name: RedHat | Initialize PostgreSQL
   shell: "/usr/pgsql-{{ postgresql_version }}/bin/postgresql{{ postgresql_org_version }}-setup initdb"

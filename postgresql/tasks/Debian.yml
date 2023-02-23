@@ -9,10 +9,7 @@
 
 - name: Debian | Packages
   apt:
-    pkg:              "{{ item }}"
-    update_cache:     yes
-    state:            latest
+    pkg: "{{ [postgresql_packages, postgresql_python_packages] | flatten }}"
+    state: latest
+    update_cache: yes
     cache_valid_time: 86400
-  with_flattened:
-  - "{{ postgresql_packages }}"
-  - "{{ postgresql_python_packages }}" # allow ansible to access postgresql
