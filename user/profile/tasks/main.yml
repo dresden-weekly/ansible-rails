@@ -4,7 +4,7 @@
     dest: "~/.profile"
     regexp: "^export {{ item.key }}="
     line: "export {{ item.key }}={{ item.value }}"
-  become: yes
+  become: true
   become_user: "{{ rails_user_name }}"
   when: item.value != ''
   with_dict: "{{ rails_user_env }}"
@@ -20,7 +20,7 @@
           | default(groups[item.0.group][item.0.index | default(0)])
         ][item.1]
       }}
-  become: yes
+  become: true
   become_user: "{{ rails_user_name }}"
   when: >
     (item.1 not in rails_user_env)
@@ -46,6 +46,6 @@
     dest: ~/.bashrc
     line: "{{ item }}"
     create: yes
-  become: yes
+  become: true
   become_user: "{{ rails_user_name }}"
   with_items: "{{ rails_user_bashrc_lines }}"

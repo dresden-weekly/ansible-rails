@@ -11,5 +11,5 @@
   template:
     dest: "{{ webrick_upstart_conf | replace('\n', '') }}"
     src: "upstart.conf.j2"
-  become: yes
+  become: true
   become_user: "{{ webrick_user }}"

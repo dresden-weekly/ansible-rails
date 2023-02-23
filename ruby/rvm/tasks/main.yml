@@ -22,7 +22,7 @@
   args:
     creates: ~/.rvm
     warn: no # don't show the curl warning (get_url can't pipe the script to bash)
-  become: yes
+  become: true
   become_user: "{{ rvm_user }}"
 
 - name: Ruby versions
@@ -32,7 +32,7 @@
     {{ item }}
   args:
     creates: "~/.rvm/rubies/ruby-{{ item }}"
-  become: yes
+  become: true
   become_user: "{{ rvm_user }}"
   with_flattened:
   - "{{ rvm_rubies }}"
@@ -45,19 +45,19 @@
 - name: Ruby Path
   shell: >
     {{ RUBY_PREFIX }} rvm gemdir
-  become: yes
+  become: true
   become_user: "{{ rvm_user }}"
   register: ruby_rvm_ruby_path_result
   changed_when: no
 
 - name: Facts
   set_fact:
-   RUBY_BIN: '{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}/wrappers/ruby'
+    RUBY_BIN: '{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}/wrappers/ruby'
 
 - name: Gem Version
   shell: >
     {{ RUBY_PREFIX }} gem --version
-  become: yes
+  become: true
   become_user: "{{ rvm_user }}"
   register: ruby_rvm_gem_version_result
   changed_when: no
@@ -65,7 +65,7 @@
 - name: Gem Update System
   shell: >
     {{ RUBY_PREFIX }} gem update --system {{ rvm_gem_version }}
-  become: yes
+  become: true
   become_user: "{{ rvm_user }}"
   when: rvm_gem_version != '' and rvm_gem_version != ruby_rvm_gem_version_result.stdout
   register: ruby_rvm_gem_update_system_result
@@ -76,7 +76,7 @@
   shell: >
     {{ RUBY_PREFIX }} gem list
     | if ! grep "^{{ item }} " ; then {{ RUBY_PREFIX }} gem install {{ item }} ; fi
-  become: yes
+  become: true
   become_user: "{{ rvm_user }}"
   with_flattened:
   - "{{ rvm_install_gems }}"

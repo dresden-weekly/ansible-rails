@@ -1,6 +1,6 @@
 ---
 - hosts: local
-  become: yes
+  become: true
   vars:
     rails_env: production
     app_secret_key_base: "0edf6fdcbf610f5ad59c665d15deb17af10ff7b40e8a918f928771f885cfbdec"

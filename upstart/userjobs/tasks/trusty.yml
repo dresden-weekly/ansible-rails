@@ -30,6 +30,6 @@
     line: 'export XDG_RUNTIME_DIR=/run/user/$(id -u) && export UPSTART_SESSION=$(initctl list-sessions | cut "-d " -f2)'
     regexp: "^export\ XDG_RUNTIME_DIR"
     create: yes
-  become: yes
+  become: true
   become_user: "{{ item }}"
   with_items: "{{ users }}"

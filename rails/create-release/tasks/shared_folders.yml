@@ -13,7 +13,7 @@
     src: "{{ RAILS_APP_SHARED_PATH }}/{{ item }}"
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: link
-    force: yes
+    force: true
   with_flattened:
   - "{{ rails_deploy_shared_folders }}"
   - "{{ rails_deploy_custom_shared_folders }}"
@@ -24,7 +24,7 @@
     src: "{{ RAILS_APP_SHARED_PATH }}/{{ item }}"
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: link
-    force: yes
+    force: true
   with_flattened:
   - "{{ rails_shared_files }}"
 
@@ -33,6 +33,6 @@
     src: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item.file }}"
     state: link
-    force: yes
+    force: true
   with_flattened:
   - "{{ rails_provisioned_files }}"

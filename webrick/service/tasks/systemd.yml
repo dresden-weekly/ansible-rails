@@ -5,12 +5,12 @@
   failed_when: >
     'command not found' in systemd_linger_enabled_test.stderr
   register: systemd_linger_enabled_test
-  become: yes
+  become: true
 
 - name: "Systemd | Enabled linger for {{ webrick_user }}"
   shell: "loginctl enable-linger {{ webrick_user }}"
   changed_when: true
-  become: yes
+  become: true
   when: >
     'Failed' in systemd_linger_enabled_test.stderr
 

@@ -8,7 +8,7 @@
   template:
     dest: "{{ puma_config_file }}"
     src: "puma.rb.j2"
-  become: yes
+  become: true
   become_user: "{{ puma_user }}"
 
 - include: "{{ puma_service_type }}.yml"

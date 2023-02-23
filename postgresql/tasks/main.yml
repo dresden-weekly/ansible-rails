@@ -40,8 +40,8 @@
   changed_when: >
     postgresql_update_template_result.stdout is defined
     and 'UPDATE 0' != postgresql_update_template_result.stdout
-  ignore_errors: yes
-  become: yes
+  ignore_errors: true
+  become: true
   become_user: "{{ postgresql_user }}"
 
 - name: Users
@@ -49,9 +49,10 @@
     name: "{{ item.name }}"
     password: "{{ item.password }}"
     role_attr_flags: "{{ item.role_attr_flags | default(postgresql_users_role_attr_flags) | join(',') | replace('\\n', '') }}"
+    encrypted: true
   when: item.name != ''
   with_items: "{{ postgresql_users }}"
-  become: yes
+  become: true
   become_user: "{{ postgresql_user }}"
 
 - name: Databases
@@ -65,7 +66,7 @@
     state: present
   when: item.name != ''
   with_items: "{{ postgresql_databases }}"
-  become: yes
+  become: true
   become_user: "{{ postgresql_user }}"
 
 - name: Relotate

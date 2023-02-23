@@ -2,7 +2,7 @@
 - name: RedHat | Restart
   service: name={{ unicorn_service_name }} state=restarted
   register: rails_unicorn_restarted
-  become: yes
+  become: true
   become_user: root
   when: rails_unicorn_restart.stat.exists
 

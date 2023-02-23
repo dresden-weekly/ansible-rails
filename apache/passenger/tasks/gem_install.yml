@@ -9,7 +9,7 @@
 - name: install compatible rack version
   command: >
     {{ RUBY_PREFIX }} gem install rack --version '1.6.4'
-  become: yes
+  become: true
   become_user: "{{ app_user }}"
   register: rack_gem_install_result
   changed_when: >
@@ -22,7 +22,7 @@
     then
       {{ RUBY_PREFIX }} gem install {{ item }} --version "{{ apache_passenger_gem_version }}"
     fi
-  become: yes
+  become: true
   become_user: "{{ app_user }}"
   with_flattened:
   - "{{ apache_passenger_gem_name }}"
@@ -33,14 +33,14 @@
 - name: install passenger
   shell: |
     {{ RUBY_PREFIX }} passenger-install-apache2-module --auto
-  become: yes
+  become: true
   become_user: "{{ app_user }}"
   when: apache_passenger_gem_install_result.changed
 
 - name: extract passenger gem path
   shell: |
     {{ RUBY_PREFIX }} ruby -e 'require "rubygems"; puts Gem::Specification.find_by_name("{{ apache_passenger_gem_name }}").gem_dir'
-  become: yes
+  become: true
   become_user: "{{ app_user }}"
   changed_when: no
   register: apache_passenger_gem_path_result

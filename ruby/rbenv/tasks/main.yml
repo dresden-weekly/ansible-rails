@@ -10,7 +10,7 @@
     repo: "https://github.com/sstephenson/rbenv.git"
     dest: "~/.rbenv"
     depth: 1
-  become: yes
+  become: true
   become_user: "{{ rbenv_user }}"
 
 - name: Install ruby-build
@@ -18,7 +18,7 @@
     repo: "https://github.com/sstephenson/ruby-build.git"
     dest: "~/.rbenv/plugins/ruby-build"
     depth: 1
-  become: yes
+  become: true
   become_user: "{{ rbenv_user }}"
 
 - name: Ensure {{ rbenv_shell_rc }} exists
@@ -56,7 +56,7 @@
   shell: "{{ rbenv_ruby_configure_opts | default('') }} ~/.rbenv/bin/rbenv install {{ item }}"
   args:
     creates: "~/.rbenv/versions/{{ item }}"
-  become: yes
+  become: true
   become_user: "{{ rbenv_user }}"
   with_flattened:
   - "{{ rbenv_rubies }}"
@@ -66,12 +66,12 @@
   shell: '~/.rbenv/bin/rbenv version | grep -oE "^[^ ]+"'
   changed_when: no
   register: rbenv_current_version
-  become: yes
+  become: true
   become_user: "{{ rbenv_user }}"
 
 - name: Set default ruby
   shell: "~/.rbenv/bin/rbenv global {{ ruby_version }}"
-  become: yes
+  become: true
   become_user: "{{ rbenv_user }}"
   when: rbenv_current_version.stdout != ruby_version
 
@@ -80,12 +80,12 @@
   failed_when: no
   changed_when: no
   register: rbenv_bundle_available
-  become: yes
+  become: true
   become_user: "{{ rbenv_user }}"
 
 - name: Install Bundler
   shell: "~/.rbenv/shims/gem install bundler"
-  become: yes
+  become: true
   become_user: "{{ rbenv_user }}"
   when: rbenv_bundle_available.rc != 0 and rbenv_bundle_available.rc != 10
 

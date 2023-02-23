@@ -2,7 +2,7 @@
 - name: RedHat | Restart
   service: name={{ webrick_service_name }} state=restarted
   register: rails_webrick_restarted
-  become: yes
+  become: true
   become_user: root
   when: rails_webrick_restart.stat.exists
 
