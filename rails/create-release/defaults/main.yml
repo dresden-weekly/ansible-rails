@@ -46,11 +46,15 @@ rails_deploy_custom_create_folders: [] # custom folders that are created for eac
 
 # Webpacker / yarn default settings
 rails_webpacker: no
+
 rails_deploy_webpacker_archive:
 - yarn.lock
 - package.json
-- .babelrc
-- .postcssrc.yml
+- "{% if rails_webpacker_use_webpacker == 4 %}babel.config.js{% else %}.babelrc{% endif %}"
+- "{% if rails_webpacker_use_webpacker == 4 %}postcss.config.js{% else %}.postcssrc.yml{% endif %}"
+
+
+
 
 rails_deploy_webpacker_pack_dir: public/packs
 rails_deploy_custom_shared_webpacker_folders: ['{{rails_deploy_webpacker_pack_dir}}', 'node_modules']

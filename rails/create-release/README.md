@@ -34,13 +34,16 @@ Those file will be placed relativ to the shared folders and symlinked into the r
 
 Just set this variable in your provisioning/deployment:
 
-```
+```yaml
 rails_webpacker: yes
+
+# if you are using Webpacker 4+, change that to:
+rails_webpacker: 4
 ```
 
 This will:
 
-1. (this role) Export these files from git in addition to the defaults: yarn.lock package.json .babelrc .postcssrc.yml
+1. (this role) Export these files from git in addition to the defaults: yarn.lock package.json .babelrc .postcssrc.yml (babel.config.js and postcss.config.js if using Webpacker 4)
 2. (this role) Keep/Symlink public/packs and node_modules between deployments
 3. (asset precompilation) ``rake yarn:install`` is run by ``rails assets:precompile`` (from +5.1), if a bin/yarn binstub is provided. **NOTE** without that binstub no node_modules are installed! Make sure to add it with ``rails app:update:bin`` and commit to your app repo.
 
