@@ -3,6 +3,7 @@
 rails_release_id: "{{ rails_release_id_time }}"
 rails_release_id_time: "{{ [ansible_date_time.year, ansible_date_time.month, ansible_date_time.day, ansible_date_time.hour, ansible_date_time.minute, ansible_date_time.second] | join('') }}"
 rails_release_id_git_branch: "{{ git_branch }}"
+rails_release_create_git_version_file_name: "GIT_REVISION"
 
 # git repository where rails app taken from
 rails_app_git_repo: "{{ git_url }}"
