@@ -1,0 +1,29 @@
+- include_tasks: Debian.yml
+  when: ansible_os_family == "Debian"
+
+
+- name: Enable systemd User Manager
+  systemd:
+    name: user@{{ item }}
+    state: started
+  loop: "{{ users }}"
+
+
+- command: systemctl status user@deploy
+  register: foo
+  failed_when: false
+- debug: var=foo
+
+- command: ps aux
+  register: psaux
+- debug: var=psaux
+
+
+- name: Check for systemd user session
+  shell: 'ps aux | grep "systemd --user" | grep -v grep'
+  register: bar
+  failed_when: bar.stdout == ""
+
+
+- name: Print out result
+  debug: var=bar

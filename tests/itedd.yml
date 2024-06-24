@@ -43,18 +43,18 @@
     #         pool: 5
 
   pre_tasks:
-    - file:
-        path: '/etc/locale.gen'
-        state: 'absent'
-    - shell: 'locale-gen "en_US.UTF-8"'
-      changed_when: no
-
     - name: Create App User
       user:
         name: "{{ app_user }}"
         shell: /bin/bash
 
   roles:
+  
+    - role: dresden-weekly.Rails/systemd/usermanager
+      users:
+      - "{{ app_user }}"
+      when: ansible_service_mgr == "systemd"
+      
     - dresden-weekly.Rails/postgresql
 
     - dresden-weekly.Rails/ruby/rvm
@@ -78,6 +78,13 @@
     - role: dresden-weekly.Rails/upstart/userjobs
       users:
       - "{{ app_user }}"
+      when: ansible_service_mgr == "upstart"
+      
+    - role: dresden-weekly.Rails/systemd/usermanager
+      users:
+      - "{{ app_user }}"
+      when: ansible_service_mgr == "systemd"
+
     - dresden-weekly.Rails/webrick/service
     - dresden-weekly.Rails/nginx/server
     - dresden-weekly.Rails/nginx/webrick
