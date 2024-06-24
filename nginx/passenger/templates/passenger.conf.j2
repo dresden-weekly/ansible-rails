@@ -10,3 +10,5 @@ more_clear_headers 'X-Request-Id';
 more_clear_headers 'X-Runtime';
 more_set_headers 'Server: nginx';
 {% endif %}
+
+gzip_types {{nginx_gzip_types}};
