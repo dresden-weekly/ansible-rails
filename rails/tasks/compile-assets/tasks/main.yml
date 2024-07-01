@@ -3,7 +3,7 @@
 #
 ---
 - name: Precompile assets
-  command: "{{ profile }}'bundle exec rake assets:precompile'"
+  ansible.builtin.command: "{{ profile }}'bundle exec rake assets:precompile'"
   args:
     chdir: "{{ RAILS_APP_RELEASE_PATH }}"
   register: rails_compile_assets_result

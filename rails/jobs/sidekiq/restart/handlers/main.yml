@@ -1,5 +1,8 @@
-- name: restart sidekiq (upstart)
-  shell: "{{ profile }}'restart {{ sidekiq_job_name }} || start {{ sidekiq_job_name }}'"
+---
+- name: Restart sidekiq (upstart)
+  ansible.builtin.shell: "{{ profile }}'restart {{ sidekiq_job_name }} || start {{ sidekiq_job_name }}'"
+  changed_when: true
 
-- name: restart sidekiq (systemd)
-  shell: 'sudo -n /bin/systemctl restart {{sidekiq_job_name}}'
+- name: Restart sidekiq (systemd)
+  ansible.builtin.command: 'sudo -n /bin/systemctl restart {{ sidekiq_job_name }}'
+  changed_when: true

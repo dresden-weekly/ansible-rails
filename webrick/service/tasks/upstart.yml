@@ -1,15 +1,18 @@
 ---
-- set_fact:
+- name: Upstart Event user-jobs
+  ansible.builtin.set_fact:
     upstart_start_on_event: user-jobs
   when: (ansible_distribution == 'Ubuntu') and (ansible_lsb.major_release|int <= 13)
 
-- set_fact:
+- name: Upstart Event startup
+  ansible.builtin.set_fact:
     upstart_start_on_event: startup
   when: (ansible_distribution == 'Ubuntu') and (ansible_lsb.major_release|int >= 14)
 
 - name: Debian | upstart script
-  template:
+  ansible.builtin.template:
     dest: "{{ webrick_upstart_conf | replace('\n', '') }}"
     src: "upstart.conf.j2"
+    mode: "644"
   become: true
   become_user: "{{ webrick_user }}"

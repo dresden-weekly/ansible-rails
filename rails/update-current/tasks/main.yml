@@ -3,10 +3,10 @@
 #
 ---
 - name: Link current
-  file:
+  ansible.builtin.file:
     src: "{{ RAILS_APP_RELEASE_PATH }}"
     path: "{{ RAILS_APP_CURRENT_PATH }}"
     state: link
-    force: yes
+    force: true
   notify:
-  - restart rails app
+    - Restart rails app

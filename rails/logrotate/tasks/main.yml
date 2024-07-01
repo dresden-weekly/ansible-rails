@@ -1,11 +1,14 @@
 ---
-
-- include: RedHat.yml
+- name: Redhat
+  ansible.builtin.include_tasks: RedHat.yml
   when: ansible_os_family == "RedHat"
-- include: Debian.yml
+
+- name: Debian
+  ansible.builtin.include_tasks: Debian.yml
   when: ansible_os_family == "Debian"
 
 - name: Configure
-  template:
+  ansible.builtin.template:
     dest: "{{ etc_logrotate_path }}/{{ rails_logrotate_name }}"
     src: "logrotate.j2"
+    mode: "644"

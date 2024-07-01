@@ -1,8 +1,9 @@
 - name: Tell sidekiq to not accept new work
-  shell: 'sudo -n /bin/systemctl kill -s USR1 {{sidekiq_job_name}}'
-  ignore_errors: true
+  ansible.builtin.command: 'sudo -n /bin/systemctl kill -s USR1 {{ sidekiq_job_name }}'
+  failed_when: false
+  changed_when: true
 
-- command: '/bin/true'
-  name: 'Make sure sidekiq is started at the end'
-  notify: restart sidekiq (systemd)
-
+- name: 'Make sure sidekiq is started at the end'
+  ansible.builtin.command: '/bin/true'
+  notify: Restart sidekiq (systemd)
+  changed_when: true

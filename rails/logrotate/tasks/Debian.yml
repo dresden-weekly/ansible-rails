@@ -1,7 +1,7 @@
 ---
 - name: Debian | Packages
-  apt:
-    update_cache: yes
+  ansible.builtin.apt:
+    pkg: "{{ logrotate_packages }}"
     state: present
-    cache_valid_time: 86400
-    pkg: "{{ logrotate_packages }}"
+    update_cache: true
+    cache_valid_time: 3600

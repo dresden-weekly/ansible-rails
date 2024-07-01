@@ -1,7 +1,7 @@
 nodejs_version: 'nodejs-v6x'
 
 nodejs_install:
-- build-essential
+  - build-essential
 
 nodejs_version_map:
   nodejs-v11x: '11.x'
@@ -22,12 +22,12 @@ nodejs_dependencies:
   - curl
 
 yarn_repositories:
-- type: deb
-  url: 'https://dl.yarnpkg.com/debian/ stable'
-  component: main
+  - type: deb
+    url: 'https://dl.yarnpkg.com/debian/ stable'
+    component: main
 
 yarn_dependencies_pre:
-- apt-transport-https
+  - apt-transport-https
 
 yarn_dependencies:
-- yarn
+  - yarn

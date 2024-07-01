@@ -2,13 +2,15 @@
 # perform a bundle run
 #
 ---
-- include_vars: RedHat.yml
+- name: Redhat Vars
+  ansible.builtin.include_vars: RedHat.yml
   when: ansible_os_family == "RedHat"
-- include: RedHat.yml
+- name: Redhat
+  ansible.builtin.include_tasks: RedHat.yml
   when: ansible_os_family == "RedHat"
 
 - name: Bundle install
-  command: >
+  ansible.builtin.command: >
     {{ profile }}
     'bundle install
     {% if bundle_deployment %}
@@ -17,7 +19,7 @@
     {% if bundle_generate_binstubs %}--binstubs {{ bundle_binstubs }}
     {% else %}--no-binstubs {% endif %}
     {% if bundle_frozen %} --frozen {% endif %}
-    --jobs {{bundle_jobs}}
+    --jobs {{ bundle_jobs }}
     --gemfile {{ bundle_gemfile }}
     --path {{ bundle_path }}
     --without {{ bundle_without | join(' ') }}
@@ -29,4 +31,4 @@
     rails_bundle_result.stdout is defined
     and 'Installing' in rails_bundle_result.stdout
   notify:
-  - restart rails app
+    - Restart rails app

@@ -1,0 +1,8 @@
+---
+- name: Start service
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    daemon_reload: true
+    name: "{{ sidekiq_job_name }}"
+  failed_when: false

@@ -2,42 +2,38 @@
 # Define a release id, extract it from git and construct shared and custom folders
 #
 ---
-- include: facts.yml
-- include: git.yml
+- name: Facts
+  ansible.builtin.include_tasks: facts.yml
+- name: Git
+  ansible.builtin.include_tasks: git.yml
 
-- name: Clean shared folders
-  file:
-    path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
-    state: absent
-    force: yes
-  when: rails_create_release_result.changed
-  with_flattened:
-  - "{{ rails_deploy_shared_folders }}"
-  - "{{ rails_deploy_custom_shared_folders }}"
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Create custom folders
-  file:
+  ansible.builtin.file:
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: directory
-  with_flattened:
-  - "{{ rails_deploy_custom_create_folders }}"
+    mode: "755"
+  loop: "{{ rails_deploy_custom_create_folders | flatten }}"
 
 - name: Provide Rails yaml configuration files
-  template:
-    src: "config.yml.jinja2"
+  ansible.builtin.template:
     dest: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
+    src: "config.yml.jinja2"
     owner: "{{ app_user }}"
     mode: "0600"
   when: item.yaml is defined
-  with_items: "{{ rails_provisioned_files }}"
+  loop: "{{ rails_provisioned_files }}"
 
 - name: Provide plain configuration files
-  copy:
-    content: "{{item.plain}}"
+  ansible.builtin.copy:
     dest: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
+    content: "{{ item.plain }}"
     owner: "{{ app_user }}"
     mode: "0600"
   when: item.plain is defined
-  with_items: "{{ rails_provisioned_files }}"
+  loop: "{{ rails_provisioned_files }}"
 
-- include: "shared_folders.yml"
+- name: Shared Folders
+  ansible.builtin.include_tasks: "shared_folders.yml"

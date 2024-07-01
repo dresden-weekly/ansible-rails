@@ -1,9 +1,23 @@
-- template: dest=/etc/nginx/conf.d/passenger.conf src=passenger.conf.j2
-  notify: nginx reload
+---
+- name: Template passenger.conf
+  ansible.builtin.template:
+    dest: "/etc/nginx/conf.d/passenger.conf"
+    src: passenger.conf.j2
+    mode: "644"
+  notify: Nginx reload
 
-- template: dest=/etc/nginx/sites-available/{{nginx_config_file}} src=site.conf.j2
-  notify: nginx reload
+- name: Template site-available
+  ansible.builtin.template:
+    dest: "/etc/nginx/sites-available/{{ nginx_config_file }}"
+    src: site.conf.j2
+    mode: "644"
+  notify: Nginx reload
 
-- file: src=/etc/nginx/sites-available/{{nginx_config_file}} dest=/etc/nginx/sites-enabled/{{app_name}} state=link owner=root group=root
-  notify: nginx reload
-
+- name: Link site-enabled
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ nginx_config_file }}"
+    dest: "/etc/nginx/sites-enabled/{{ app_name }}"
+    state: link
+    owner: root
+    group: root
+  notify: Nginx reload

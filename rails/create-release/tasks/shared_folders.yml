@@ -1,38 +1,39 @@
 ---
 - name: Create shared folders
-  file:
+  ansible.builtin.file:
     path: "{{ RAILS_APP_SHARED_PATH }}/{{ item }}"
     state: directory
-  with_flattened:
-  - "{{ rails_deploy_shared_folders }}"
-  - "{{ rails_deploy_custom_shared_folders }}"
-  - "{{ rails_deploy_custom_shared_webpacker_folders if rails_webpacker else [] }}"
+    mode: "755"
+  loop: >-
+    {{ rails_deploy_shared_folders
+     + rails_deploy_custom_shared_folders
+     + (rails_deploy_custom_shared_webpacker_folders if rails_webpacker else [])
+     | flatten }}
 
 - name: Link shared folders
-  file:
+  ansible.builtin.file:
     src: "{{ RAILS_APP_SHARED_PATH }}/{{ item }}"
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: link
     force: true
-  with_flattened:
-  - "{{ rails_deploy_shared_folders }}"
-  - "{{ rails_deploy_custom_shared_folders }}"
-  - "{{ rails_deploy_custom_shared_webpacker_folders if rails_webpacker else [] }}"
+  loop: >-
+    {{ rails_deploy_shared_folders
+     + rails_deploy_custom_shared_folders
+     + (rails_deploy_custom_shared_webpacker_folders if rails_webpacker else [])
+     | flatten }}
 
 - name: Link shared files
-  file:
+  ansible.builtin.file:
     src: "{{ RAILS_APP_SHARED_PATH }}/{{ item }}"
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: link
     force: true
-  with_flattened:
-  - "{{ rails_shared_files }}"
+  loop: "{{ rails_shared_files | flatten }}"
 
 - name: Link provisioned files
-  file:
+  ansible.builtin.file:
     src: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item.file }}"
     state: link
     force: true
-  with_flattened:
-  - "{{ rails_provisioned_files }}"
+  loop: "{{ rails_provisioned_files | flatten }}"

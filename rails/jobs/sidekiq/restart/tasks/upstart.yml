@@ -1,8 +1,10 @@
-
+---
 - name: Tell sidekiq to not accept new work
-  shell: "{{ profile }}'reload {{ sidekiq_job_name }}'"
-  ignore_errors: true
+  ansible.builtin.command: "{{ profile }}'reload {{ sidekiq_job_name }}'"
+  failed_when: false
+  changed_when: true
 
-- command: '/bin/true'
-  name: 'Make sure sidekiq is started at the end'
-  notify: restart sidekiq (upstart)
+- name: 'Make sure sidekiq is started at the end'
+  ansible.builtin.command: '/bin/true'
+  notify: Restart sidekiq (upstart)
+  changed_when: true

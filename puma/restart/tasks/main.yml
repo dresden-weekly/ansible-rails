@@ -1,24 +1,28 @@
 ---
-- meta: flush_handlers
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Check for Restart
-  stat:
+  ansible.builtin.stat:
     path: "{{ RAILS_APP_RESTART_PATH }}"
   register: rails_puma_restart
 
-- when: rails_puma_restart.stat.exists
+- name: Restart required
+  when: rails_puma_restart.stat.exists
   block:
     - name: Debian | Remove RAILS_APP_RESTART_PATH
-      file:
+      ansible.builtin.file:
         path: "{{ RAILS_APP_RESTART_PATH }}"
         state: absent
 
     - name: Debian | Upstart | Restart
-      shell: "{{ profile }}'restart puma || start puma'"
+      ansible.builtin.shell: "{{ profile }}'restart puma || start puma'"
+      changed_when: true
       when: >
         'upstart' == puma_service_type
 
     - name: Debian | Systemd | Restart
-      shell: "{{ profile }}'systemctl --user restart {{ puma_service_name }}.service'"
+      ansible.builtin.command: "{{ profile }}'systemctl --user restart {{ puma_service_name }}.service'"
+      changed_when: true
       when: >
         'systemd' == puma_service_type

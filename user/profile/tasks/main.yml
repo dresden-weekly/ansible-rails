@@ -1,6 +1,6 @@
 ---
 - name: Environment variables
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "~/.profile"
     regexp: "^export {{ item.key }}="
     line: "export {{ item.key }}={{ item.value }}"
@@ -10,7 +10,7 @@
   with_dict: "{{ rails_user_env }}"
 
 - name: Environment from facts
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "~/.profile"
     regexp: "^export {{ item.1 }}="
     line: >-
@@ -38,14 +38,15 @@
       ]
     )
   with_subelements:
-  - "{{ rails_user_env_facts }}"
-  - "facts"
+    - "{{ rails_user_env_facts }}"
+    - "facts"
 
 - name: Bashrc lines
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: ~/.bashrc
     line: "{{ item }}"
-    create: yes
+    create: true
+    mode: "600"
   become: true
   become_user: "{{ rails_user_name }}"
   with_items: "{{ rails_user_bashrc_lines }}"

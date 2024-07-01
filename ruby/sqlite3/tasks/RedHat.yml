@@ -1,7 +1,7 @@
+---
 - name: RedHat | Packages
-  yum:
-    pkg: "{{ item }}"
-    update_cache: yes
+  ansible.builtin.dnf:
+    pkg:
+      - sqlite-devel
+    update_cache: true
     state: latest
-  with_items:
-  - sqlite-devel

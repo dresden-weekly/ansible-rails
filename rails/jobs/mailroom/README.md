@@ -7,7 +7,7 @@ Vars:
 ```yaml
 mailroom_job_name: "mailroom-{{ app_name }}"
 mailroom_config_file: "{{ RAILS_APP_SHARED_PATH }}/config/mailroom.yml"
-mailroom_user: "{{app_user}}"
+mailroom_user: "{{ app_user }}"
 ```
 
 ## Usage:

@@ -1,4 +1,4 @@
-# {{ansible_managed}}
+# {{ ansible_managed }}
 # Template: https://github.com/mperham/sidekiq/blob/master/examples/systemd/sidekiq.service
 #
 # systemd unit file for CentOS 7, Ubuntu 15.04
@@ -16,7 +16,7 @@
 # https://github.com/mperham/inspeqtor/wiki/Systemd
 #
 [Unit]
-Description=sidekiq {{app_name}}
+Description=sidekiq {{ app_name }}
 # start us only once the network and logging subsystems are available,
 # consider adding redis-server.service if Redis is local and systemd-managed.
 After=syslog.target network.target
@@ -26,13 +26,13 @@ After=syslog.target network.target
 # http://0pointer.de/public/systemd-man/systemd.exec.html
 [Service]
 Type=simple
-WorkingDirectory={{RAILS_APP_CURRENT_PATH}}
+WorkingDirectory={{ RAILS_APP_CURRENT_PATH }}
 # If you use rbenv:
 # ExecStart=/bin/bash -lc 'bundle exec sidekiq -e production'
 # If you use the system's ruby:
-ExecStart=/bin/bash -l -c 'bundle exec sidekiq -i {{sidekiq_worker_index}} -e {{sidekiq_rails_env}} -L {{sidekiq_log_file}} -C {{ sidekiq_config_file }}'
-User={{rails_user_name}}
-Group={{rails_user_name}}
+ExecStart=/bin/bash -l -c 'bundle exec sidekiq -i {{ sidekiq_worker_index }} -e {{ sidekiq_rails_env }} -L {{ sidekiq_log_file }} -C {{ sidekiq_config_file }}'
+User={{ rails_user_name }}
+Group={{ rails_user_name }}
 UMask=0002
 
 # if we crash, restart
@@ -44,7 +44,7 @@ StandardOutput=syslog
 StandardError=syslog
 
 # This will default to "bundler" if we don't specify it
-SyslogIdentifier=sidekiq {{app_name}}
+SyslogIdentifier=sidekiq {{ app_name }}
 
 [Install]
 WantedBy=multi-user.target

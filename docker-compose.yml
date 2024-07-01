@@ -1,0 +1,37 @@
+name: dd-weekly-rails
+
+volumes:
+  ansible-colletions:
+
+services:
+  ansible:
+    image: ghcr.io/hicknhack-software/ansible:noble-2.17.1
+    volumes:
+      - .:/etc/ansible/roles/dresden-weekly.Rails
+      - ./tests/docker-sshkey:/root/.ssh/id_rsa
+      - ansible-colletions:/root/.ansible/collections
+    working_dir: /etc/ansible/roles/dresden-weekly.Rails
+    command:
+      - '/bin/bash'
+      - '-c'
+      - >-
+        ansible-galaxy install -r tests/urlshort_requirements.yml
+        && ansible-playbook --inventory-file=tests/docker-inventory.ini tests/urlshort_simple.yml
+    tty: true
+    stdin_open: true
+    environment:
+      - ANSIBLE_HOST_KEY_CHECKING=false
+    links:
+      - app_vm
+
+  app_vm:
+    image: ghcr.io/hicknhack-software/ansible-target:noble
+    privileged: true
+    tmpfs:
+      - /run
+      - /run/lock
+      - /tmp
+    volumes:
+      - ./tests/docker-sshkey.pub:/root/.ssh/authorized_keys
+    ports:
+      - "3030:80"

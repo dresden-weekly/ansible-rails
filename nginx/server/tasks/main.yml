@@ -1,43 +1,57 @@
 ---
-- include_vars: "{{ ansible_os_family }}.yml"
-- include: RedHat.yml
+- name: Load Variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+- name: Redhat
+  ansible.builtin.include_tasks: RedHat.yml
   when: ansible_os_family == "RedHat"
-- include: Debian.yml
+- name: Debian
+  ansible.builtin.include_tasks: Debian.yml
   when: ansible_os_family == "Debian"
 
 - name: Configure
-  template:
+  ansible.builtin.template:
     dest: "{{ nginx_config_file }}"
     src: "nginx.conf.j2"
+    mode: "644"
   notify:
-  - restart nginx
+    - Restart nginx
 
 - name: Config Includes
-  template:
+  ansible.builtin.template:
     src: "{{ item }}.conf.j2"
     dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
+    mode: "644"
   with_items: "{{ nginx_include_templates }}"
   notify:
-  - restart nginx
+    - Restart nginx
 
 - name: Disable Includes
-  file:
+  ansible.builtin.file:
     dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
     state: absent
   with_items: "{{ nginx_exclude_templates }}"
   notify:
-  - restart nginx
+    - Restart nginx
 
 - name: Disable the default config
-  file:
+  ansible.builtin.file:
     path: "{{ nginx_sites_enabled_path }}/{{ item }}"
     state: absent
   with_items: "{{ nginx_disabled_sites }}"
   notify:
-  - restart nginx
+    - Restart nginx
+
+- name: Ensure directories are present
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "755"
+  loop:
+    - "{{ nginx_sites_available_path }}"
+    - "{{ nginx_sites_enabled_path }}"
 
 - name: Facts
-  set_fact:
+  ansible.builtin.set_fact:
     NGINX_SERVICE_NAME: "{{ nginx_service_name }}"
     NGINX_USER: "{{ nginx_user }}"
     NGINX_CONFIG_INCLUDE_PATH: "{{ nginx_config_include_path }}"

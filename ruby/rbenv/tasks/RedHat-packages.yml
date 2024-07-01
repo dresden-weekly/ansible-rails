@@ -1,10 +1,10 @@
+---
 - name: Red Hat | Install EPEL repo
-  yum:
+  ansible.builtin.dnf:
     name: "{{ rbenv_epel_repo }}"
-    update_cache: yes
+    update_cache: true
 
 - name: Red Hat | Install dependencies
-  yum:
-    pkg: "{{ item }}"
-    update_cache: yes
-  with_items: "{{ rbenv_package_names }}"
+  ansible.builtin.dnf:
+    pkg: "{{ rbenv_package_names }}"
+    update_cache: true

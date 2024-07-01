@@ -1,13 +1,16 @@
+---
 - name: Sidekiq upstart script
-  template:
+  ansible.builtin.template:
     src: "sidekiq.conf.j2"
     dest: "{{ sidekiq_upstart_conf }}"
+    mode: "644"
   become: true
   become_user: "{{ sidekiq_upstart_user }}"
 
-- name: sidekiq config
-  template:
+- name: Sidekiq config
+  ansible.builtin.template:
     src: "sidekiq.yml.j2"
     dest: "{{ sidekiq_config_file }}"
+    mode: "644"
   become: true
   become_user: "{{ sidekiq_upstart_user }}"

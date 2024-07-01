@@ -1,7 +1,15 @@
 ---
 # options to create a release id
 rails_release_id: "{{ rails_release_id_time }}"
-rails_release_id_time: "{{ [ansible_date_time.year, ansible_date_time.month, ansible_date_time.day, ansible_date_time.hour, ansible_date_time.minute, ansible_date_time.second] | join('') }}"
+rails_release_id_time: >-
+  {{ [
+    ansible_date_time.year,
+    ansible_date_time.month,
+    ansible_date_time.day,
+    ansible_date_time.hour,
+    ansible_date_time.minute,
+    ansible_date_time.second
+    ] | join('') }}
 rails_release_id_git_branch: "{{ git_branch }}"
 
 # git repository where rails app taken from
@@ -17,43 +25,43 @@ rails_app_git_passphrase: "{{ git_passphrase | default('', True) if rails_app_gi
 # path where the repository goes
 rails_app_repo_path: "{{ RAILS_APP_BASE_PATH }}/repo"
 
-rails_repo_ssh_keyfile: "/home/{{app_user}}/.ssh/id_rsa"
+rails_repo_ssh_keyfile: "/home/{{ app_user }}/.ssh/id_rsa"
 
 rails_app_group: "{{ app_group | default('app') }}"
 
 # handling of deployment files and folder
 rails_deploy_archive: # default files/folders that are exported from git
-- app
-- bin
-- config
-- config.ru
-- db
-- Gemfile
-- lib
-- public
-- Rakefile
-- vendor
+  - app
+  - bin
+  - config
+  - config.ru
+  - db
+  - Gemfile
+  - lib
+  - public
+  - Rakefile
+  - vendor
 rails_deploy_custom_archive: [] # custom files/folders that are exported from git
 
 rails_deploy_shared_folders: # default folders that are shared between releases
-- bundle
-- log
-- public/assets
-- tmp
+  - bundle
+  - log
+  - public/assets
+  - tmp
 rails_deploy_custom_shared_folders: [] # custom folders that are shared between releases
 
 rails_deploy_custom_create_folders: [] # custom folders that are created for each release
 
 # Webpacker / yarn default settings
-rails_webpacker: no
+rails_webpacker: false
 rails_deploy_webpacker_archive:
-- yarn.lock
-- package.json
-- .babelrc
-- .postcssrc.yml
+  - yarn.lock
+  - package.json
+  - .babelrc
+  - .postcssrc.yml
 
 rails_deploy_webpacker_pack_dir: public/packs
-rails_deploy_custom_shared_webpacker_folders: ['{{rails_deploy_webpacker_pack_dir}}', 'node_modules']
+rails_deploy_custom_shared_webpacker_folders: ['{{ rails_deploy_webpacker_pack_dir }}', 'node_modules']
 
 
 # Link files

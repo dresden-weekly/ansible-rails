@@ -1,12 +1,16 @@
-- include_vars: "{{ ansible_os_family }}.yml"
+---
+- name: Variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
-- include: RedHat-packages.yml
+- name: Redhat
+  ansible.builtin.include_tasks: RedHat-packages.yml
   when: ansible_os_family == "RedHat"
-- include: Debian-packages.yml
+- name: Debian
+  ansible.builtin.include_tasks: Debian-packages.yml
   when: ansible_os_family == "Debian"
 
 - name: Install rbenv
-  git:
+  ansible.builtin.git:
     repo: "https://github.com/sstephenson/rbenv.git"
     dest: "~/.rbenv"
     depth: 1
@@ -14,22 +18,22 @@
   become_user: "{{ rbenv_user }}"
 
 - name: Install ruby-build
-  git:
+  ansible.builtin.git:
     repo: "https://github.com/sstephenson/ruby-build.git"
     dest: "~/.rbenv/plugins/ruby-build"
     depth: 1
   become: true
   become_user: "{{ rbenv_user }}"
 
-- name: Ensure {{ rbenv_shell_rc }} exists
-  shell: "touch {{ rbenv_shell_rc }}"
+- name: Ensure exists {{ rbenv_shell_rc }}
+  ansible.builtin.command: "touch {{ rbenv_shell_rc }}"
   args:
     creates: "{{ rbenv_shell_rc }}"
   become: true
   become_user: "{{ rbenv_user }}"
 
 - name: Export RBENV_ROOT in {{ rbenv_shell_rc }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ rbenv_shell_rc }}"
     regexp: "^export RBENV_ROOT="
     line: "export RBENV_ROOT=~/.rbenv"
@@ -37,7 +41,7 @@
   become_user: "{{ rbenv_user }}"
 
 - name: Put rbenv in users PATH in {{ rbenv_shell_rc }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ rbenv_shell_rc }}"
     regexp: "^PATH=\\$PATH:\\$RBENV_ROOT/bin"
     line: "PATH=$PATH:$RBENV_ROOT/bin"
@@ -45,7 +49,7 @@
   become_user: "{{ rbenv_user }}"
 
 - name: Put $RBENV_ROOT/shims in users $PATH in {{ rbenv_shell_rc }}
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "{{ rbenv_shell_rc }}"
     regexp: "^PATH=\\$RBENV_ROOT/shims:\\$PATH"
     line: "PATH=$RBENV_ROOT/shims:$PATH"
@@ -53,43 +57,47 @@
   become_user: "{{ rbenv_user }}"
 
 - name: Install Rubies
-  shell: "{{ rbenv_ruby_configure_opts | default('') }} ~/.rbenv/bin/rbenv install {{ item }}"
+  ansible.builtin.command: "{{ rbenv_ruby_configure_opts | default('') }} ~/.rbenv/bin/rbenv install {{ item }}"
   args:
     creates: "~/.rbenv/versions/{{ item }}"
   become: true
   become_user: "{{ rbenv_user }}"
-  with_flattened:
-  - "{{ rbenv_rubies }}"
-  - "{{ rbenv_default }}"
+  loop: "{{ rbenv_rubies + [rbenv_default] | flatten }}"
 
 - name: Check default ruby
-  shell: '~/.rbenv/bin/rbenv version | grep -oE "^[^ ]+"'
-  changed_when: no
+  ansible.builtin.shell:
+    cmd: >
+      set -o pipefail
+      && ~/.rbenv/bin/rbenv version | grep -oE "^[^ ]+"
+    executable: /bin/bash
+  changed_when: false
   register: rbenv_current_version
   become: true
   become_user: "{{ rbenv_user }}"
 
 - name: Set default ruby
-  shell: "~/.rbenv/bin/rbenv global {{ ruby_version }}"
+  ansible.builtin.command: "~/.rbenv/bin/rbenv global {{ ruby_version }}"
   become: true
   become_user: "{{ rbenv_user }}"
+  changed_when: true
   when: rbenv_current_version.stdout != ruby_version
 
 - name: Check for Bundler
-  shell: '~/.rbenv/bin/rbenv exec bundle'
-  failed_when: no
-  changed_when: no
+  ansible.builtin.command: '~/.rbenv/bin/rbenv exec bundle'
+  failed_when: false
+  changed_when: false
   register: rbenv_bundle_available
   become: true
   become_user: "{{ rbenv_user }}"
 
 - name: Install Bundler
-  shell: "~/.rbenv/shims/gem install bundler"
+  ansible.builtin.command: "~/.rbenv/shims/gem install bundler"
   become: true
   become_user: "{{ rbenv_user }}"
+  changed_when: true
   when: rbenv_bundle_available.rc != 0 and rbenv_bundle_available.rc != 10
 
-- name: facts
-  set_fact:
+- name: Facts
+  ansible.builtin.set_fact:
     RUBY_PREFIX: '/home/{{ rbenv_user }}/.rbenv/bin/rbenv exec '
     RUBY_BIN: '/home/{{ rbenv_user }}/.rbenv/shims/ruby'

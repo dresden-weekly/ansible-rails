@@ -1,0 +1,4 @@
+---
+services:
+  ansible:
+    image: "ghcr.io/ansible/community-ansible-dev-tools:latest"

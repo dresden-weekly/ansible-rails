@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 {% for key,value in passenger_main_variables.items() | list %}
-{{key}} {{value}};
+{{ key }} {{ value }};
 {% endfor %}
 
 {% if passenger_cloak_headers %}

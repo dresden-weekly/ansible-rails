@@ -1,0 +1,7 @@
+---
+- name: Clean shared folders
+  ansible.builtin.file:
+    path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
+    state: absent
+    force: true
+  loop: "{{ rails_deploy_shared_folders + rails_deploy_custom_shared_folders | flatten }}"

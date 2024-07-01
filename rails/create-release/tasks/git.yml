@@ -1,27 +1,28 @@
 ---
 - name: Ensure Git mirror repo is up to date
-  git:
+  ansible.builtin.git:
     repo: "{{ rails_app_git_repo }}"
     dest: "{{ rails_app_repo_path }}"
-    bare: yes
+    bare: true
     version: "{{ rails_app_git_branch }}"
     key_file: "{{ rails_repo_ssh_keyfile }}"
-    update: yes
-    accept_hostkey: yes
+    update: true
+    accept_hostkey: true
   environment:
     GIT_CREDENTIAL_HOST: "{{ rails_app_git_repo_host }}"
     GIT_CREDENTIAL_USERNAME: "{{ rails_app_git_user }}"
     GIT_CREDENTIAL_PASSWORD: "{{ rails_app_git_passphrase }}"
 
 - name: Create release
-  shell: >
-    git archive --format=tar --prefix={{ RAILS_APP_RELEASE_ID }}/ {{ rails_app_git_branch }}
-    {{ rails_deploy_archive | join(' ') }}
-    {{ rails_deploy_webpacker_archive | join(' ') if rails_webpacker else "" }}
-    {{ rails_deploy_custom_archive | join(' ') }}
-    | (cd {{ RAILS_APP_RELEASES_PATH }} && tar -xf -)
-  args:
+  # note: creating a release is a complex task that can not be done with the git module
+  ansible.builtin.shell:
+    cmd: >
+      set -o pipefail
+      && git archive --format=tar --prefix={{ RAILS_APP_RELEASE_ID }}/ {{ rails_app_git_branch }}
+      {{ rails_deploy_archive | join(' ') }}
+      {{ rails_deploy_webpacker_archive | join(' ') if rails_webpacker else "" }}
+      {{ rails_deploy_custom_archive | join(' ') }} | (cd {{ RAILS_APP_RELEASES_PATH }} && tar -xf -)
     creates: "{{ RAILS_APP_RELEASE_PATH }}"
     chdir: "{{ rails_app_repo_path }}"
-    warn: no # creating a release is a complex task that can not be done with the git module
-  register: rails_create_release_result
+    executable: /bin/bash
+  notify: Clean shared folders

@@ -1,4 +1,5 @@
 ---
 - name: RedHat | En-/Disabling SELinux
-  selinux: state={{ selinux_state }}
+  ansible.posix.selinux:
+    state: "{{ selinux_state }}"
   when: ansible_os_family == "RedHat"

@@ -1,19 +1,13 @@
-- name: Create {{mailroom_job_name}}.service for systemd
-  template:
+---
+- name: 'Create systemd {{ mailroom_job_name }}'
+  ansible.builtin.template:
+    dest: /lib/systemd/system/{{ mailroom_job_name }}.service
     src: mailroom.service.j2
-    dest: /lib/systemd/system/{{mailroom_job_name}}.service
-  register: mailroomtpl
+    mode: "644"
+  notify: Start service
 
-- systemd:
-    state: started
-    enabled: true
-    daemon_reload: true
-    name: "{{mailroom_job_name}}"
-  when: mailroomtpl.changed
-  ignore_errors: true
-  name: "Enable/Reload systemd"
-
-- template:
+- name: "Enable passwordless sudo for job control of {{ mailroom_job_name }}"
+  ansible.builtin.template:
     src: 'sudoers.j2'
-    dest: '/etc/sudoers.d/{{mailroom_job_name}}'
-  name: "Enable passwordless sudo for job control of {{mailroom_job_name}}"
+    dest: '/etc/sudoers.d/{{ mailroom_job_name }}'
+    mode: "644"

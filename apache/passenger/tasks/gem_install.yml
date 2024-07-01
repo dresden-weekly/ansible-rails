@@ -1,13 +1,13 @@
 ---
-- name: install dependencies
-  apt:
+- name: Install dependencies
+  ansible.builtin.apt:
     pkg: "{{ apache_passenger_gem_packages }}"
     state: present
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 86400
 
-- name: install compatible rack version
-  command: >
+- name: Install compatible rack version
+  ansible.builtin.command: >
     {{ RUBY_PREFIX }} gem install rack --version '1.6.4'
   become: true
   become_user: "{{ app_user }}"
@@ -16,63 +16,61 @@
     "Successfully installed" in rack_gem_install_result.stdout
   when: rvm_default | version_compare('2.2', '<')
 
-- name: install gem
-  shell: |
+- name: Install GEM
+  ansible.builtin.shell: |
     if ! {{ RUBY_PREFIX }} gem list -i {{ item }} --version "{{ apache_passenger_gem_version }}"
     then
       {{ RUBY_PREFIX }} gem install {{ item }} --version "{{ apache_passenger_gem_version }}"
     fi
   become: true
   become_user: "{{ app_user }}"
-  with_flattened:
-  - "{{ apache_passenger_gem_name }}"
+  loop: "{{ apache_passenger_gem_name | flatten }}"
   register: apache_passenger_gem_install_result
   changed_when: >
     "Successfully installed {{ item }}" in apache_passenger_gem_install_result.stdout
+  notify: Install Passenger
 
-- name: install passenger
-  shell: |
-    {{ RUBY_PREFIX }} passenger-install-apache2-module --auto
-  become: true
-  become_user: "{{ app_user }}"
-  when: apache_passenger_gem_install_result.changed
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
-- name: extract passenger gem path
-  shell: |
+- name: Extract Passenger GEM path
+  ansible.builtin.shell: |
     {{ RUBY_PREFIX }} ruby -e 'require "rubygems"; puts Gem::Specification.find_by_name("{{ apache_passenger_gem_name }}").gem_dir'
   become: true
   become_user: "{{ app_user }}"
-  changed_when: no
+  changed_when: false
   register: apache_passenger_gem_path_result
 
-- name: extract module path
-  shell: |
+- name: Extract module path
+  ansible.builtin.shell: |
     find {{ apache_passenger_gem_path_result.stdout_lines[0] }} -name mod_passenger.so
-  changed_when: no
+  changed_when: false
   register: apache_passenger_module_path_result
 
-- name: module loader
-  copy:
+- name: Module loader
+  ansible.builtin.copy:
     dest: "{{ APACHE_SERVER_MODS_AVAILABLE_PATH }}/passenger.load"
     content: |
       LoadModule passenger_module {{ apache_passenger_module_path_result.stdout_lines[0] }}
+    mode: "644"
   notify:
-  - restart apache
+    - Restart apache
 
-- name: module config
-  copy:
+- name: Module config
+  ansible.builtin.copy:
     dest: "{{ APACHE_SERVER_MODS_AVAILABLE_PATH }}/passenger.conf"
     content: |
       <IfModule mod_passenger.c>
         PassengerRoot {{ apache_passenger_gem_path_result.stdout_lines[0] }}
         PassengerDefaultRuby {{ RUBY_BIN }}
       </IfModule>
+    mode: "644"
   notify:
-  - restart apache
+    - Restart apache
 
-- name: enable module
-  apache2_module:
+- name: Enable module
+  community.general.apache2_module:
     name: "passenger"
     state: present
   notify:
-  - restart apache
+    - Restart apache

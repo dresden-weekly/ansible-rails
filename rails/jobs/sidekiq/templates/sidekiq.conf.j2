@@ -1,5 +1,5 @@
 # /etc/init/sidekiq.conf - Sidekiq config
-# {{ansible_managed}}
+# {{ ansible_managed }}
 
 description "Sidekiq Background {{ app_name }}"
 stop on runlevel [06]
@@ -8,7 +8,7 @@ respawn limit 3 30
 console log
 normal exit 0 TERM
 reload signal USR1
-instance {{sidekiq_worker_index}}
+instance {{ sidekiq_worker_index }}
 
 script
 exec /bin/bash <<'EOT'
@@ -28,8 +28,8 @@ exec /bin/bash <<'EOT'
       source /usr/local/share/chruby/auto.sh
     fi
   fi
-  cd {{RAILS_APP_CURRENT_PATH}}
-  logger -t {{sidekiq_upstart_user}} "Starting sidekiq worker {{app_name}}: $PWD"
-  exec bundle exec sidekiq -i {{sidekiq_worker_index}} -e {{sidekiq_rails_env}} -C {{sidekiq_config_file}} -L {{sidekiq_log_file}}
+  cd {{ RAILS_APP_CURRENT_PATH }}
+  logger -t {{ sidekiq_upstart_user }} "Starting sidekiq worker {{ app_name }}: $PWD"
+  exec bundle exec sidekiq -i {{ sidekiq_worker_index }} -e {{ sidekiq_rails_env }} -C {{ sidekiq_config_file }} -L {{ sidekiq_log_file }}
 EOT
 end script

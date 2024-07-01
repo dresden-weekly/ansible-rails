@@ -3,11 +3,15 @@
 #
 ---
 - name: Cleanup
-  shell: >
-    ls -dt {{ RAILS_APP_RELEASES_PATH }}/*
-    | egrep '{{ rails_deploy_release_mask }}'
-    | tail -n +{{ rails_deploy_old_release_count }}
-    | xargs rm -rfv
+  ansible.builtin.shell:
+    cmd: >
+      set -o pipefail
+      && ls -dt {{ RAILS_APP_RELEASES_PATH }}/*
+      | egrep '{{ rails_deploy_release_mask }}'
+      | tail -n '+{{ rails_deploy_old_release_count }}'
+      | xargs rm -rfv
+    executable: /bin/bash
   register: rails_cleanup_result
+  failed_when: false
   changed_when: >
     'removed' in rails_cleanup_result.stdout

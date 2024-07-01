@@ -1,12 +1,16 @@
-
-- meta: flush_handlers
+---
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Check for Restart
-  stat:
+  ansible.builtin.stat:
     path: "{{ RAILS_APP_RESTART_PATH }}"
   register: rails_webrick_restart
 
-- include: RedHat.yml
+- name: Redhat
+  ansible.builtin.include_tasks: RedHat.yml
   when: ansible_os_family == "RedHat"
-- include: Debian.yml
+
+- name: Debian
+  ansible.builtin.include_tasks: Debian.yml
   when: ansible_os_family == "Debian"

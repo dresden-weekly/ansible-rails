@@ -1,12 +1,14 @@
 ---
-- name: enable ForwardAgent
-  lineinfile:
+- name: Enable ForwardAgent
+  ansible.builtin.lineinfile:
     dest: "/etc/ssh/ssh_config"
     line: "    ForwardAgent yes"
     regexp: "^\\s*ForwardAgent"
-    create: yes
+    create: true
+    mode: "644"
 
-- name: sudoer forward_ssh_agent
-  template:
+- name: Sudoer forward_ssh_agent
+  ansible.builtin.template:
     src: "forward_ssh_agent.j2"
     dest: "/etc/sudoers.d/forward_ssh_agent"
+    mode: "644"

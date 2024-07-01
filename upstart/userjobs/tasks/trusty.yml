@@ -1,35 +1,38 @@
 ---
 - name: Trusty | Session Init
-  template:
+  ansible.builtin.template:
     src: "{{ item }}"
     dest: "/etc/init/{{ item }}"
+    mode: "644"
   with_items:
-  - "session_init.conf"
-  - "session_init_setup.conf"
+    - "session_init.conf"
+    - "session_init_setup.conf"
 
 - name: Trusty | Check Session Init
-  command: "status session_init USER={{ item }}"
+  ansible.builtin.command: "status session_init USER={{ item }}"
   register: session_init_status
-  changed_when: no
+  changed_when: false
   failed_when: (session_init_status.rc != 0) and (session_init_status.rc != 1)
   with_items: "{{ users }}"
 
 - name: Trusty | Start Session Init
-  shell: |
+  ansible.builtin.shell: |
     export XDG_RUNTIME_DIR="/run/user/$(id -u {{ item.item }})"
     mkdir -p "$XDG_RUNTIME_DIR"
     chmod 0700 "$XDG_RUNTIME_DIR"
     chown "{{ item.item }}:$(id -g -n {{ item.item }})" "$XDG_RUNTIME_DIR"
     start session_init USER={{ item.item }}
+  changed_when: true
   when: "'running' not in item.stdout"
   with_items: "{{ session_init_status.results }}"
 
 - name: Trusty | Join Session
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: "~/.profile"
     line: 'export XDG_RUNTIME_DIR=/run/user/$(id -u) && export UPSTART_SESSION=$(initctl list-sessions | cut "-d " -f2)'
     regexp: "^export\ XDG_RUNTIME_DIR"
-    create: yes
+    create: true
+    mode: "600"
   become: true
   become_user: "{{ item }}"
   with_items: "{{ users }}"

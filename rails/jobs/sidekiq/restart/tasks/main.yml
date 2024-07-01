@@ -1,4 +1,8 @@
-- include: "upstart.yml"
+---
+- name: Upstart
+  ansible.builtin.include_tasks: "upstart.yml"
   when: ansible_service_mgr != "systemd"
-- include: "systemd.yml"
+
+- name: Systemd
+  ansible.builtin.include_tasks: "systemd.yml"
   when: ansible_service_mgr == "systemd"

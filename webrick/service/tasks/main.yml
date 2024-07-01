@@ -1,7 +1,8 @@
 ---
-- name: store facts
-  set_fact:
+- name: Store facts
+  ansible.builtin.set_fact:
     APP_URL: "{{ webrick_app_url }}"
   tags: [always]
 
-- include: "{{ webrick_service_type }}.yml"
+- name: Service
+  ansible.builtin.include_tasks: "{{ webrick_service_type }}.yml"

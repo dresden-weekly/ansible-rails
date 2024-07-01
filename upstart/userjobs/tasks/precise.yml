@@ -1,11 +1,13 @@
 ---
 - name: Precise Allow
-  template:
+  ansible.builtin.template:
     src: "Upstart.conf"
     dest: "/etc/dbus-1/system.d/Upstart.conf"
-    force: yes
+    force: true
+    mode: "644"
 
 - name: Precise Autostart
-  template:
+  ansible.builtin.template:
     src: "load_user_jobs.conf"
     dest: "/etc/init/load_user_jobs.conf"
+    mode: "644"

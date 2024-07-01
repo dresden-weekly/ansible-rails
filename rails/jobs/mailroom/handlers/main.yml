@@ -1,0 +1,8 @@
+---
+- name: Start service
+  ansible.builtin.systemd:
+    name: "{{ mailroom_job_name }}"
+    state: started
+    enabled: true
+    daemon_reload: true
+  failed_when: false

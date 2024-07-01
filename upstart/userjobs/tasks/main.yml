@@ -1,17 +1,21 @@
+---
 #
 # enables upstart user jobs
 #
-- include: precise.yml
+- name: Precise
+  ansible.builtin.include_tasks: precise.yml
   when: (ansible_distribution == 'Ubuntu') and (ansible_lsb.major_release|int <= 13)
 
 - name: Create ~/.init folder
-  file:
+  ansible.builtin.file:
     path: ~/.init
     state: directory
+    mode: "755"
   become: true
   become_user: "{{ item }}"
-  with_items: "{{ users }}"
+  loop: "{{ users }}"
   when: ansible_os_family == "Debian"
 
-- include: trusty.yml
+- name: Trusty
+  ansible.builtin.include_tasks: trusty.yml
   when: (ansible_distribution == 'Ubuntu') and (ansible_lsb.major_release|int >= 14)

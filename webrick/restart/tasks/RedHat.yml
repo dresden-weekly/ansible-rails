@@ -1,13 +1,15 @@
 ---
 - name: RedHat | Restart
-  service: name={{ webrick_service_name }} state=restarted
+  ansible.builtin.service:
+    name: "{{ webrick_service_name }}"
+    state: restarted
   register: rails_webrick_restarted
   become: true
   become_user: root
   when: rails_webrick_restart.stat.exists
 
 - name: RedHat | Remove RAILS_APP_RESTART_PATH
-  file:
+  ansible.builtin.file:
     path: "{{ RAILS_APP_RESTART_PATH }}"
     state: absent
   when: rails_webrick_restarted is defined and rails_webrick_restarted|success

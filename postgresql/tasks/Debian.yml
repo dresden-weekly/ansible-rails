@@ -1,15 +1,25 @@
 ---
+- name: Debian | GPG
+  ansible.builtin.apt:
+    name:
+      - "gpg"
+      - "apt-transport-https"
+      - "ca-certificates"
+    state: latest
+    update_cache: true
+    cache_valid_time: 86400
+
 - name: Debian | Add repo key
-  apt_key:
+  ansible.builtin.apt_key:
     url: "{{ postgresql_apt_key }}"
 
 - name: Debian | Add repo
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "{{ postgresql_apt_repo }}"
 
 - name: Debian | Packages
-  apt:
-    pkg: "{{ [postgresql_packages, postgresql_python_packages] | flatten }}"
+  ansible.builtin.apt:
+    name: "{{ postgresql_packages + postgresql_python_packages | flatten }}"
     state: latest
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 86400

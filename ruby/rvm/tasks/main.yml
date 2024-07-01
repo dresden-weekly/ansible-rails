@@ -1,32 +1,32 @@
 ---
 - name: Packages
-  apt:
-    pkg: "{{ item }}"
-    update_cache: yes
+  ansible.builtin.apt:
+    name: "{{ rvm_packages + rvm_custom_packages | flatten }}"
+    update_cache: true
     state: present
     cache_valid_time: 86400
-  with_flattened:
-  - "{{ rvm_packages }}"
-  - "{{ rvm_custom_packages }}"
 
-- include: ruby187.yml
+- name: Ruby 1.8.7
+  ansible.builtin.include_tasks: ruby187.yml
   when: rvm_default == '1.8.7' or '1.8.7' in rvm_rubies
 
-- include: gpg_keys.yml
+- name: GPG
+  ansible.builtin.include_tasks: gpg_keys.yml
   when: rvm_gpg_keys != ''
 
 - name: Install RVM
-  shell: >
-    curl -L https://get.rvm.io
-    | bash -s stable --autolibs=disable --auto-dotfiles
-  args:
+  # note: we need the pipe to work here
+  ansible.builtin.shell:
+    cmd: >
+      set -o pipefail
+      && curl -L https://get.rvm.io | bash -s stable --autolibs=disable --auto-dotfiles
     creates: ~/.rvm
-    warn: no # don't show the curl warning (get_url can't pipe the script to bash)
+    executable: /bin/bash
   become: true
   become_user: "{{ rvm_user }}"
 
 - name: Ruby versions
-  shell: >
+  ansible.builtin.shell: >
     ~/.rvm/bin/rvm install
     {{ '--default' if item == rvm_default else '' }}
     {{ item }}
@@ -34,36 +34,34 @@
     creates: "~/.rvm/rubies/ruby-{{ item }}"
   become: true
   become_user: "{{ rvm_user }}"
-  with_flattened:
-  - "{{ rvm_rubies }}"
-  - "{{ rvm_default }}"
+  loop: "{{ rvm_rubies + [rvm_default] | flatten }}"
 
 - name: Facts
-  set_fact:
-    RUBY_PREFIX: '~/.rvm/bin/rvm default do '
+  ansible.builtin.set_fact:
+    RUBY_PREFIX: "~/.rvm/bin/rvm default do "
 
 - name: Ruby Path
-  shell: >
+  ansible.builtin.shell: >
     {{ RUBY_PREFIX }} rvm gemdir
   become: true
   become_user: "{{ rvm_user }}"
   register: ruby_rvm_ruby_path_result
-  changed_when: no
+  changed_when: false
 
 - name: Facts
-  set_fact:
-    RUBY_BIN: '{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}/wrappers/ruby'
+  ansible.builtin.set_fact:
+    RUBY_BIN: "{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}/wrappers/ruby"
 
 - name: Gem Version
-  shell: >
+  ansible.builtin.shell: >
     {{ RUBY_PREFIX }} gem --version
   become: true
   become_user: "{{ rvm_user }}"
   register: ruby_rvm_gem_version_result
-  changed_when: no
+  changed_when: false
 
 - name: Gem Update System
-  shell: >
+  ansible.builtin.shell: >
     {{ RUBY_PREFIX }} gem update --system {{ rvm_gem_version }}
   become: true
   become_user: "{{ rvm_user }}"
@@ -73,13 +71,14 @@
     "Aborting" not in ruby_rvm_gem_update_system_result.stdout
 
 - name: Install gems
-  shell: >
-    {{ RUBY_PREFIX }} gem list
-    | if ! grep "^{{ item }} " ; then {{ RUBY_PREFIX }} gem install {{ item }} ; fi
+  ansible.builtin.shell:
+    cmd: >
+      set -o pipefail
+      && {{ RUBY_PREFIX }} gem list | if ! grep "^{{ item }} " ; then {{ RUBY_PREFIX }} gem install {{ item }} ; fi
+    executable: /bin/bash
   become: true
   become_user: "{{ rvm_user }}"
-  with_flattened:
-  - "{{ rvm_install_gems }}"
+  loop: "{{ rvm_install_gems | flatten }}"
   register: ruby_rvm_gem_install_result
   changed_when: >
-    "Successfully installed {{ item }}" in ruby_rvm_gem_install_result.stdout
+    ("Successfully installed ITEM" | regex_replace('ITEM', item)) in ruby_rvm_gem_install_result.stdout

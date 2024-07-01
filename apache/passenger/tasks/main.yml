@@ -1,3 +1,6 @@
 ---
-- include: "{{ apache_passenger_install }}_install.yml"
-- include: vhost.yml
+- name: Install
+  ansible.builtin.include_tasks: "{{ apache_passenger_install }}_install.yml"
+
+- name: Vhost
+  ansible.builtin.include_tasks: vhost.yml

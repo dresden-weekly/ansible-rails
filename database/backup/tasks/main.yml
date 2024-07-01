@@ -1,13 +1,13 @@
 ---
 - name: "Database | Backup | Create Backup directory"
-  file:
+  ansible.builtin.file:
     path: "{{ database_backup_dir }}"
     state: directory
-    recurse: yes
+    recurse: true
     owner: "{{ database_backup_crontab_user }}"
 
 - name: "Database | Backup | PostgreSQL Cronjob"
-  cron:
+  ansible.builtin.cron:
     name: "backup {{ database_backup_name }}"
     hour: "{{ database_backup_hour }}"
     minute: "{{ database_backup_minute }}"
@@ -16,7 +16,7 @@
   when: database_backup_type == "postgresql"
 
 - name: "Database | Backup | MySQL Cronjob"
-  cron:
+  ansible.builtin.cron:
     name: "backup {{ database_backup_name }}"
     hour: "{{ database_backup_hour }}"
     minute: "{{ database_backup_minute }}"

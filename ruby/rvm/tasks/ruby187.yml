@@ -1,7 +1,7 @@
 ---
 - name: Install Autoconf
-  apt:
+  ansible.builtin.apt:
     pkg: autoconf
-    update_cache: yes
     state: present
+    update_cache: true
     cache_valid_time: 86400

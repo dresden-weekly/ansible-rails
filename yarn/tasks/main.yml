@@ -1,3 +1,5 @@
 ---
-- include: 'nodejs.yml'
-- include: 'yarn.yml'
+- name: NodeJS
+  ansible.builtin.include_tasks: 'nodejs.yml'
+- name: Yarn
+  ansible.builtin.include_tasks: 'yarn.yml'

@@ -1,47 +1,49 @@
 ---
 - name: Mods | Conf
-  file:
+  ansible.builtin.copy:
     dest: "{{ apache_server_mods_available_path }}/{{ item.name }}.conf"
     content: "{{ item.conf }}"
+    mode: "644"
   when: (item is mapping)
     and (item.conf is defined)
     and (item.name is defined)
   with_items: "{{ apache_server_mods }}"
   notify:
-  - restart apache
+    - Restart apache
 
 - name: Mods | Load
-  file:
+  ansible.builtin.copy:
     dest: "{{ apache_server_mods_available_path }}/{{ item.name }}.load"
     content: "{{ item.conf }}"
+    mode: "644"
   when: (item is mapping)
     and (item.load is defined)
     and (item.name is defined)
   with_items: "{{ apache_server_mods }}"
   notify:
-  - restart apache
+    - Restart apache
 
 - name: Mods | Enable
-  apache2_module:
+  community.general.apache2_module:
     name: "{{ item if item is string else item.name }}"
     state: present
   with_items: "{{ apache_server_mods }}"
   notify:
-  - restart apache
+    - Restart apache
 
 - name: Mods | SSL Enable
-  apache2_module:
+  community.general.apache2_module:
     name: "ssl"
     state: present
   when: apache_server_ssl
     and ('ssl' not in apache_server_mods)
   notify:
-  - restart apache
+    - Restart apache
 
 - name: Mods | Disable
-  apache2_module:
+  community.general.apache2_module:
     name: "{{ item }}"
     state: absent
   with_items: "{{ apache_server_disable_mods }}"
   notify:
-  - restart apache
+    - Restart apache

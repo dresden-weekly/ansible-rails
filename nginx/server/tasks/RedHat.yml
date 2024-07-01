@@ -1,19 +1,20 @@
 ---
 - name: RedHat | Install nginx.org repo rpm
-  yum: name=http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+  ansible.builtin.dnf:
+    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
 
 - name: RedHat | Install packages
-  yum:
-    pkg: "{{ item }}"
-    update_cache: yes
+  ansible.builtin.dnf:
+    pkg: "{{ nginx_package_names }}"
+    update_cache: true
     state: latest
-  with_items: "{{ nginx_package_names }}"
 
 - name: RedHat | Reload systemd configs
-  shell: systemctl daemon-reload
-  changed_when: no
+  ansible.builtin.shell:
+    cmd: "warn=no && systemctl daemon-reload"
+  changed_when: false
 
 - name: RedHat | Enable nginx
-  service:
+  ansible.builtin.service:
     name: "{{ nginx_service_name }}"
-    enabled: yes
+    enabled: true

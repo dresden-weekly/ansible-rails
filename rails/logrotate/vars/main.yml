@@ -1,5 +1,5 @@
 ---
 logrotate_packages:
-- logrotate
+  - logrotate
 
 etc_logrotate_path: "/etc/logrotate.d"

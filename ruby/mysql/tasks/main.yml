@@ -1,8 +1,9 @@
+---
 # Packages required for mysql gem
 - name: Packages
-  apt:
-    update_cache: yes
-    state: latest
-    cache_valid_time: 86400
+  ansible.builtin.apt:
     pkg:
-    - libmysqlclient-dev
+      - libmysqlclient-dev
+    state: latest
+    update_cache: true
+    cache_valid_time: 86400

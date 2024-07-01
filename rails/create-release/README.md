@@ -12,7 +12,7 @@ rails_provisioned_files:
     yaml:
       production:
         adapter: postgresql
-        database: '{{rails_database_name}}'
+        database: '{{ rails_database_name }}'
         encoding: UTF8
         pool: 30
   - file: config/database.yml
@@ -24,7 +24,7 @@ rails_provisioned_files:
     plain: |
       some verbatim config
   - file: config/somekey.crt
-    plain: "{{some_variable_for_file_content}}"
+    plain: "{{ some_variable_for_file_content }}"
 ```
 
 Those file will be placed relativ to the shared folders and symlinked into the release/current folders.
@@ -45,4 +45,3 @@ This will:
 3. (asset precompilation) ``rake yarn:install`` is run by ``rails assets:precompile`` (from +5.1), if a bin/yarn binstub is provided. **NOTE** without that binstub no node_modules are installed! Make sure to add it with ``rails app:update:bin`` and commit to your app repo.
 
 You might also want to include the [**yarn**](https://github.com/dresden-weekly/ansible-rails/tree/develop/yarn) Installs nodejs + yarn (default nodejs-6.x) role in your provisioning before, to install required nodejs + yarn.
-

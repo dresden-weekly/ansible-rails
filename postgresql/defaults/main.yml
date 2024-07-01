@@ -17,23 +17,23 @@ db_name: '' # name of the database (empty means no database is created)
 
 # all the created users
 postgresql_users:
-- name: "{{ db_user | default('') }}"
-  password: "{{ db_password | default('') }}" # only needed if user is given
-  # role_attr_flags: "{{ postgresql_users_role_attr_flags }}"
+  - name: "{{ db_user | default('') }}"
+    password: "{{ db_password | default('') }}" # only needed if user is given
+    # role_attr_flags: "{{ postgresql_users_role_attr_flags }}"
 
 # all the created databases
 postgresql_databases:
-- name: "{{ db_name }}"
-  owner: "{{ db_user | default('') }}" # empty mean 'postgres' user will own it
-  # encoding: "{{ postgresql_encoding }}"
-  # lc_collate: "{{ postgresql_locale }}.{{ postgresql_encoding }}"
-  # lc_ctype: "{{ postgresql_locale }}.{{ postgresql_encoding }}"
-  # template: template0
+  - name: "{{ db_name }}"
+    owner: "{{ db_user | default('') }}" # empty mean 'postgres' user will own it
+    # encoding: "{{ postgresql_encoding }}"
+    # lc_collate: "{{ postgresql_locale }}.{{ postgresql_encoding }}"
+    # lc_ctype: "{{ postgresql_locale }}.{{ postgresql_encoding }}"
+    # template: template0
 
 # default user attr_flags
 postgresql_users_role_attr_flags:
-- CREATEDB
-- NOSUPERUSER
+  - CREATEDB
+  - NOSUPERUSER
 
 # variables to build postgresql.conf
 

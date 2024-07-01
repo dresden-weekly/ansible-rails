@@ -1,6 +1,9 @@
+---
 # Packages required for sqlite3 gem
-
-- include: RedHat.yml
+- name: Redhat
+  ansible.builtin.include_tasks: RedHat.yml
   when: ansible_os_family == "RedHat"
-- include: Debian.yml
+
+- name: Debian
+  ansible.builtin.include_tasks: Debian.yml
   when: ansible_os_family == "Debian"

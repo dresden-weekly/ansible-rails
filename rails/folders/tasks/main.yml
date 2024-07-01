@@ -1,16 +1,15 @@
 ---
-- name: directories
-  file:
+- name: Directories
+  ansible.builtin.file:
     path: "{{ item }}"
     owner: "{{ rails_app_owner }}"
     group: "{{ rails_app_group }}"
     state: directory
-  with_flattened:
-  - "{{ rails_create_folders }}"
-  - "{{ rails_app_custom_folders }}"
+    mode: "755"
+  loop: "{{ rails_create_folders + rails_app_custom_folders | flatten }}"
 
-- name: facts
-  set_fact:
+- name: Facts
+  ansible.builtin.set_fact:
     RAILS_APP_BASE_PATH: "{{ rails_app_base_path }}"
     RAILS_APP_OWNER: "{{ rails_app_owner }}"
     RAILS_APP_GROUP: "{{ rails_app_group }}"

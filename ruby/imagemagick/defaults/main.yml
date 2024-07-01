@@ -1,4 +1,4 @@
-
+---
 imagemagick_packages:
   - libmagickwand-dev
   - imagemagick
@@ -6,4 +6,3 @@ imagemagick_packages:
 image_optimization_packages:
   - pngquant
   - jpegoptim
-

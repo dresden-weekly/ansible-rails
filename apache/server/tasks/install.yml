@@ -1,34 +1,33 @@
 ---
 - name: Install | Packages
-  apt:
-    name: "{{ item }}"
-    update_cache: yes
+  ansible.builtin.apt:
+    name: "{{ apache_server_packages + (apache_server_ssl_packages if apache_server_ssl else []) | flatten }}"
     state: latest
+    update_cache: true
     cache_valid_time: 86400
-  with_flattened:
-  - "{{ apache_server_packages }}"
-  - "{{ apache_server_ssl_packages if apache_server_ssl else [] }}"
 
 - name: Install | Config folders
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-  with_items:
-  - "{{ apache_server_config_path }}"
-  - "{{ apache_server_ssl_path }}"
-  - "{{ apache_server_conf_available_path }}"
-  - "{{ apache_server_conf_enabled_path }}"
-  - "{{ apache_server_sites_available_path }}"
-  - "{{ apache_server_sites_enabled_path }}"
-  - "{{ apache_server_sites_include_path }}"
-  - "{{ apache_server_mods_available_path }}"
-  - "{{ apache_server_mods_enabled_path }}"
+    mode: "755"
+  loop:
+    - "{{ apache_server_config_path }}"
+    - "{{ apache_server_ssl_path }}"
+    - "{{ apache_server_conf_available_path }}"
+    - "{{ apache_server_conf_enabled_path }}"
+    - "{{ apache_server_sites_available_path }}"
+    - "{{ apache_server_sites_enabled_path }}"
+    - "{{ apache_server_sites_include_path }}"
+    - "{{ apache_server_mods_available_path }}"
+    - "{{ apache_server_mods_enabled_path }}"
 
 - name: Install | www_root
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: "{{ apache_server_user }}"
     group: "{{ apache_server_group }}"
-  with_items:
-  - "{{ apache_server_www_root }}"
+    mode: "755"
+  loop:
+    - "{{ apache_server_www_root }}"

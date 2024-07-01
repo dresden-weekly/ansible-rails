@@ -17,10 +17,10 @@ apache_server_ports_config_file: "{{ apache_server_config_path }}/ports.conf"
 apache_server_config_name: "ansible"
 
 apache_server_packages:
-- "apache2"
+  - "apache2"
 
 apache_server_ssl_packages:
-- "ssl-cert"
+  - "ssl-cert"
 
 apache_server_proxy_packages: []
 

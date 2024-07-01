@@ -1,0 +1,15 @@
+---
+exclude_paths:
+  - ".github"
+  - "/docker-compose.yml"
+  - "/docker-compose.*.yml"
+
+kinds:
+  - playbook: "tests/urlshort_simple.yml"
+
+skip_list:
+  - package-latest # we don't change this role with all the versions
+  - latest[git] # same
+  - role-name[path] # we nest roles here to avoid 1000 dependencies
+  - var-naming[pattern] # we use uppercase variables for stored facts
+  - var-naming[no-role-prefix] # our role variables don't follow this pattern

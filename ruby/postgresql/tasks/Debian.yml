@@ -1,7 +1,8 @@
+---
 - name: Debian | Packages
-  apt:
-    update_cache: yes
-    state: latest
-    cache_valid_time: 86400
+  ansible.builtin.apt:
     pkg:
-    - libpq-dev
+      - libpq-dev
+    state: latest
+    update_cache: true
+    cache_valid_time: 86400

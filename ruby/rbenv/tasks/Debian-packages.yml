@@ -1,5 +1,6 @@
+---
 - name: Debian | Install dependencies
-  apt:
-    update_cache: yes
-    state: latest
+  ansible.builtin.apt:
     pkg: "{{ rbenv_package_names }}"
+    state: latest
+    update_cache: true

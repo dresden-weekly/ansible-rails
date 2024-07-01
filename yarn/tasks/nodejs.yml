@@ -1,20 +1,20 @@
-- name: install dependencies
-  apt:
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    pkg: "{{ nodejs_dependencies + nodejs_install | flatten }}"
     update_cache: true
     cache_valid_time: 3600
-    pkg: "{{ nodejs_dependencies }}"
 
-- name: install additional
-  apt:
-    pkg: "{{ nodejs_install }}"
-
-- name: add repository and install its signing key
-  shell: curl -sL https://deb.nodesource.com/setup_{{ nodejs_version_map[nodejs_version] }} | bash -
-  args:
+- name: Add repository and install its signing key
+  ansible.builtin.shell:
+    cmd: >
+      set -o pipefail
+      && curl -sL https://deb.nodesource.com/setup_{{ nodejs_version_map[nodejs_version] }} | bash -
     creates: /etc/apt/sources.list.d/nodesource.list
+    executable: /bin/bash
 
-- name: install nodejs
-  apt:
+- name: Install NodeJS
+  ansible.builtin.apt:
     pkg: "{{ 'nodejs' if 'nodejs' in nodejs_version else 'iojs' }}"
-    update_cache: true
     state: latest
+    update_cache: true

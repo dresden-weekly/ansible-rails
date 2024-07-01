@@ -12,11 +12,11 @@ It will create a upstart-job in ``~/.init/APP_NAME.conf``
 Variables:
 
 ```yaml
-sidekiq_upstart_user: '{{app_user}}'
+sidekiq_upstart_user: '{{ app_user }}'
 sidekiq_job_name: "sidekiq-{{ app_name }}"
-sidekiq_upstart_conf: '/home/{{sidekiq_upstart_user}}/.init/{{sidekiq_job_name}}.conf'
+sidekiq_upstart_conf: '/home/{{ sidekiq_upstart_user }}/.init/{{ sidekiq_job_name }}.conf'
 sidekiq_worker_index: 0
-sidekiq_rails_env: '{{rails_env}}'
+sidekiq_rails_env: '{{ rails_env }}'
 sidekiq_log_file: '{{ RAILS_APP_SHARED_PATH }}/log/sidekiq.log'
 sidekiq_config_file: '{{ RAILS_APP_SHARED_PATH }}/config/sidekiq.yml'
 sidekiq_configuration_concurrency: 10
@@ -39,7 +39,7 @@ After the userjob / redis:
 ```yaml
   - role: ../roles/dresden-weekly.rails/upstart/userjobs
     users:
-      - "{{app_user}}"
+      - "{{ app_user }}"
     when: ansible_service_mgr != "systemd"
   - role: dresden-weekly.Rails/rails/jobs/sidekiq
     sidekiq_configuration_concurrency: 5
@@ -64,4 +64,3 @@ Somewhere at the beginning of your deployment:
 
 This will trigger a graceful shutdown. Sidekiq won't take any new jobs from this point.
 At the end of the deployment a complete restart with service handlers is executed.
-

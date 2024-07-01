@@ -1,18 +1,19 @@
 dresden-weekly.Rails
 ====================
-[![Ansible Galaxy](https://img.shields.io/badge/Ansible%20Galaxy-dresden--weekly.Rails-blue.svg)](https://galaxy.ansible.com/list#/roles/2108)
-[![Build Status](https://travis-ci.org/dresden-weekly/ansible-rails.svg)](https://travis-ci.org/dresden-weekly/ansible-rails)
+[![Ansible Galaxy](https://img.shields.io/badge/Ansible%20Galaxy-dresden--weekly.Rails-blue.svg)](https://galaxy.ansible.com/ui/standalone/roles/dresden-weekly/Rails/)
+[![Test with Docker](https://github.com/arBmind/ansible-rails/actions/workflows/docker_test.yml/badge.svg)](https://github.com/arBmind/ansible-rails/actions/workflows/docker_test.yml)
 
-Our think-tank for modules and playbooks that help to deploy Ruby on Rails applications
+Our think-tank for modules and playbooks that help to deploy Ruby on Rails applications.
 
 This repository contains many roles that you can glue together to represent your individual Rails deployment.
 
 Requirements
 ------------
 
-* Ubuntu 12.04 (Precise)
-* Ubuntu 14.04 (Trusty)
-* CentOS 7
+* Ubuntu 18.04 (Bionic)
+* Ubuntu 20.04 (Focal)
+* Ubuntu 22.04 (Jammy)
+* Ubuntu 24.04 (Noble)
 
 Content Roles
 -------------
@@ -61,49 +62,52 @@ Deployment:
 * **rails/rollback** rollback the the previous and delete the current release
 * [**rails/tasks/rake**](https://github.com/dresden-weekly/ansible-rails/tree/develop/rails/tasks/rake) Run arbitrary Rake task on app
 
+See directory structure for more "ideas".
+
 Dependencies
 ------------
 
 no other roles currently
 
-You may want to use our [vagrant-ansible-remote](https://github.com/dresden-weekly/vagrant-ansible-remote) for testing and deploying
-
 Example Playbook
 ----------------
 
-### Github based single tier deployment
+The playbook `tests/urlshort_simple.yml` shows off a simple usage of our roles.
 
-[dresden-weekly/ansible-rails-example@simple](https://github.com/dresden-weekly/ansible-rails-example/tree/simple)
-* Git based deployment
-* single tier
-* PostgreSql database
-* Nginx Webserver
-* Webrick as application server
-* Support for Vagrant based development
+To get it running you can use docker:
 
-[dresden-weekly/ansible-rails-example@threetier](https://github.com/dresden-weekly/ansible-rails-example/tree/threetier)
-* like simple but for classic 3-tier deployment
-  1. database
-  1. rails application servers
-  1. web-servers
+```bash
+tests/make_sshkey.sh
+docker-compose up
+```
 
-[hicknhack-software/ansible-redmine-example](https://github.com/hicknhack-software/ansible-redmine-example)
-* stable version based deployment
-* single tier with Git and Subversion hosting
-* MySql database
-* Apache webserver
-* Passenger as application server
-* customized for Redmine
+Devcontainer
+------------
 
-[stefanwienert.de/ansible](http://www.stefanwienert.de/blog/2015/10/29/deploying-rails-with-ansible-with-dresden-weekly-toolbox/)
-* Blog post that explains on how to use this role for deploying a Rails app
+The folder `.devcontainer/` contains a simple devcontainer definition for use with VSCode + Docker.
+Using the devcontainer you can run linting:
+```bash
+ansible-lint
+```
+
 
 Changelog
 ---------
 
-**0.3** (stables) *planned*
+**0.4** (stables) *planned*
 
 * (Your pull requests are welcome)
+
+**0.3** (Ansible 2.17) *planned*
+
+* Features
+  * [x] Switch to Ansible 2.17
+  * [x] Automated Lint and Testing with Github Actions
+* Linux distributions
+  * [x] Ubuntu 18.04
+  * [x] Ubuntu 20.04
+  * [x] Ubuntu 22.04
+  * [x] Ubuntu 24.04
 
 **0.2** (more features!) 13.05.2015
 
@@ -144,26 +148,6 @@ Changelog
 * Linux distributions
   * [x] Ubuntu 12.04
   * [x] Ubuntu 14.04
-
-Roadmap
--------
-
-* Release Management
-  * [ ] Download based releases
-* Webserver
-  * [ ] Passenger Standalone
-* Rails Application Server
-  * [ ] Passenger on NGINX
-  * [ ] Thin
-  * [ ] Unicorn
-* Ruby installation
-  * [ ] Package based
-* Configuration management
-  * [ ] Generator for secrets.yml
-  * [ ] Generator for database.yml
-* Linux distribution
-  * [ ] Ubuntu 15.04
-  * [ ] CentOS (remaining parts)
 
 License
 -------

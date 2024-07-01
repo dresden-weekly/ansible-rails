@@ -1,19 +1,46 @@
 ---
-- name: Debian | Repo
-  apt_repository:
-    repo: "{{ nginx_apt_repo }}"
+- name: PPA
+  when: nginx_install == "ppa"
+  block:
+    - name: Debian | PPA Repo
+      ansible.builtin.apt_repository:
+        repo: "{{ nginx_ppa_repo }}"
+
+- name: Offical Site
+  when: nginx_install == "official"
+  block:
+    - name: Debian | GPG
+      ansible.builtin.apt:
+        name:
+          - "gpg"
+          - "apt-transport-https"
+          - "ca-certificates"
+        state: latest
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Debian | Add official key
+      ansible.builtin.apt_key:
+        keyserver: "{{ item }}"
+        id: "{{ nginx_official_key_id }}"
+      loop: "{{ nginx_official_key_servers }}"
+      retries: 2
+      delay: 1
+
+    - name: Install | Add repo
+      ansible.builtin.apt_repository:
+        repo: "{{ nginx_official_repo }}"
 
 - name: Debian | Packages
-  apt:
-    name: "{{ item }}"
-    update_cache: yes
+  ansible.builtin.apt:
+    name: "{{ nginx_package_names }}"
+    update_cache: true
     state: latest
     cache_valid_time: 86400
-  with_items: "{{ nginx_package_names }}"
 
 - name: Debian | Enable nginx
-  service:
+  ansible.builtin.service:
     name: "{{ nginx_service_name }}"
-    enabled: yes
+    enabled: true
   notify:
-  - restart nginx
+    - Restart nginx

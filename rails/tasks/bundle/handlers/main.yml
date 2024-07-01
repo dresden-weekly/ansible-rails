@@ -1,5 +1,6 @@
 ---
 - name: Restart rails app
-  file:
+  ansible.builtin.file:
     path: "{{ RAILS_APP_RESTART_PATH }}"
     state: touch
+    mode: "644"

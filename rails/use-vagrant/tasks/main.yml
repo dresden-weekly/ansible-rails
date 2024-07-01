@@ -5,7 +5,11 @@
 # we have link to parts
 #
 ---
-- include: "facts.yml"
-- include: "folders.yml"
-- include: "links.yml"
-- include: "../../create-release/tasks/shared_folders.yml"
+- name: Facts
+  ansible.builtin.include_tasks: "facts.yml"
+- name: Folders
+  ansible.builtin.include_tasks: "folders.yml"
+- name: Links
+  ansible.builtin.include_tasks: "links.yml"
+- name: Shared Folders
+  ansible.builtin.include_tasks: "../../create-release/tasks/shared_folders.yml"

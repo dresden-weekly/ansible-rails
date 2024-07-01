@@ -1,24 +1,34 @@
 ---
-- name: install | add key
-  apt_key:
+- name: Install | gpg
+  ansible.builtin.apt:
+    name:
+      - "gpg"
+      - "apt-transport-https"
+      - "ca-certificates"
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install | add key
+  ansible.builtin.apt_key:
     keyserver: "{{ apache_passenger_key_server }}"
     id: "{{ apache_passenger_key_id }}"
 
-- name: install | add repo
-  apt_repository:
+- name: Install | add repo
+  ansible.builtin.apt_repository:
     repo: "{{ apache_passenger_apt_repo }}"
 
-- name: install | packages
-  apt:
+- name: Install | packages
+  ansible.builtin.apt:
     pkg: "{{ apache_passenger_package }}"
     state: "{{ apache_passenger_state }}"
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 3600
   notify:
-  - restart apache
+    - Restart apache
 
-- name: install | enable module
-  apache2_module:
+- name: Install | enable module
+  community.general.apache2_module:
     name: "{{ apache_passenger_mod }}"
   notify:
-  - restart apache
+    - Restart apache

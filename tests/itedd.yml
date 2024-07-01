@@ -1,5 +1,6 @@
 ---
-- hosts: local
+- name: Install ITEDD for testing
+  hosts: local
   become: true
   vars:
     rails_env: production
@@ -16,7 +17,7 @@
 
     ruby_version: 2.1.7
     rvm_install_gems:
-    - "bundler -v 1.17.1"
+      - "bundler -v 1.17.1"
 
     db_user: itedd
     db_password: secret
@@ -43,14 +44,16 @@
     #         pool: 5
 
   pre_tasks:
-    - file:
+    - name: Reset system locales
+      ansible.builtin.file:
         path: '/etc/locale.gen'
         state: 'absent'
-    - shell: 'locale-gen "en_US.UTF-8"'
-      changed_when: no
+    - name: Generate UTF8 locale for Postgres
+      ansible.builtin.command: 'locale-gen "en_US.UTF-8"'
+      changed_when: false
 
     - name: Create App User
-      user:
+      ansible.builtin.user:
         name: "{{ app_user }}"
         shell: /bin/bash
 
@@ -67,8 +70,8 @@
     - role: dresden-weekly.Rails/user/profile
       rails_user_name: "{{ app_user }}"
       rails_user_bashrc_lines:
-      - "cd {{ RAILS_APP_BASE_PATH }} || true"
-      - "cd {{ RAILS_APP_CURRENT_PATH }} || true"
+        - "cd {{ RAILS_APP_BASE_PATH }} || true"
+        - "cd {{ RAILS_APP_CURRENT_PATH }} || true"
       rails_user_env:
         RAILS_ENV: "{{ rails_env }}"
         SECRET_KEY_BASE: "{{ app_secret_key_base }}"
@@ -77,7 +80,7 @@
 
     - role: dresden-weekly.Rails/upstart/userjobs
       users:
-      - "{{ app_user }}"
+        - "{{ app_user }}"
     - dresden-weekly.Rails/webrick/service
     - dresden-weekly.Rails/nginx/server
     - dresden-weekly.Rails/nginx/webrick
@@ -90,7 +93,7 @@
       rails_release_id: "static" # prevent multiple release_ids
       become_user: '{{ app_user }}'
       rails_deploy_custom_archive:
-      - Gemfile.lock
+        - Gemfile.lock
 
     - role: dresden-weekly.Rails/rails/tasks/bundle
       become_user: '{{ app_user }}'

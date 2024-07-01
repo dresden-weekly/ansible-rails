@@ -5,9 +5,9 @@ rails_logrotate_path: "{{ RAILS_APP_LOG_PATH }}"
 rails_logrotate_mask: "*.log"
 
 rails_logrotate_options:
-- compress
-- copytruncate
-- daily
-- delaycompress
-- missingok
-- rotate 7
+  - compress
+  - copytruncate
+  - daily
+  - delaycompress
+  - missingok
+  - rotate 7

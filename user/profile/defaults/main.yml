@@ -13,11 +13,11 @@ rails_user_env_facts: []
 # examples:
   # - host: app # element of Ansible hostvars
   #   facts:
-  #   - RAILS_LOG_FILE_PATH # pseudo code "export {{fact}}={{ hostvars[host][fact] }}"
+  #   - RAILS_LOG_FILE_PATH # pseudo code "export {{ fact }}={{ hostvars[host][fact] }}"
   # - group: db # element of Ansible groups
   #   index: 0 # index inside the group - 0 is default
   #   facts: # list of fact-names == variable name
-  #   - DATABASE_URL # pseudo code "export {{fact}}={{ hostvars[ groups[group][index] ][fact] }}"
+  #   - DATABASE_URL # pseudo code "export {{ fact }}={{ hostvars[ groups[group][index] ][fact] }}"
 
 # list of lines added to the .bashrc file
 rails_user_bashrc_lines: []

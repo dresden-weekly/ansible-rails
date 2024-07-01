@@ -5,7 +5,7 @@ apache_passenger_key_id: "16378A33A6EF16762922526E561F9B9CAC40B2F7"
 apache_passenger_key_server: "keyserver.ubuntu.com"
 apache_passenger_apt_repo: "deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ ansible_lsb.codename }} main"
 
-#apache_passenger_install: gem
+# apache_passenger_install: gem
 apache_passenger_gem_version: ">1"
 
 site_name: "{{ app_name }}"
@@ -17,7 +17,7 @@ site_user: "{{ RAILS_APP_OWNER }}"
 
 apache_vhost_name: "{{ site_domain }}"
 apache_vhost_addresses:
-- "*:{{ site_port }}"
+  - "*:{{ site_port }}"
 apache_vhost_server_name: "{{ site_domain }}"
 apache_vhost_server_aliases: "{{ app_domain_aliases | default([]) }}"
 apache_vhost_document_root: "{{ site_path }}"

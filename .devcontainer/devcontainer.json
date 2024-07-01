@@ -1,0 +1,30 @@
+{
+  "name": "rails-ansible-dev",
+  "dockerComposeFile": [
+    "../docker-compose.yml",
+    "docker-compose.override.yml"
+  ],
+  "service": "ansible",
+  "overrideCommand": true,
+  "containerUser": "root",
+  "workspaceFolder": "/etc/ansible/roles/dresden-weekly.Rails",
+  // "capAdd": ["SYS_ADMIN", "SYS_RESOURCE"],
+  // "securityOpt": ["seccomp=unconfined", "label=disable", "apparmor=unconfined"],
+  "updateRemoteUserUID": true,
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.ansible"
+      ],
+      "settings": {
+        "files.associations": {
+          "**/defaults/*.yml": "ansible",
+          "**/handlers/*.yml": "ansible",
+          "**/tasks/*.yml": "ansible",
+          "**/vars/*.yml": "ansible",
+          "**/templates/*.j2": "ansible-jinja"
+        }
+      }
+    }
+  }
+}

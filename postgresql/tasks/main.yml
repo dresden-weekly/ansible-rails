@@ -1,32 +1,38 @@
 ---
 - name: Shell locales
-  copy:
+  ansible.builtin.copy:
     dest: /etc/profile.d/lang.sh
     content: |
       export LANGUAGE="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
       export LANG="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
       export LC_ALL="{{ postgresql_locale }}.{{ postgresql_shell_encoding }}"
+    mode: "644"
 
-- include_vars: "{{ ansible_os_family }}.yml"
-- include: RedHat.yml
+- name: Vars
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+- name: Redhat
+  ansible.builtin.include_tasks: RedHat.yml
   when: ansible_os_family == "RedHat"
-- include: Debian.yml
+- name: Debian
+  ansible.builtin.include_tasks: Debian.yml
   when: ansible_os_family == "Debian"
 
 - name: Configure
-  template:
+  ansible.builtin.template:
     src: "{{ item }}.j2"
     dest: "{{ postgresql_config_path }}/{{ item }}"
+    mode: "644"
   notify:
-  - restart postgresql
+    - Restart postgresql
   with_items:
-  - pg_hba.conf
-  - postgresql.conf
+    - pg_hba.conf
+    - postgresql.conf
 
-- meta: flush_handlers
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Template locales
-  shell: >
+  ansible.builtin.shell: >
     psql -c "update pg_database
       set
         encoding = pg_char_to_encoding('{{ postgresql_encoding }}'),
@@ -45,7 +51,7 @@
   become_user: "{{ postgresql_user }}"
 
 - name: Users
-  postgresql_user:
+  community.postgresql.postgresql_user:
     name: "{{ item.name }}"
     password: "{{ item.password }}"
     role_attr_flags: "{{ item.role_attr_flags | default(postgresql_users_role_attr_flags) | join(',') | replace('\\n', '') }}"
@@ -56,7 +62,7 @@
   become_user: "{{ postgresql_user }}"
 
 - name: Databases
-  postgresql_db:
+  community.postgresql.postgresql_db:
     name: "{{ item.name }}"
     owner: "{{ item.owner | default(postgresql_user, true) }}"
     encoding: "{{ item.encoding | default(postgresql_encoding) }}"
@@ -70,7 +76,7 @@
   become_user: "{{ postgresql_user }}"
 
 - name: Relotate
-  include_tasks: relocate.yml
+  ansible.builtin.include_tasks: relocate.yml
   loop:
     # - "{{ postgresql_config_basepath }}" # pg_upgradecluster scripts fail with this!
     - "{{ postgresql_data_basepath }}"
@@ -79,7 +85,7 @@
   when: postgresql_relocate_basepath != ''
 
 - name: Connection URL
-  set_fact:
+  ansible.builtin.set_fact:
     DATABASE_URL: "{{ lookup('template', '../templates/database_url.j2') | trim }}"
   when: db_name != ''
   #  and (postgresql_databases | selectattr('name', 'equalto', db_name))

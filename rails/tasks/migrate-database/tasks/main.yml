@@ -1,8 +1,9 @@
+---
 #
 # Perform the db:migrate rake task
 #
 - name: Migrate database
-  command: "{{ profile }}'bundle exec rake db:migrate'"
+  ansible.builtin.command: "{{ profile }}'bundle exec rake db:migrate'"
   args:
     chdir: "{{ RAILS_APP_RELEASE_PATH }}"
   register: rails_migrate_database_result
@@ -10,4 +11,4 @@
     'migrating' in rails_migrate_database_result.stdout
   until: rails_migrate_database_result.rc == 0
   notify:
-  - restart rails app
+    - Restart rails app

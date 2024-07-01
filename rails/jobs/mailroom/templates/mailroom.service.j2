@@ -1,10 +1,10 @@
-# {{ansible_managed}}
+# {{ ansible_managed }}
 # Template: https://github.com/mperham/mailroom/blob/master/examples/systemd/mailroom.service
 #
 # systemd unit file for CentOS 7, Ubuntu 15.04
 #
 [Unit]
-Description=mailroom {{mailroom_user}}
+Description=mailroom {{ mailroom_user }}
 # start us only once the network and logging subsystems are available,
 # consider adding redis-server.service if Redis is local and systemd-managed.
 After=syslog.target network.target
@@ -14,13 +14,13 @@ After=syslog.target network.target
 # http://0pointer.de/public/systemd-man/systemd.exec.html
 [Service]
 Type=simple
-WorkingDirectory={{mailroom_workdir}}
+WorkingDirectory={{ mailroom_workdir }}
 # If you use rbenv:
 # ExecStart=/bin/bash -lc 'bundle exec mail_room'
 # If you use the system's ruby:
 ExecStart=/bin/bash -l -c 'bundle exec mail_room -c {{ mailroom_config_file }}'
-User={{mailroom_user}}
-Group={{mailroom_user}}
+User={{ mailroom_user }}
+Group={{ mailroom_user }}
 UMask=0002
 
 # if we crash, restart
@@ -32,7 +32,7 @@ StandardOutput=syslog
 StandardError=syslog
 
 # This will default to "bundler" if we don't specify it
-SyslogIdentifier=mailroom {{mailroom_user}}
+SyslogIdentifier=mailroom {{ mailroom_user }}
 
 [Install]
 WantedBy=multi-user.target

@@ -1,12 +1,24 @@
 ---
+- name: Install | GPG
+  ansible.builtin.apt:
+    name:
+      - "gpg"
+      - "apt-transport-https"
+      - "ca-certificates"
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+
 - name: Configure the Yarn APT key
-  apt_key: url=https://dl.yarnpkg.com/debian/pubkey.gpg
+  ansible.builtin.apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
 
 - name: Add Yarn repository
-  apt_repository:
-    repo: 'deb https://dl.yarnpkg.com/debian/ stable main'
+  ansible.builtin.apt_repository:
+    repo: "deb https://dl.yarnpkg.com/debian/ stable main"
     state: present
 
 - name: Install Yarn
-  apt: pkg=yarn state=present
-
+  ansible.builtin.apt:
+    name: yarn
+    state: present

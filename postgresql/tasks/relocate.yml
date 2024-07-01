@@ -1,44 +1,45 @@
 ---
 - name: Check Base Path
-  stat:
+  ansible.builtin.stat:
     path: "{{ src_basepath }}"
   register: config_stat
 
 - name: Relocate path
   when: not config_stat.stat.islnk or config_stat.stat.lnk_target != postgresql_relocate_basepath
   block:
-  - name: Ensure Postgresql is sopped
-    service:
-      name: "{{ postgresql_service }}"
-      state: stopped
+    - name: Ensure Postgresql is sopped
+      ansible.builtin.service:
+        name: "{{ postgresql_service }}"
+        state: stopped
 
-  - name: Copy Files
-    shell: |
-      find . -type d -exec mkdir -p {{ postgresql_relocate_basepath }}/\{} \;
-      chmod u+rwx,og-rwx -R {{ postgresql_relocate_basepath }} \;
-      find . -type f -exec mv \{} {{ postgresql_relocate_basepath }}/\{} \;
-      find . -type d -empty -delete
-    args:
-      chdir: "{{ src_basepath }}"
+    - name: Copy Files
+      ansible.builtin.shell: |
+        find . -type d -exec mkdir -p {{ postgresql_relocate_basepath }}/\{} \;
+        chmod u+rwx,og-rwx -R {{ postgresql_relocate_basepath }} \;
+        find . -type f -exec mv \{} {{ postgresql_relocate_basepath }}/\{} \;
+        find . -type d -empty -delete
+      args:
+        chdir: "{{ src_basepath }}"
+      changed_when: true
 
-  - name: Owner
-    file:
-      path: "{{ postgresql_relocate_basepath }}"
-      state: directory
-      owner: "{{ postgresql_user }}"
-      group: "{{ postgresql_user }}"
-      recurse: true
+    - name: Owner
+      ansible.builtin.file:
+        path: "{{ postgresql_relocate_basepath }}"
+        state: directory
+        owner: "{{ postgresql_user }}"
+        group: "{{ postgresql_user }}"
+        recurse: true
 
-  - name: Remove old
-    file:
-      path: "{{ src_basepath }}"
-      state: absent
+    - name: Remove old
+      ansible.builtin.file:
+        path: "{{ src_basepath }}"
+        state: absent
 
-  - name: Symlink old
-    file:
-      path: "{{ src_basepath }}"
-      src: "{{ postgresql_relocate_basepath }}"
-      owner: "{{ postgresql_user }}"
-      group: "{{ postgresql_user }}"
-      state: link
-    trigger: restart postgresql
+    - name: Symlink old
+      ansible.builtin.file:
+        path: "{{ src_basepath }}"
+        src: "{{ postgresql_relocate_basepath }}"
+        owner: "{{ postgresql_user }}"
+        group: "{{ postgresql_user }}"
+        state: link
+      trigger: Restart postgresql

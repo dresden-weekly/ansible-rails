@@ -1,24 +1,26 @@
 ---
 - name: RedHat | Create site directories
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
+    mode: "755"
   with_items:
-  - "{{ NGINX_SITES_ENABLED_PATH }}"
-  - "{{ NGINX_SITES_AVAILABLE_PATH }}"
+    - "{{ NGINX_SITES_ENABLED_PATH }}"
+    - "{{ NGINX_SITES_AVAILABLE_PATH }}"
   when: ansible_os_family == "RedHat"
 
 - name: Site configuration
-  template:
+  ansible.builtin.template:
     src: "site.conf.j2"
     dest: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
+    mode: "644"
   notify:
-  - nginx reload
+    - Nginx reload
 
 - name: Enable the site
-  file:
+  ansible.builtin.file:
     path: "{{ NGINX_SITES_ENABLED_PATH }}/{{ site_name }}"
     src: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
     state: link
   notify:
-  - nginx reload
+    - Nginx reload

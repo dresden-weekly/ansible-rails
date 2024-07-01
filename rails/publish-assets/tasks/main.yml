@@ -1,25 +1,27 @@
 ---
 - name: Distribute release id and path
-  set_fact:
+  ansible.builtin.set_fact:
     RAILS_APP_RELEASE_ID: "{{ rails_app_server_release_id }}"
     RAILS_APP_RELEASE_PATH: "{{ RAILS_APP_RELEASES_PATH }}/{{ rails_app_server_release_id }}"
   tags: [always]
 
 - name: Create folders
-  file:
+  ansible.builtin.file:
     path: "{{ RAILS_APP_RELEASE_PATH }}"
     state: directory
+    mode: "755"
 
 - name: Check folder
-  stat:
+  ansible.builtin.stat:
     path: "{{ rails_app_release_assets_path }}"
   register: rails_publish_assets_path_result
 
 - name: Copy assets
-  shell: >
+  ansible.builtin.shell: >
     scp -r -3
     {{ app_user }}@{{ rails_app_server }}:{{ rails_app_server_assets_path }}
     {{ app_user }}@{{ ansible_hostname }}:{{ RAILS_APP_RELEASE_PATH }}/
-  become: no # ssh_agent is used
+  become: false # ssh_agent is used
   delegate_to: 127.0.0.1
+  changed_when: true
   when: not rails_publish_assets_path_result.stat.exists

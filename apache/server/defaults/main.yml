@@ -3,13 +3,13 @@
 apache_server_name: "{{ ansible_fqdn }}"
 
 # list of ports the server should listen on
-apache_server_ports:
-- 80 # defaults to protocol HTTP on all interfaces
-- 443 # defaults to protocol HTTPS on all interfaces
 # mapped example:
 # - port: 443
 #   address: "0.0.0.0" # IPv4 or IPv6 adress (default all interfaces)
 #   protocol: "https"
+apache_server_ports:
+  - 80 # defaults to protocol HTTP on all interfaces
+  - 443 # defaults to protocol HTTPS on all interfaces
 
 # user that run the apache server deamon
 apache_server_user: "www-data"
@@ -65,4 +65,4 @@ apache_server_disable_mods: []
 
 # list of site names that are disabled
 apache_server_disable_sites:
-- default
+  - default

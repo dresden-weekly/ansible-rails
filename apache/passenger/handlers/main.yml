@@ -1,5 +1,12 @@
 ---
-- name: restart apache
-  service:
+- name: Install Passenger
+  ansible.builtin.shell: |
+    {{ RUBY_PREFIX }} passenger-install-apache2-module --auto
+  become: true
+  become_user: "{{ app_user }}"
+  changed_when: true
+
+- name: Restart apache
+  ansible.builtin.service:
     name: "{{ APACHE_SERVER_SERVICE }}"
     state: "restarted"

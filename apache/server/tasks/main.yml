@@ -1,10 +1,13 @@
 ---
-- include: install.yml
-- include: configs.yml
-- include: mods.yml
+- name: Install
+  ansible.builtin.include_tasks: install.yml
+- name: Configs
+  ansible.builtin.include_tasks: configs.yml
+- name: Mods
+  ansible.builtin.include_tasks: mods.yml
 
 - name: Export facts
-  set_fact:
+  ansible.builtin.set_fact:
     APACHE_SERVER_CONF_AVAILABLE_PATH: "{{ apache_server_conf_available_path }}"
     APACHE_SERVER_SITES_AVAILABLE_PATH: "{{ apache_server_sites_available_path }}"
     APACHE_SERVER_SITES_INCLUDE_PATH: "{{ apache_server_sites_include_path }}"

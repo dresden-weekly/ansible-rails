@@ -1,13 +1,13 @@
 ---
 - name: Folders | Base
-  file:
+  ansible.builtin.file:
     path: "{{ RAILS_APP_RELEASE_PATH }}"
     state: directory
+    mode: "755"
 
 - name: Folders | Create
-  file:
+  ansible.builtin.file:
     path: "{{ RAILS_APP_RELEASE_PATH }}/{{ item }}"
     state: directory
-  with_flattened:
-  - "{{ rails_vagrant_create_folders }}"
-  - "{{ rails_vagrant_custom_create_folders }}"
+    mode: "755"
+  loop: "{{ rails_vagrant_create_folders + rails_vagrant_custom_create_folders | flatten }}"

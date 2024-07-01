@@ -1,8 +1,8 @@
 postgresql_packages:
-- "postgresql-{{ postgresql_version }}"
+  - "postgresql-{{ postgresql_version }}"
 
 postgresql_python_packages:
-- "python-psycopg2"
+  - "{{ 'python3-psycopg2' if ansible_python.version.major == 3 else 'python-psycopg2' }}"
 
 postgresql_apt_url: "https://apt.postgresql.org/pub/repos/apt"
 postgresql_apt_key: "{{ postgresql_apt_url }}/ACCC4CF8.asc"

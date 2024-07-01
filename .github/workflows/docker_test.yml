@@ -1,0 +1,33 @@
+name: Test with Docker
+
+on: push
+
+jobs:
+  test-urlshort:
+    name: "Test provision url short on Docker"
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - distro_name: noble
+          - distro_name: jammy
+          - distro_name: focal
+
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: "-f docker-compose.yml -f tests/docker-compose.${{ matrix.distro_name }}.yml"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate SSH key
+        run: sudo tests/make_sshkey.sh
+
+      - name: Run Ansible
+        run: sudo docker compose ${{ env.COMPOSE_FILE }} run --quiet-pull --rm --env ANSIBLE_FORCE_COLOR=True ansible
+
+      - name: Check Idempotence
+        shell: bash
+        run: >-
+          sudo docker compose ${{ env.COMPOSE_FILE }} run --rm --env ANSIBLE_FORCE_COLOR=True ansible | tee >(sed "s/\\x1B\\[\\([0-9]\\{1,2\}\\(;[0-9]\\{1,2\\}\\)\\?\\)\\?[mGK]//g" | cat >/tmp/output);
+          cat /tmp/output | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)

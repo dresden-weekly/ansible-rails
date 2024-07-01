@@ -1,7 +1,7 @@
+---
 - name: RedHat | Packages
-  yum:
-    pkg: "{{ item }}"
-    update_cache: yes
+  ansible.builtin.dnf:
+    pkg:
+      - libpqxx-devel
     state: latest
-  with_items:
-  - libpqxx-devel
+    update_cache: true
