@@ -4,6 +4,7 @@ RailsBaseURI {{ site_url_path }}
 {% if passenger_ruby %}
 PassengerRuby {{ passenger_ruby }}
 {% endif %}
+PassengerAppRoot {{ passengen_app_root }}
 PassengerMinInstances {{ passenger_min_instances }}
 {% for option, value in apache_site_options.items() | list %}
 {{ option }} {{ value }}
@@ -12,7 +13,7 @@ PassengerMinInstances {{ passenger_min_instances }}
 SetEnv {{ key }} {{ value }}
 {% endfor %}
 
-<Directory {{ site_path }}>
+<Directory {{ site_public_path }}>
   Options FollowSymLinks
   AllowOverride None
   Require all granted

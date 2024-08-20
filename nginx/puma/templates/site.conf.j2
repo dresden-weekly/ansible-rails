@@ -9,7 +9,7 @@ upstream {{ site_name }} {
 server {
   server_name {{ ([site_domain | default('""', true)] + site_domain_aliases) | join(" ") }} 127.0.0.1;
   listen {{ site_port }};
-  root {{ site_path }};
+  root {{ site_public_path }};
 
   location / {
     try_files $uri $uri/index.html $uri.html @app;
@@ -32,7 +32,7 @@ server {
   error_page 500 502 503 504 /500.html;
 
   location @error_page {
-    root {{ site_path }}; # location of 500.html file
+    root {{ site_public_path }}; # location of 500.html file
     internal;
     rewrite ^ /500.html;
     break;

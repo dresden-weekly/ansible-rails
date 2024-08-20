@@ -12,7 +12,8 @@ site_name: "{{ app_name }}"
 site_port: 80
 site_domain: "{{ app_domain }}"
 site_url_path: "/"
-site_path: "{{ RAILS_APP_CURRENT_PUBLIC_PATH }}"
+site_base_path: "{{ RAILS_APP_CURRENT_PATH }}"
+site_public_path: "{{ RAILS_APP_CURRENT_PUBLIC_PATH }}"
 site_user: "{{ RAILS_APP_OWNER }}"
 
 apache_vhost_name: "{{ site_domain }}"
@@ -20,7 +21,7 @@ apache_vhost_addresses:
   - "*:{{ site_port }}"
 apache_vhost_server_name: "{{ site_domain }}"
 apache_vhost_server_aliases: "{{ app_domain_aliases | default([]) }}"
-apache_vhost_document_root: "{{ site_path }}"
+apache_vhost_document_root: "{{ site_public_path }}"
 apache_vhost_include_mode: "0644"
 
 apache_site_options: {}
@@ -29,3 +30,4 @@ apache_set_env: {}
 passenger_min_instances: 1
 passenger_start_url: "http://{{ site_domain }}:{{ site_port }}{{ site_url_path }}"
 passenger_ruby:
+passengen_app_root: "{{ site_base_path }}"
