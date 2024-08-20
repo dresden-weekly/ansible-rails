@@ -17,7 +17,7 @@ mailroom_user: "{{ app_user }}"
 creates the systemd unit job and enables it
 
 ```yaml
-  - role: dresden-weekly.Rails/rails/jobs/mailroom
+  - role: dresden-weekly.rails/rails/jobs/mailroom
 ```
 
 MailRoom works great in combination with Sidekiq. This Role does not provide a method for creating the mailroom config at the moment. It need to be delivered via other methods (provision files, part of app code)

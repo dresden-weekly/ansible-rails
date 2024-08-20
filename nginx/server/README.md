@@ -1,4 +1,4 @@
-dresden-weekly.Rails/nginx/server
+dresden-weekly.rails/nginx/server
 =======================
 
 Install, configure and store facts about Nginx

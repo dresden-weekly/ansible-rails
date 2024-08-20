@@ -7,7 +7,7 @@
   "service": "ansible",
   "overrideCommand": true,
   "containerUser": "root",
-  "workspaceFolder": "/etc/ansible/roles/dresden-weekly.Rails",
+  "workspaceFolder": "/etc/ansible/roles/dresden-weekly.rails",
   // "capAdd": ["SYS_ADMIN", "SYS_RESOURCE"],
   // "securityOpt": ["seccomp=unconfined", "label=disable", "apparmor=unconfined"],
   "updateRemoteUserUID": true,

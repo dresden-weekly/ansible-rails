@@ -13,7 +13,7 @@ jobs:
       - name: Make Symlink
         run: >-
           mkdir -p /home/runner/.ansible/roles
-          && ln -s $(pwd) /home/runner/.ansible/roles/dresden-weekly.Rails
+          && ln -s $(pwd) /home/runner/.ansible/roles/dresden-weekly.rails
 
       - name: Run Ansible Lint
         uses: ansible/ansible-lint@main

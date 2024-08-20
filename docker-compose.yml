@@ -7,10 +7,10 @@ services:
   ansible:
     image: ghcr.io/hicknhack-software/ansible:noble-2.17.1
     volumes:
-      - .:/etc/ansible/roles/dresden-weekly.Rails
+      - .:/etc/ansible/roles/dresden-weekly.rails
       - ./tests/docker-sshkey:/root/.ssh/id_rsa
       - ansible-colletions:/root/.ansible/collections
-    working_dir: /etc/ansible/roles/dresden-weekly.Rails
+    working_dir: /etc/ansible/roles/dresden-weekly.rails
     command:
       - '/bin/bash'
       - '-c'

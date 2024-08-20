@@ -7,7 +7,7 @@ Updates Crontab of ``app_user`` with crontab. Requires Gem ``whenever`` to be pr
 ```yaml
   roles:
     # ...
-    - role: dresden-weekly.Rails/rails/tasks/whenever
+    - role: dresden-weekly.rails/rails/tasks/whenever
 ```
 
 - If using in any environment other than `production`, be sure to include the `@environment` argument (which comes in via `--set environment={{ rails_env }}` in the task) in your `config/schedule.rb` file, like this:

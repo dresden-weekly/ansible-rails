@@ -1,4 +1,4 @@
-dresden-weekly.Rails
+dresden-weekly.rails
 ====================
 [![Ansible Galaxy](https://img.shields.io/badge/Ansible%20Galaxy-dresden--weekly.Rails-blue.svg)](https://galaxy.ansible.com/ui/standalone/roles/dresden-weekly/Rails/)
 [![Test with Docker](https://github.com/arBmind/ansible-rails/actions/workflows/docker_test.yml/badge.svg)](https://github.com/arBmind/ansible-rails/actions/workflows/docker_test.yml)

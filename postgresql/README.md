@@ -1,4 +1,4 @@
-dresden-weekly.Rails/postgresql
+dresden-weekly.rails/postgresql
 ======================
 
 This role installs the PostgreSQL database, configures it and creates users and databases

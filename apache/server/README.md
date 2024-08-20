@@ -1,4 +1,4 @@
-dresden-weekly.Rails/apache/server
+dresden-weekly.rails/apache/server
 ====================
 
 Install and configure the Apache webserver

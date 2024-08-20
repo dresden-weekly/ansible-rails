@@ -1,4 +1,4 @@
-dresden-weekly.Rails/rails/folders
+dresden-weekly.rails/rails/folders
 =====================
 
 Creates and exports the folder structure for Rails deployments

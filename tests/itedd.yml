@@ -58,16 +58,16 @@
         shell: /bin/bash
 
   roles:
-    - dresden-weekly.Rails/postgresql
+    - dresden-weekly.rails/postgresql
 
-    - dresden-weekly.Rails/ruby/rvm
-    - dresden-weekly.Rails/ruby/postgresql
-    - dresden-weekly.Rails/ruby/sqlite3
+    - dresden-weekly.rails/ruby/rvm
+    - dresden-weekly.rails/ruby/postgresql
+    - dresden-weekly.rails/ruby/sqlite3
 
-    - dresden-weekly.Rails/rails/folders
-    - dresden-weekly.Rails/rails/logrotate
+    - dresden-weekly.rails/rails/folders
+    - dresden-weekly.rails/rails/logrotate
 
-    - role: dresden-weekly.Rails/user/profile
+    - role: dresden-weekly.rails/user/profile
       rails_user_name: "{{ app_user }}"
       rails_user_bashrc_lines:
         - "cd {{ RAILS_APP_BASE_PATH }} || true"
@@ -78,37 +78,37 @@
         RAILS_LOG_FILE_PATH: "{{ RAILS_APP_LOG_PATH }}"
         DATABASE_URL: "{{ DATABASE_URL }}"
 
-    - role: dresden-weekly.Rails/upstart/userjobs
+    - role: dresden-weekly.rails/upstart/userjobs
       users:
         - "{{ app_user }}"
-    - dresden-weekly.Rails/webrick/service
-    - dresden-weekly.Rails/nginx/server
-    - dresden-weekly.Rails/nginx/webrick
+    - dresden-weekly.rails/webrick/service
+    - dresden-weekly.rails/nginx/server
+    - dresden-weekly.rails/nginx/webrick
 
-    - role: dresden-weekly.Rails/rails/folders
+    - role: dresden-weekly.rails/rails/folders
       become_user: '{{ app_user }}'
 
 
-    - role: dresden-weekly.Rails/rails/create-release
+    - role: dresden-weekly.rails/rails/create-release
       rails_release_id: "static" # prevent multiple release_ids
       become_user: '{{ app_user }}'
       rails_deploy_custom_archive:
         - Gemfile.lock
 
-    - role: dresden-weekly.Rails/rails/tasks/bundle
+    - role: dresden-weekly.rails/rails/tasks/bundle
       become_user: '{{ app_user }}'
 
-    - role: dresden-weekly.Rails/rails/tasks/migrate-database
+    - role: dresden-weekly.rails/rails/tasks/migrate-database
       become_user: '{{ app_user }}'
 
-    - role: dresden-weekly.Rails/rails/tasks/compile-assets
+    - role: dresden-weekly.rails/rails/tasks/compile-assets
       become_user: '{{ app_user }}'
 
-    - role: dresden-weekly.Rails/rails/update-current
+    - role: dresden-weekly.rails/rails/update-current
       become_user: '{{ app_user }}'
 
-    - role: dresden-weekly.Rails/webrick/restart
+    - role: dresden-weekly.rails/webrick/restart
       become_user: '{{ app_user }}'
 
-    - role: dresden-weekly.Rails/rails/cleanup-old-releases
+    - role: dresden-weekly.rails/rails/cleanup-old-releases
       become_user: '{{ app_user }}'

@@ -1,4 +1,4 @@
-dresden-weekly.Rails/ruby/rvm
+dresden-weekly.rails/ruby/rvm
 =============================
 
 This role installs rvm for a given user and manages the rvm ruby versions.

@@ -1,4 +1,4 @@
-dresden-weekly.Rails/webrick/service
+dresden-weekly.rails/webrick/service
 ======================
 
 Configure the init system to start webrick and store facts
@@ -14,12 +14,12 @@ Requirements
 Dependencies
 ------------
 
-* **dresden-weekly.Rails/rails/folders** - facts about app locations
+* **dresden-weekly.rails/rails/folders** - facts about app locations
 
 Relations
 ---------
 
-* **dresden-weekly.Rails/ruby/rvm** - supports the RUBY_PREFIX
+* **dresden-weekly.rails/ruby/rvm** - supports the RUBY_PREFIX
 
 Facts
 -----

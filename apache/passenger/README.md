@@ -1,4 +1,4 @@
-dresden-weekly.Rails/apache/passenger
+dresden-weekly.rails/apache/passenger
 ========================
 
 Install the Apache Passenger module and configure a site.
@@ -12,8 +12,8 @@ Requirements
 Dependencies
 ------------
 
-* **dresden-weekly.Rails/apache/server** - without the server it makes no sense
-* **dresden-weekly.Rails/rails/folders** - facts about the Rails deployment folder
+* **dresden-weekly.rails/apache/server** - without the server it makes no sense
+* **dresden-weekly.rails/rails/folders** - facts about the Rails deployment folder
 
 Facts
 -----

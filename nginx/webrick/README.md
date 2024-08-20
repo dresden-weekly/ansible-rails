@@ -1,4 +1,4 @@
-dresden-weekly.Rails/nginx/webrick
+dresden-weekly.rails/nginx/webrick
 =====================
 
 Configures an Nginx site for the use with Webrick application server.
@@ -15,8 +15,8 @@ Requirements
 Dependencies
 ------------
 
-* **dresden-weekly.Rails/nginx/server** - nginx server and facts
-* **dresden-weekly.Rails/rails/folders** - facts about app locations
+* **dresden-weekly.rails/nginx/server** - nginx server and facts
+* **dresden-weekly.rails/rails/folders** - facts about app locations
 
 Facts
 -----

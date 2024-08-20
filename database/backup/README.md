@@ -7,7 +7,7 @@ Simple rotating SQL dump written to specified folder (e.g. /var/backup). At the 
 
 ```yaml
   roles:
-  - role: dresden-weekly.Rails/database/backup
+  - role: dresden-weekly.rails/database/backup
     database_backup_name: '{{ app_name }}_{{ rails_env }}'
     database_backup_type: 'postgresql'
     database_backup_base_dir: '/var/backup'

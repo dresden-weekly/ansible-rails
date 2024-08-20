@@ -1,4 +1,4 @@
-dresden-weekly.Rails/apache/vhost
+dresden-weekly.rails/apache/vhost
 ====================
 
 Add an Apache vhost configuration
@@ -12,7 +12,7 @@ Requirements
 Dependencies
 ------------
 
-* **dresden-weekly.Rails/apache/server** - without the server it makes no sense
+* **dresden-weekly.rails/apache/server** - without the server it makes no sense
 
 Facts
 -----

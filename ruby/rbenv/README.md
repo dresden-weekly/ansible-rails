@@ -1,4 +1,4 @@
-dresden-weekly.Rails/ruby/rbenv
+dresden-weekly.rails/ruby/rbenv
 ===============================
 
 This role installs [rbenv](https://github.com/sstephenson/rbenv/wiki/Why-rbenv%3F) for a given user and (re-)sets the *global* rbenv ruby version.
