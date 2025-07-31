@@ -10,5 +10,4 @@
   changed_when: >
     'migrating' in rails_migrate_database_result.stdout
   until: rails_migrate_database_result.rc == 0
-  notify:
-    - Restart rails app
+  notify: Restart rails app

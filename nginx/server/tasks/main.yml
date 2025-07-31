@@ -13,8 +13,7 @@
     dest: "{{ nginx_config_file }}"
     src: "nginx.conf.j2"
     mode: "644"
-  notify:
-    - Restart nginx
+  notify: Restart nginx
 
 - name: Config Includes
   ansible.builtin.template:
@@ -22,24 +21,21 @@
     dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
     mode: "644"
   with_items: "{{ nginx_include_templates }}"
-  notify:
-    - Restart nginx
+  notify: Restart nginx
 
 - name: Disable Includes
   ansible.builtin.file:
     dest: "{{ nginx_config_include_path }}/{{ item }}.conf"
     state: absent
   with_items: "{{ nginx_exclude_templates }}"
-  notify:
-    - Restart nginx
+  notify: Restart nginx
 
 - name: Disable the default config
   ansible.builtin.file:
     path: "{{ nginx_sites_enabled_path }}/{{ item }}"
     state: absent
   with_items: "{{ nginx_disabled_sites }}"
-  notify:
-    - Restart nginx
+  notify: Restart nginx
 
 - name: Ensure directories are present
   ansible.builtin.file:

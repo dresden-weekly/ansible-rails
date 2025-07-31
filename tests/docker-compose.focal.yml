@@ -1,4 +1,0 @@
----
-services:
-  app_vm:
-    image: ghcr.io/hicknhack-software/ansible-target:focal

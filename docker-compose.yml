@@ -5,7 +5,7 @@ volumes:
 
 services:
   ansible:
-    image: ghcr.io/hicknhack-software/ansible:noble-2.17.1
+    image: ghcr.io/hicknhack-software/ansible:noble-2.18.7
     volumes:
       - .:/etc/ansible/roles/dresden-weekly.rails
       - ./tests/docker-sshkey:/root/.ssh/id_rsa

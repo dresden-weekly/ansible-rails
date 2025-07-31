@@ -42,4 +42,4 @@
         owner: "{{ postgresql_user }}"
         group: "{{ postgresql_user }}"
         state: link
-      trigger: Restart postgresql
+      notify: Restart postgresql

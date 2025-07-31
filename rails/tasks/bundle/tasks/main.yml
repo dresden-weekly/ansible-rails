@@ -30,5 +30,4 @@
   changed_when: >
     rails_bundle_result.stdout is defined
     and 'Installing' in rails_bundle_result.stdout
-  notify:
-    - Restart rails app
+  notify: Restart rails app

@@ -10,8 +10,6 @@ This repository contains many roles that you can glue together to represent your
 Requirements
 ------------
 
-* Ubuntu 18.04 (Bionic)
-* Ubuntu 20.04 (Focal)
 * Ubuntu 22.04 (Jammy)
 * Ubuntu 24.04 (Noble)
 

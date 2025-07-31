@@ -22,8 +22,7 @@
     src: "{{ item }}.j2"
     dest: "{{ postgresql_config_path }}/{{ item }}"
     mode: "644"
-  notify:
-    - Restart postgresql
+  notify: Restart postgresql
   with_items:
     - pg_hba.conf
     - postgresql.conf

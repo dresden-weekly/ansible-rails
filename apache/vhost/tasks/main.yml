@@ -10,12 +10,10 @@
     dest: "{{ APACHE_SERVER_SITES_AVAILABLE_PATH }}/{{ apache_vhost_name }}.conf"
     src: "vhost.conf.j2"
     mode: "644"
-  notify:
-    - Restart apache
+  notify: Restart apache
 
 - name: Vhost | enable
   ansible.builtin.command: "a2ensite {{ apache_vhost_name }}"
   register: apache_vhost_enable_result
   changed_when: "'Enabling site' in apache_vhost_enable_result.stdout"
-  notify:
-    - Restart apache
+  notify: Restart apache

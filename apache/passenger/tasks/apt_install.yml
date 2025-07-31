@@ -24,11 +24,9 @@
     state: "{{ apache_passenger_state }}"
     update_cache: true
     cache_valid_time: 3600
-  notify:
-    - Restart apache
+  notify: Restart apache
 
 - name: Install | enable module
   community.general.apache2_module:
     name: "{{ apache_passenger_mod }}"
-  notify:
-    - Restart apache
+  notify: Restart apache

@@ -42,5 +42,4 @@
   ansible.builtin.service:
     name: "{{ nginx_service_name }}"
     enabled: true
-  notify:
-    - Restart nginx
+  notify: Restart nginx

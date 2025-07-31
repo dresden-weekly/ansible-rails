@@ -53,8 +53,7 @@
     content: |
       LoadModule passenger_module {{ apache_passenger_module_path_result.stdout_lines[0] }}
     mode: "644"
-  notify:
-    - Restart apache
+  notify: Restart apache
 
 - name: Module config
   ansible.builtin.copy:
@@ -65,12 +64,10 @@
         PassengerDefaultRuby {{ RUBY_BIN }}
       </IfModule>
     mode: "644"
-  notify:
-    - Restart apache
+  notify: Restart apache
 
 - name: Enable module
   community.general.apache2_module:
     name: "passenger"
     state: present
-  notify:
-    - Restart apache
+  notify: Restart apache

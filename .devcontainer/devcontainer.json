@@ -17,6 +17,10 @@
         "redhat.ansible"
       ],
       "settings": {
+        "redhat.telemetry.enabled": false,
+        "ansible.python.interpreterPath": "/bin/python3",
+        "ansible.lightspeed.enabled": false,
+        "ansible.executionEnvironment.enabled": false,
         "files.associations": {
           "**/defaults/*.yml": "ansible",
           "**/handlers/*.yml": "ansible",

@@ -14,13 +14,11 @@
     src: "site.conf.j2"
     dest: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
     mode: "644"
-  notify:
-    - Nginx reload
+  notify: Nginx reload
 
 - name: Enable the site
   ansible.builtin.file:
     path: "{{ NGINX_SITES_ENABLED_PATH }}/{{ site_name }}"
     src: "{{ NGINX_SITES_AVAILABLE_PATH }}/{{ site_name }}"
     state: link
-  notify:
-    - Nginx reload
+  notify: Nginx reload

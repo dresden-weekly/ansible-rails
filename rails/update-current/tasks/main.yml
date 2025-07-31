@@ -8,5 +8,4 @@
     path: "{{ RAILS_APP_CURRENT_PATH }}"
     state: link
     force: true
-  notify:
-    - Restart rails app
+  notify: Restart rails app

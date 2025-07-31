@@ -11,7 +11,6 @@ jobs:
         include:
           - distro_name: noble
           - distro_name: jammy
-          - distro_name: focal
 
     runs-on: ubuntu-latest
     env:
