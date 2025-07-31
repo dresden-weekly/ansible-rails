@@ -15,21 +15,20 @@
           - "gpg"
           - "apt-transport-https"
           - "ca-certificates"
+          - "python3-debian"
         state: latest
         update_cache: true
         cache_valid_time: 3600
 
-    - name: Debian | Add official key
-      ansible.builtin.apt_key:
-        keyserver: "{{ item }}"
-        id: "{{ nginx_official_key_id }}"
-      loop: "{{ nginx_official_key_servers }}"
-      retries: 2
-      delay: 1
-
-    - name: Install | Add repo
-      ansible.builtin.apt_repository:
-        repo: "{{ nginx_official_repo }}"
+    - name: Debian | Add repo
+      ansible.builtin.deb822_repository:
+        name: NGINX
+        types: deb
+        uris: ["{{ nginx_official_repo_uri }}"]
+        suites: ["{{ ansible_lsb.codename }}"]
+        components: [nginx]
+        architectures: [amd64]
+        signed_by: "{{ nginx_official_key_url }}"
 
 - name: Debian | Packages
   ansible.builtin.apt:

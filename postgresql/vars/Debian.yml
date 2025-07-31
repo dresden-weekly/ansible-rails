@@ -6,7 +6,7 @@ postgresql_python_packages:
 
 postgresql_apt_url: "https://apt.postgresql.org/pub/repos/apt"
 postgresql_apt_key: "{{ postgresql_apt_url }}/ACCC4CF8.asc"
-postgresql_apt_repo: "deb {{ postgresql_apt_url }}/ {{ ansible_lsb.codename }}-pgdg main"
+# postgresql_apt_repo: "deb {{ postgresql_apt_url }}/ {{ ansible_lsb.codename }}-pgdg main"
 
 postgresql_config_basepath: "/etc/postgresql"
 postgresql_data_basepath: "/var/lib/postgresql"

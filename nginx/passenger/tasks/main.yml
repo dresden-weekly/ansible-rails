@@ -5,21 +5,34 @@
       - "gpg"
       - "apt-transport-https"
       - "ca-certificates"
+      - "python3-debian"
     state: latest
     update_cache: true
     cache_valid_time: 3600
 
-- name: Apt | Add key for passenger repos
-  ansible.builtin.apt_key:
-    url: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x561F9B9CAC40B2F7
-    id: AC40B2F7
-    state: present
-
 - name: Apt | Add passenger repo
-  ansible.builtin.apt_repository:
-    repo: "deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ ansible_lsb.codename }} main"
-    state: present
-    update_cache: true
+  ansible.builtin.deb822_repository:
+    name: Phusion Passenger
+    types: deb
+    uris: ["{{ apache_passenger_apt_uri }}"]
+    suites: ["{{ ansible_lsb.codename }}"]
+    components: [main]
+    architectures: [amd64]
+    signed_by: "{{ apache_passenger_key_url }}"
+  register: repo_result
+
+# old apt_key no longer works!
+# - name: Apt | Add key for passenger repos
+#   ansible.builtin.apt_key:
+#     url: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x561F9B9CAC40B2F7
+#     id: AC40B2F7
+#     state: present
+
+# - name: Apt | Add passenger repo
+#   ansible.builtin.apt_repository:
+#     repo: "deb https://oss-binaries.phusionpassenger.com/apt/passenger {{ ansible_lsb.codename }} main"
+#     state: present
+#     update_cache: true
 
 - name: Pkg | Install nginx passenger packages
   ansible.builtin.apt:
@@ -27,6 +40,7 @@
     pkg:
       - "nginx-extras"
       - "passenger"
+    update_cache: "{{ repo_result.changed | bool }}"
   notify: Nginx restart
 
 - name: Service | Ensure nginx is running

@@ -1,10 +1,11 @@
 ---
 nginx_install: official # or "apt" or "ppa"
-nginx_official_key_id: "573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
-nginx_official_key_servers:
-  - keyserver.ubuntu.com
-  - pgp.mit.edu
-nginx_official_repo: "deb http://nginx.org/packages/ubuntu {{ ansible_lsb.codename }} nginx"
+# nginx_official_key_id: "573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
+# nginx_official_key_servers:
+#   - keyserver.ubuntu.com
+#   - pgp.mit.edu
+nginx_official_key_url: "https://nginx.org/keys/nginx_signing.key"
+nginx_official_repo_uri: "https://nginx.org/packages/ubuntu"
 
 # name of the system user that runs nginx
 nginx_user: "www-data"

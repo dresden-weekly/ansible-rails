@@ -1,2 +1,3 @@
 *.retry
 tests/docker-sshkey*
+.ansible

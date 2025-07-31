@@ -5,20 +5,34 @@
       - "gpg"
       - "apt-transport-https"
       - "ca-certificates"
+      - "python3-debian"
     state: latest
     update_cache: true
     cache_valid_time: 3600
 
-- name: Configure the Yarn APT key
-  ansible.builtin.apt_key:
-    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+- name: Install | Add repo
+  ansible.builtin.deb822_repository:
+    name: Yarn
+    types: deb
+    uris: ["https://dl.yarnpkg.com/debian/"]
+    suites: [stable]
+    components: [main]
+    architectures: [amd64]
+    signed_by: "https://dl.yarnpkg.com/debian/pubkey.gpg"
+  register: repo_result
 
-- name: Add Yarn repository
-  ansible.builtin.apt_repository:
-    repo: "deb https://dl.yarnpkg.com/debian/ stable main"
-    state: present
+# note: apt_key no longer works!
+# - name: Configure the Yarn APT key
+#   ansible.builtin.apt_key:
+#     url: https://dl.yarnpkg.com/debian/pubkey.gpg
+
+# - name: Add Yarn repository
+#   ansible.builtin.apt_repository:
+#     repo: "deb https://dl.yarnpkg.com/debian/ stable main"
+#     state: present
 
 - name: Install Yarn
   ansible.builtin.apt:
     name: yarn
     state: present
+    update_cache: "{{ repo_result.changed | bool }}"

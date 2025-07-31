@@ -5,25 +5,37 @@
       - "gpg"
       - "apt-transport-https"
       - "ca-certificates"
+      - "python3-debian"
     state: latest
     update_cache: true
     cache_valid_time: 3600
 
-- name: Install | add key
-  ansible.builtin.apt_key:
-    keyserver: "{{ apache_passenger_key_server }}"
-    id: "{{ apache_passenger_key_id }}"
+# note: old keychain is no longer supported!
+# - name: Install | add key
+#   ansible.builtin.apt_key:
+#     keyserver: "{{ apache_passenger_key_server }}"
+#     id: "{{ apache_passenger_key_id }}"
 
-- name: Install | add repo
-  ansible.builtin.apt_repository:
-    repo: "{{ apache_passenger_apt_repo }}"
+# - name: Install | add repo
+#   ansible.builtin.apt_repository:
+#     repo: "{{ apache_passenger_apt_repo }}"
+
+- name: Install | Add repo
+  ansible.builtin.deb822_repository:
+    name: Phusion Passenger
+    types: deb
+    uris: ["{{ apache_passenger_apt_uri }}"]
+    suites: ["{{ ansible_lsb.codename }}"]
+    components: [main]
+    architectures: [amd64]
+    signed_by: "{{ apache_passenger_key_url }}"
+  register: repo_result
 
 - name: Install | packages
   ansible.builtin.apt:
     pkg: "{{ apache_passenger_package }}"
     state: "{{ apache_passenger_state }}"
-    update_cache: true
-    cache_valid_time: 3600
+    update_cache: "{{ repo_result.changed | bool }}"
   notify: Restart apache
 
 - name: Install | enable module

@@ -5,21 +5,33 @@
       - "gpg"
       - "apt-transport-https"
       - "ca-certificates"
+      - "python3-debian"
     state: latest
     update_cache: true
     cache_valid_time: 86400
 
-- name: Debian | Add repo key
-  ansible.builtin.apt_key:
-    url: "{{ postgresql_apt_key }}"
+- name: Install | Add repo
+  ansible.builtin.deb822_repository:
+    name: Postgresql
+    types: deb
+    uris: ["{{ postgresql_apt_url }}"]
+    suites: ["{{ ansible_lsb.codename }}-pgdg"]
+    components: [main]
+    architectures: [amd64]
+    signed_by: "{{ postgresql_apt_key }}"
+  register: repo_result
 
-- name: Debian | Add repo
-  ansible.builtin.apt_repository:
-    repo: "{{ postgresql_apt_repo }}"
+# note: apt_key no longer works
+# - name: Debian | Add repo key
+#   ansible.builtin.apt_key:
+#     url: "{{ postgresql_apt_key }}"
+
+# - name: Debian | Add repo
+#   ansible.builtin.apt_repository:
+#     repo: "{{ postgresql_apt_repo }}"
 
 - name: Debian | Packages
   ansible.builtin.apt:
     name: "{{ postgresql_packages + postgresql_python_packages | flatten }}"
     state: latest
-    update_cache: true
-    cache_valid_time: 86400
+    update_cache: "{{ repo_result.changed | bool }}"
