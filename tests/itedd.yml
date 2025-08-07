@@ -44,14 +44,6 @@
     #         pool: 5
 
   pre_tasks:
-    - name: Reset system locales
-      ansible.builtin.file:
-        path: '/etc/locale.gen'
-        state: 'absent'
-    - name: Generate UTF8 locale for Postgres
-      ansible.builtin.command: 'locale-gen "en_US.UTF-8"'
-      changed_when: false
-
     - name: Create App User
       ansible.builtin.user:
         name: "{{ app_user }}"

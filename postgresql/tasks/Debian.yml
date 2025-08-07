@@ -2,13 +2,27 @@
 - name: Debian | GPG
   ansible.builtin.apt:
     name:
-      - "gpg"
-      - "apt-transport-https"
-      - "ca-certificates"
-      - "python3-debian"
+      - gpg
+      - apt-transport-https
+      - ca-certificates
+      - python3-debian
+      - locales
     state: latest
     update_cache: true
     cache_valid_time: 86400
+
+- name: Ensure locale is selected
+  ansible.builtin.lineinfile:
+    path: /etc/locale.gen
+    state: present
+    regexp: "^#\\s*{{ postgresql_locale }}.{{ postgresql_encoding }}.*$"
+    line: "{{ postgresql_locale }}.{{ postgresql_encoding }} {{ postgresql_encoding }}"
+  register: locale_gen_result
+
+- name: Generate locale if changed
+  ansible.builtin.command: locale-gen
+  changed_when: true
+  when: locale_gen_result.changed and true
 
 - name: Install | Add repo
   ansible.builtin.deb822_repository:
