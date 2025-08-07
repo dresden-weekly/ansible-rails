@@ -21,5 +21,28 @@ rvm_gpg_key_alternative_url: "https://rvm.io/mpapis.asc"
 rvm_custom_packages:
   - nodejs # precompile assets
 
+rvm_build_packages: [] # packages required to build your ruby version
+
+rvm_ruby_build_packages: # note: duplicates some packages of rvm_packages for gems
+  - autoconf
+  - patch
+  - rustc
+  - pkg-config
+  - libtool
+  - build-essential
+  - libssl-dev
+  - libyaml-dev
+  - libreadline6-dev
+  - zlib1g-dev
+  - libgmp-dev
+  - libncurses5-dev
+  - libffi-dev
+  - libgdbm6
+  - libgdbm-dev
+  - libdb-dev
+  - uuid-dev
+
 rvm_install_gems:
   - bundler
+
+rvm_pkg_openssl: false # set to true to build openssl as rvm pkg

@@ -1,84 +1,79 @@
 ---
 - name: Packages
   ansible.builtin.apt:
-    name: "{{ rvm_packages + rvm_custom_packages | flatten }}"
+    name: "{{ rvm_packages + rvm_custom_packages + rvm_build_packages | flatten | list | unique }}"
     update_cache: true
     state: present
     cache_valid_time: 86400
-
-- name: Ruby 1.8.7
-  ansible.builtin.include_tasks: ruby187.yml
-  when: rvm_default == '1.8.7' or '1.8.7' in rvm_rubies
 
 - name: GPG
   ansible.builtin.include_tasks: gpg_keys.yml
   when: rvm_gpg_keys != ''
 
-- name: Install RVM
-  # note: we need the pipe to work here
-  ansible.builtin.shell:
-    cmd: >
-      set -o pipefail
-      && curl -L https://get.rvm.io | bash -s stable --autolibs=disable --auto-dotfiles
-    creates: ~/.rvm
-    executable: /bin/bash
+- name: Run as RVM user
   become: true
   become_user: "{{ rvm_user }}"
+  block:
+    - name: Install RVM
+      # note: we need the pipe to work here
+      ansible.builtin.shell:
+        cmd: >
+          set -o pipefail
+          && curl -L https://get.rvm.io | bash -s stable --autolibs=disable --auto-dotfiles
+        creates: ~/.rvm
+        executable: /bin/bash
 
-- name: Ruby versions
-  ansible.builtin.shell: >
-    ~/.rvm/bin/rvm install
-    {{ '--default' if item == rvm_default else '' }}
-    {{ item }}
-  args:
-    creates: "~/.rvm/rubies/ruby-{{ item }}"
-  become: true
-  become_user: "{{ rvm_user }}"
-  loop: "{{ rvm_rubies + [rvm_default] | flatten }}"
+    - name: Build OpenSSL by RVM
+      ansible.builtin.command:
+        cmd: "~/.rvm/bin/rvm pkg install openssl"
+        creates: ~/.rvm/usr/lib/libssl.so
+      when: rvm_pkg_openssl
 
-- name: Facts
-  ansible.builtin.set_fact:
-    RUBY_PREFIX: "~/.rvm/bin/rvm default do "
+    - name: Ruby versions
+      ansible.builtin.shell:
+        cmd: >
+          ~/.rvm/bin/rvm install
+          {{ '--default' if item == rvm_default else '' }}
+          {{ '--with-openssl-dir=$HOME/.rvm/usr' if rvm_pkg_openssl }}
+          {{ item }}
+        creates: "~/.rvm/rubies/ruby-{{ item }}"
+      loop: "{{ rvm_rubies + [rvm_default] | flatten }}"
 
-- name: Ruby Path
-  ansible.builtin.shell: >
-    {{ RUBY_PREFIX }} rvm gemdir
-  become: true
-  become_user: "{{ rvm_user }}"
-  register: ruby_rvm_ruby_path_result
-  changed_when: false
+    - name: Facts
+      ansible.builtin.set_fact:
+        RUBY_PREFIX: "~/.rvm/bin/rvm default do "
 
-- name: Facts
-  ansible.builtin.set_fact:
-    RUBY_BIN: "{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}/wrappers/ruby"
+    - name: Ruby Path
+      ansible.builtin.command:
+        cmd: "{{ RUBY_PREFIX }} rvm gemdir"
+      register: ruby_rvm_ruby_path_result
+      changed_when: false
 
-- name: Gem Version
-  ansible.builtin.shell: >
-    {{ RUBY_PREFIX }} gem --version
-  become: true
-  become_user: "{{ rvm_user }}"
-  register: ruby_rvm_gem_version_result
-  changed_when: false
+    - name: Facts
+      ansible.builtin.set_fact:
+        RUBY_BIN: "{{ ruby_rvm_ruby_path_result.stdout_lines[0] }}/wrappers/ruby"
 
-- name: Gem Update System
-  ansible.builtin.shell: >
-    {{ RUBY_PREFIX }} gem update --system {{ rvm_gem_version }}
-  become: true
-  become_user: "{{ rvm_user }}"
-  when: rvm_gem_version != '' and rvm_gem_version != ruby_rvm_gem_version_result.stdout
-  register: ruby_rvm_gem_update_system_result
-  changed_when: >
-    "Aborting" not in ruby_rvm_gem_update_system_result.stdout
+    - name: Gem Version
+      ansible.builtin.command:
+        cmd: "{{ RUBY_PREFIX }} gem --version"
+      register: ruby_rvm_gem_version_result
+      changed_when: false
 
-- name: Install gems
-  ansible.builtin.shell:
-    cmd: >
-      set -o pipefail
-      && {{ RUBY_PREFIX }} gem list | if ! grep "^{{ item }} " ; then {{ RUBY_PREFIX }} gem install {{ item }} ; fi
-    executable: /bin/bash
-  become: true
-  become_user: "{{ rvm_user }}"
-  loop: "{{ rvm_install_gems | flatten }}"
-  register: ruby_rvm_gem_install_result
-  changed_when: >
-    ("Successfully installed ITEM" | regex_replace('ITEM', item)) in ruby_rvm_gem_install_result.stdout
+    - name: Gem Update System
+      ansible.builtin.command:
+        cmd: "{{ RUBY_PREFIX }} gem update --system {{ rvm_gem_version }}"
+      when: rvm_gem_version != '' and rvm_gem_version != ruby_rvm_gem_version_result.stdout
+      register: ruby_rvm_gem_update_system_result
+      changed_when: >
+        "Aborting" not in ruby_rvm_gem_update_system_result.stdout
+
+    - name: Install gems
+      ansible.builtin.shell:
+        cmd: >
+          set -o pipefail
+          && {{ RUBY_PREFIX }} gem list | if ! grep "^{{ item }} " ; then {{ RUBY_PREFIX }} gem install {{ item }} ; fi
+        executable: /bin/bash
+      register: ruby_rvm_gem_install_result
+      changed_when: >
+        ("Successfully installed ITEM" | regex_replace('ITEM', item)) in ruby_rvm_gem_install_result.stdout
+      loop: "{{ rvm_install_gems | flatten }}"
