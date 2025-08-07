@@ -24,7 +24,7 @@ while read line; do
   esac
 done
 
-if [ ! "${host}" =~ "${GIT_CREDENTIAL_HOST}" ]; then
+if [[ ! "${host}" =~ "${GIT_CREDENTIAL_HOST}" ]]; then
   echo -e "not matching host: ${host} != ${GIT_CREDENTIAL_HOST}"
   exit 0
 fi
