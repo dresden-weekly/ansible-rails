@@ -23,7 +23,7 @@ apache_vhost_addresses:
 apache_vhost_server_name: "{{ site_domain }}"
 apache_vhost_server_aliases: "{{ app_domain_aliases | default([]) }}"
 apache_vhost_document_root: "{{ site_public_path }}"
-apache_vhost_include_mode: "0644"
+apache_vhost_include_mode: "644"
 
 apache_site_options: {}
 apache_set_env: {}
