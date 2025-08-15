@@ -10,11 +10,11 @@
 
 - name: Import GPG keys
   ansible.builtin.command: 'gpg --keyserver {{ rvm_gpg_key_server }} --recv-keys {{ rvm_gpg_keys_list[index] }}'
-  ignore_errors: true
   register: rvm_import_gpg_keys_result
   become: true
   become_user: "{{ rvm_user }}"
   changed_when: true
+  failed_when: false
   when: item.rc != 0
   loop: "{{ rvm_gpg_keys_checks.results }}"
   loop_control:
@@ -30,8 +30,9 @@
   ansible.builtin.shell:
     cmd: >
       set -o pipefail
-      && curl -sSL {{ rvm_gpg_key_alternative_url }} | gpg --import -
+      && curl -sSL {{ item }} | gpg --import -
     executable: /bin/bash
+  loop: "{{ rvm_gpg_key_alternative_urls }}"
   become: true
   become_user: "{{ rvm_user }}"
   changed_when: true

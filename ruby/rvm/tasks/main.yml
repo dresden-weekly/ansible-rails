@@ -20,7 +20,7 @@
         cmd: >
           set -o pipefail
           && curl -L https://get.rvm.io | bash -s stable --autolibs=disable --auto-dotfiles
-        creates: ~/.rvm
+        creates: ~/.rvm/bin/rvm
         executable: /bin/bash
 
     - name: Build OpenSSL by RVM
