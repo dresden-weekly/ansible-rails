@@ -37,7 +37,7 @@
         mode: "644"
 
     - name: Systemd | Enable unit at boot
-      ansible.builtin.command: "/bin/bash -lc -- 'systemctl --user enable {{ unicorn_service_name }}.service'"
-      register: enable_unit_result
-      changed_when: >
-        'Created' in enable_unit_result.stderr
+      ansible.builtin.systemd_service:
+        name: "{{ unicorn_service_name }}"
+        scope: "user"
+        enabled: true

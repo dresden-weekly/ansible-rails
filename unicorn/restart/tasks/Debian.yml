@@ -1,6 +1,8 @@
 ---
 - name: Debian | Restart required
   when: rails_unicorn_restart.stat.exists
+  become: true
+  become_user: "{{ unicorn_user }}"
   block:
     - name: Debian | Remove RAILS_APP_RESTART_PATH
       ansible.builtin.file:
@@ -13,6 +15,7 @@
       when: unicorn_service_type == 'upstart'
 
     - name: Debian | Systemd | Restart
-      ansible.builtin.command: "{{ profile }}'systemctl --user restart {{ unicorn_service_name }}.service'"
-      changed_when: true
-      when: unicorn_service_type == 'systemd'
+      ansible.builtin.systemd_service:
+        name: "{{ unicorn_service_name }}"
+        scope: "user"
+        state: restarted

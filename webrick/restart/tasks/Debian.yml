@@ -1,6 +1,8 @@
 ---
 - name: Restart exists
   when: rails_webrick_restart.stat.exists
+  become: true
+  become_user: "{{ webrick_user }}"
   block:
     - name: Debian | Remove RAILS_APP_RESTART_PATH
       ansible.builtin.file:
@@ -13,6 +15,8 @@
       when: webrick_service_type == 'upstart'
 
     - name: Debian | Systemd | Restart
-      ansible.builtin.command: "{{ profile }}'systemctl --user restart {{ webrick_service_name }}.service'"
-      changed_when: true
+      ansible.builtin.systemd_service:
+        name: "{{ webrick_service_name }}"
+        scope: "user"
+        state: restarted
       when: webrick_service_type == 'systemd'
