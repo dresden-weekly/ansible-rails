@@ -1,18 +1,8 @@
 ---
-- name: "Systemd | Test if linger is enabled for {{ puma_user }}"
-  ansible.builtin.command: "loginctl show-user {{ puma_user }}"
-  changed_when: false
-  failed_when: >
-    'command not found' in systemd_linger_enabled_test.stderr
-  register: systemd_linger_enabled_test
-  become: true
-
-- name: "Systemd | Enabled linger for {{ puma_user }}"
-  ansible.builtin.command: "loginctl enable-linger {{ puma_user }}"
-  changed_when: true
-  become: true
-  when: >
-    'Failed' in systemd_linger_enabled_test.stderr
+- name: "Systemd | Enabled linger"
+  ansible.builtin.command:
+    cmd: "loginctl enable-linger {{ puma_user }}"
+    creates: "/var/lib/systemd/linger/{{ puma_user }}"
 
 - name: Systemd | User
   become: true

@@ -1,18 +1,8 @@
 ---
-- name: "Systemd | Test if linger is enabled for {{ webrick_user }}"
-  ansible.builtin.command: "loginctl show-user {{ webrick_user }}"
-  changed_when: false
-  failed_when: >
-    'command not found' in systemd_linger_enabled_test.stderr
-  register: systemd_linger_enabled_test
-  become: true
-
 - name: "Systemd | Enabled linger for {{ webrick_user }}"
-  ansible.builtin.command: "loginctl enable-linger {{ webrick_user }}"
-  changed_when: true
-  become: true
-  when: >
-    'Failed' in systemd_linger_enabled_test.stderr
+  ansible.builtin.command:
+    cmd: "loginctl enable-linger {{ webrick_user }}"
+    creates: "/var/lib/systemd/linger/{{ webrick_user }}"
 
 - name: Systemd User service
   become: true
