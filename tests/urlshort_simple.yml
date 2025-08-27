@@ -17,7 +17,7 @@
 
     ruby_version: 3.2.2
     rvm_install_gems:
-      - "bundler -v 2.4.19"
+      - "bundler:2.4.19"
 
     db_user: urlshort
     db_password: secret

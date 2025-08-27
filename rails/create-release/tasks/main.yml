@@ -4,8 +4,14 @@
 ---
 - name: Facts
   ansible.builtin.include_tasks: facts.yml
+
 - name: Git
   ansible.builtin.include_tasks: git.yml
+  when: rails_release_strategy == 'git'
+
+- name: Empty
+  ansible.builtin.include_tasks: empty.yml
+  when: rails_release_strategy == 'empty'
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
@@ -17,22 +23,21 @@
     mode: "755"
   loop: "{{ rails_deploy_custom_create_folders | flatten }}"
 
-- name: Provide Rails yaml configuration files
-  ansible.builtin.template:
-    dest: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
-    src: "config.yml.jinja2"
-    owner: "{{ app_user }}"
-    mode: "0600"
-  when: item.yaml is defined
-  loop: "{{ rails_provisioned_files }}"
-
-- name: Provide plain configuration files
+- name: Provide Rails configuration files
   ansible.builtin.copy:
     dest: "{{ RAILS_APP_SHARED_PATH }}/{{ item.file }}"
-    content: "{{ item.plain }}"
+    content: |
+      {% if item.yaml is defined %}
+      ---
+      # {{ ansible_managed }}
+      {{ item.yaml | to_nice_yaml }}
+      {% elif item.plain is defined %}
+      {{ item.plain }}
+      {% else %}
+      {{ false | mandatory('Only yaml or plain configurations are supported!') }}
+      {% endif %}
     owner: "{{ app_user }}"
     mode: "0600"
-  when: item.plain is defined
   loop: "{{ rails_provisioned_files }}"
 
 - name: Shared Folders

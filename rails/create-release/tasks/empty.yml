@@ -1,0 +1,6 @@
+---
+- name: Create release folder
+  ansible.builtin.file:
+    path: "{{ RAILS_APP_RELEASE_PATH }}"
+    state: directory
+    mode: "755"

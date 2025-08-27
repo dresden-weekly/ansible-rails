@@ -6,38 +6,29 @@
     update_cache: true
     cache_valid_time: 86400
 
-- name: Install compatible rack version
-  ansible.builtin.command: >
-    {{ RUBY_PREFIX }} gem install rack --version '1.6.4'
-  become: true
-  become_user: "{{ app_user }}"
-  register: rack_gem_install_result
-  changed_when: >
-    "Successfully installed" in rack_gem_install_result.stdout
-  when: rvm_default | version_compare('2.2', '<')
-
 - name: Install GEM
-  ansible.builtin.shell: |
-    if ! {{ RUBY_PREFIX }} gem list -i {{ item }} --version "{{ apache_passenger_gem_version }}"
-    then
-      {{ RUBY_PREFIX }} gem install {{ item }} --version "{{ apache_passenger_gem_version }}"
-    fi
   become: true
   become_user: "{{ app_user }}"
-  loop: "{{ apache_passenger_gem_name | flatten }}"
+  ansible.builtin.shell:
+    cmd: |
+      if ! {{ RUBY_PREFIX }} gem list -i {{ apache_passenger_gem_name }} --version "{{ apache_passenger_gem_version }}"
+      then
+        {{ RUBY_PREFIX }} gem install {{ apache_passenger_gem_name }} --version "{{ apache_passenger_gem_version }}"
+      fi
   register: apache_passenger_gem_install_result
   changed_when: >
-    "Successfully installed {{ item }}" in apache_passenger_gem_install_result.stdout
+    ("Successfully installed ITEM" | regex_replace('ITEM', apache_passenger_gem_name)) in apache_passenger_gem_install_result.stdout
   notify: Install Passenger
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
 
 - name: Extract Passenger GEM path
-  ansible.builtin.shell: |
-    {{ RUBY_PREFIX }} ruby -e 'require "rubygems"; puts Gem::Specification.find_by_name("{{ apache_passenger_gem_name }}").gem_dir'
   become: true
   become_user: "{{ app_user }}"
+  ansible.builtin.shell:
+    cmd: |
+      {{ RUBY_PREFIX }} ruby -e 'require "rubygems"; puts Gem::Specification.find_by_name("{{ apache_passenger_gem_name }}").gem_dir'
   changed_when: false
   register: apache_passenger_gem_path_result
 

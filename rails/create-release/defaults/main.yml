@@ -12,6 +12,11 @@ rails_release_id_time: >-
     ] | join('') }}
 rails_release_id_git_branch: "{{ git_branch }}"
 
+# options:
+# - "git" - clone version from a git repository
+# - "empty" - create an empty release folder
+rails_release_strategy: "git"
+
 # git repository where rails app taken from
 rails_app_git_repo: "{{ git_url }}"
 rails_app_git_branch: "{{ git_branch }}"
