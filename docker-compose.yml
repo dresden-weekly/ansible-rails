@@ -16,7 +16,7 @@ services:
       - '-c'
       - >-
         ansible-galaxy install -r tests/urlshort_requirements.yml
-        && ansible-playbook --inventory-file=tests/docker-inventory.ini tests/urlshort_simple.yml
+        && ansible-playbook --inventory=tests/docker-inventory.ini tests/urlshort_simple.yml
     tty: true
     stdin_open: true
     environment:
