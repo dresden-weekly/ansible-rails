@@ -1,0 +1,29 @@
+---
+docker_apt_repository: "https://download.docker.com/{{ ansible_system | lower }}/{{ ansible_distribution | lower }}"
+docker_apt_gpg_key: "{{ docker_apt_repository }}/gpg"
+
+docker_prerequisite_packages:
+  - ca-certificates
+  - python3-debian
+  - sudo
+  - gpg
+  - curl
+
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin
+
+docker_service: "docker"
+
+docker_data_root: "/var/lib/docker"
+docker_volumes_path: "{{ docker_data_root }}/volumes"
+
+docker_config_root: "/etc/docker"
+docker_config_daemon_file: "{{ docker_config_root }}/daemon.json"
+docker_config_daemon: |
+  {
+    "data-root": "{{ docker_data_root }}"
+  }

@@ -1,0 +1,37 @@
+- name: Install prerequisite packages
+  ansible.builtin.apt:
+    pkg: "{{ docker_prerequisite_packages }}"
+    update_cache: true
+    state: latest
+    cache_valid_time: 86400
+
+- name: Add repo
+  ansible.builtin.deb822_repository:
+    name: Docker
+    types: deb
+    uris: ["{{ docker_apt_repository }}"]
+    suites: ["{{ ansible_distribution_release }}"]
+    components: [stable]
+    architectures: [amd64]
+    signed_by: "{{ docker_apt_gpg_key }}"
+  register: repo_result
+
+- name: Install packages
+  ansible.builtin.apt:
+    pkg: "{{ docker_packages }}"
+    state: latest
+    update_cache: "{{ repo_result.changed | bool }}"
+  notify: Restart docker
+
+- name: Create data folder
+  ansible.builtin.file:
+    dest: "{{ docker_data_root }}"
+    state: directory
+    mode: "755"
+
+- name: Create daemon.json
+  ansible.builtin.copy:
+    content: "{{ docker_config_daemon }}"
+    dest: "{{ docker_config_daemon_file }}"
+    mode: "644"
+  notify: Restart docker
